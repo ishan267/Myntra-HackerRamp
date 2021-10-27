@@ -14,66 +14,21 @@ const initialState = {
   
   export default (state = initialState, action) => {
     switch (action.type) {
-      case FETCH_CHATROOMS:
-        return {
-          availableChatrooms:[
-            {
-              id: '1',
-              userName: 'Jenny Doe',
-              userImg: require('../../assets/users/user-3.jpg'),
-              messageTime: '4 mins ago',
-              messageText:
-                'Hey there, this is my test for a post of my social app in React Native.',
-            },
-            {
-              id: '2',
-              userName: 'John Doe',
-              userImg: require('../../assets/users/user-1.jpg'),
-              messageTime: '2 hours ago',
-              messageText:
-                'Hey there, this is my test for a post of my social app in React Native.',
-            },
-            {
-              id: '3',
-              userName: 'Ken William',
-              userImg: require('../../assets/users/user-4.jpg'),
-              messageTime: '1 hours ago',
-              messageText:
-                'Hey there, this is my test for a post of my social app in React Native.',
-            },
-            {
-              id: '4',
-              userName: 'Selina Paul',
-              userImg: require('../../assets/users/user-6.jpg'),
-              messageTime: '1 day ago',
-              messageText:
-                'Hey there, this is my test for a post of my social app in React Native.',
-            },
-            {
-              id: '5',
-              userName: 'Christy Alex',
-              userImg: require('../../assets/users/user-7.jpg'),
-              messageTime: '2 days ago',
-              messageText:
-                'Hey there, this is my test for a post of my social app in React Native.',
-            },
-          ]
-          // availableChatrooms: action.loadedChatrooms,
-        //   userProducts: action.userProducts
+      case FETCH_CHATROOMS:   //Done ,action part left
+        return {  
+        availableChatrooms: action.loadedChatrooms, 
         };
-      case CREATE_CHATROOM:
-        const newProduct = new Product(
-          action.productData.id,
-          action.productData.ownerId,
-          action.productData.title,
-          action.productData.imageUrl,
-          action.productData.description,
-          action.productData.price
+      case CREATE_CHATROOM:          //Done ,action part left
+        const newChatroom = new chatroom(
+          action.chatroomData.id,
+          action.chatroomData.name,
+          action.chatroomData.adminId,
+          action.chatroomData.usersId,
+          action.chatroomData.messagesId,
         );
         return {
           ...state,
-          availableProducts: state.availableProducts.concat(newProduct),
-          userProducts: state.userProducts.concat(newProduct)
+          availableChatrooms: state.availableChatrooms.concat(newChatroom)
         };
       case UPDATE_CHATROOM:
         const productIndex = state.userProducts.findIndex(
@@ -92,23 +47,18 @@ const initialState = {
         const availableProductIndex = state.availableProducts.findIndex(
           prod => prod.id === action.pid
         );
-        const updatedAvailableProducts = [...state.availableProducts];
+        const updatedAvailableChatrooms = [...state.availableChatrooms];
         updatedAvailableProducts[availableProductIndex] = updatedProduct;
         return {
           ...state,
-          availableProducts: updatedAvailableProducts,
-
-          userProducts: updatedUserProducts
+         availableChatrooms: updatedAvailableChatrooms,
         };
-      case DELETE_CHATROOM:
+      case DELETE_CHATROOM:     // Done only action part left
         return {
           ...state,
-          userProducts: state.userProducts.filter(
-            product => product.id !== action.pid
+          availableChatrooms: state.availableChatrooms.filter(
+            chatroom => chatroom.id !== action.chatroomid
           ),
-          availableProducts: state.availableProducts.filter(
-            product => product.id !== action.pid
-          )
         };
        
     }
