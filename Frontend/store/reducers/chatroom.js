@@ -5,13 +5,11 @@ import {
     CREATE_CHATROOM,
     DELETE_CHATROOM,
     UPDATE_CHATROOM,
-    FETCH_MESSAGES,
 } from "../actions/chatroom";
 
 
 const initialState = {
     availableChatrooms: [], 
-    availableMessages:[],
   };
   
   export default (state = initialState, action) => {
@@ -112,14 +110,7 @@ const initialState = {
             product => product.id !== action.pid
           )
         };
-       case FETCH_MESSAGES:
-         return{
-           availableMessages:
-           [
-            {id:1,text:"hey",sent:false},
-            {id:2,text:"hello",sent:true}
-           ]
-         }
+       
     }
     return state;
   };
