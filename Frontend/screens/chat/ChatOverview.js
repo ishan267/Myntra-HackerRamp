@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import {View,FlatList,Text,Platform,ActivityIndicator,StyleSheet} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
+import { useSelector, useDispatch } from 'react-redux';
+import * as chatroomAction from '../../store/actions/chatroom'
+import * as messagesAction from '../../store/actions/messages'
+import * as friendsAction from '../../store/actions/friends';
+
 import {
   Container,
   Card,
@@ -15,54 +20,36 @@ import {
   TextSection,
 } from '../../styles/MessageStyles';
 
-const Messages = [
-  {
-    id: '1',
-    userName: 'Jenny Doe',
-    userImg: require('../../assets/users/user-3.jpg'),
-    messageTime: '4 mins ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '2',
-    userName: 'John Doe',
-    userImg: require('../../assets/users/user-1.jpg'),
-    messageTime: '2 hours ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '3',
-    userName: 'Ken William',
-    userImg: require('../../assets/users/user-4.jpg'),
-    messageTime: '1 hours ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '4',
-    userName: 'Selina Paul',
-    userImg: require('../../assets/users/user-6.jpg'),
-    messageTime: '1 day ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-  {
-    id: '5',
-    userName: 'Christy Alex',
-    userImg: require('../../assets/users/user-7.jpg'),
-    messageTime: '2 days ago',
-    messageText:
-      'Hey there, this is my test for a post of my social app in React Native.',
-  },
-];
-
 const ChatOverviewScreen = ({navigation}) => {
+
+  const [isLoading, setIsLoading] = useState(false);
+
+    const dispatch=useDispatch();
+    const chatrooms=useSelector(state=>state.chatroom.availableChatrooms);
+    const messages=useSelector(state=>state.messages.allMessages);
+    const friends=useSelector(state=>state.friends.allFriends);
+
+
+    useEffect(()=>{
+      setIsLoading(true);
+      dispatch(chatroomAction.fetchChatroom()).then(() => {
+      setIsLoading(false);
+      console.log("chatrooms",chatrooms)
+    });
+    },[dispatch])
+
+    useEffect(()=>{
+      dispatch(messagesAction.fetchMessage()).then(()=>{console.log("messages",messages)})
+    },[dispatch]);
+
+    useEffect(()=>{
+      dispatch(friendsAction.fetchFriends()).then(()=>{console.log("friends",friends)})
+    },[dispatch])
+
     return (
       <Container>
         <FlatList 
-          data={Messages}
+          data={chatrooms}
           keyExtractor={item=>item.id}
           renderItem={({item}) => (
             <Card onPress={() => navigation.navigate('ChatDetails', {userName: item.userName})}>
@@ -87,7 +74,7 @@ const ChatOverviewScreen = ({navigation}) => {
 
 ChatOverviewScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'Messages',
+    headerTitle: 'All Chats',
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

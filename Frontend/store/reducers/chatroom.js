@@ -16,7 +16,7 @@ const initialState = {
     switch (action.type) {
       case FETCH_CHATROOMS:   //Done ,action part left
         return {  
-        availableChatrooms: action.loadedChatrooms, 
+        availableChatrooms: action.chatrooms, 
         };
       case CREATE_CHATROOM:          //Done ,action part left
         const newChatroom = new chatroom(

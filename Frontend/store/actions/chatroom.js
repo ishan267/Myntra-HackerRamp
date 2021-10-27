@@ -4,7 +4,6 @@ export const FETCH_CHATROOMS="FETCH_CHATROOMS";
 export const CREATE_CHATROOM="CREATE_CHATROOM";
 export const DELETE_CHATROOM="DELETE_CHATROOM";
 export const UPDATE_CHATROOM="UPDATE_CHATROOM";
-export const FETCH_MESSAGES="FETCH_MESSAGES";
 
 export const fetchChatroom = () => {
     return async (dispatch, getState) => {
@@ -35,10 +34,53 @@ export const fetchChatroom = () => {
         //     )
         //   );
         // }
+        const loadedChatrooms=[
+          {
+            id: '1',
+            userName: 'Jenny Doe',
+            userImg: require('../../assets/users/user-3.jpg'),
+            messageTime: '4 mins ago',
+            messageText:
+              'Hey there, this is my test for a post of my social app in React Native.',
+          },
+          {
+            id: '2',
+            userName: 'John Doe',
+            userImg: require('../../assets/users/user-1.jpg'),
+            messageTime: '2 hours ago',
+            messageText:
+              'Hey there, this is my test for a post of my social app in React Native.',
+          },
+          {
+            id: '3',
+            userName: 'Ken William',
+            userImg: require('../../assets/users/user-4.jpg'),
+            messageTime: '1 hours ago',
+            messageText:
+              'Hey there, this is my test for a post of my social app in React Native.',
+          },
+          {
+            id: '4',
+            userName: 'Selina Paul',
+            userImg: require('../../assets/users/user-6.jpg'),
+            messageTime: '1 day ago',
+            messageText:
+              'Hey there, this is my test for a post of my social app in React Native.',
+          },
+          {
+            id: '5',
+            userName: 'Christy Alex',
+            userImg: require('../../assets/users/user-7.jpg'),
+            messageTime: '2 days ago',
+            messageText:
+              'Hey there, this is my test for a post of my social app in React Native.',
+          },
+        ];
+        
      
         dispatch({
           type: FETCH_CHATROOMS,
-          // chatrooms: loadedChatrooms,
+          chatrooms:loadedChatrooms,
         });
       } catch (err) {
         // send to custom analytics server
@@ -47,17 +89,14 @@ export const fetchChatroom = () => {
     };
   };
 
-  export const fetchMessage=()=>{
-    return async(dispatch,getState)=>{
-        try{
-          dispatch(
-            {
-              type:FETCH_MESSAGES,
-            }
-          )
+  export const createChatroom=()=>{
 
-        }catch(err){
-          throw err;
-        }
-      }
+  }
+
+  export const updateChatroom=()=>{
+
+  }
+
+  export const deleteChatroom=()=>{
+
   }
