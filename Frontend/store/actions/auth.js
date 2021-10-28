@@ -87,7 +87,7 @@ export const login = (email, password) => {
     }
 
     const resData = await response.json();
-    console.log(resData);
+    console.log("Response data on login is",resData);
     dispatch(
       authenticate(
         resData.localId,

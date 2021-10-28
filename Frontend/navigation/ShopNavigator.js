@@ -237,18 +237,18 @@ const BottomNavigator = createBottomTabNavigator(
   }
 );
 
-// const AuthNavigator = createStackNavigator(
-//   {
-//     Auth: AuthScreen
-//   },
-//   {
-//     defaultNavigationOptions: defaultNavOptions
-//   }
-// );
+ const AuthNavigator = createStackNavigator(
+   {
+     Auth: AuthScreen
+   },
+   {
+     defaultNavigationOptions: defaultNavOptions
+   }
+ );
 
 const MainNavigator = createSwitchNavigator({
-  // Startup: StartupScreen,
-  //Auth: AuthNavigator,
+  Startup: StartupScreen,
+  Auth: AuthNavigator,
   Shop: BottomNavigator,
 });
 export default createAppContainer(MainNavigator);
