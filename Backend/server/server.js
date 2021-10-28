@@ -24,10 +24,20 @@ console.log('HI');
 io.on('connection',(socket)=>{
     console.log('New user connected');
 
-    //add socket id
+    //update socket id
+    socket.on('update-socket-id',(params,callback)=>{
+        var user=usersObj.getUser(params.uid);
+        for(var i=0;i<users.length;i++){
+            if(users[i].uid==user.uid){
+                users[i].sock_id=socket.id;
+                break;
+            }
+        }
+        callback(socket.id);
+    })
 
     socket.on('join-room',(params,callback)=>{
-        if(users.isPresentInRoom(params.uid,params.cid)){
+        if(roomsObj.isPresentInRoom(params.cid,params.uid)){
             return callback('Username already exists in this room');
         }
 
@@ -36,7 +46,12 @@ io.on('connection',(socket)=>{
         usersObj.addUserToRoom(params.uid,params.cid);
 
         //Telling other users that a new user joined
-        socket.broadcast.to(params.cid).emit('newMessage',generateMessage('Admin',`${params.name} has joined`));
+        socket.broadcast.to(params.cid).emit('newMessage',generateMessage('Admin',`${params.uid} has joined`));
+
+        console.log(users);
+        console.log(chatrooms);
+        console.log(messages);
+
         callback();
         
     });
@@ -49,11 +64,14 @@ io.on('connection',(socket)=>{
         console.log("HERE")
         console.log(message);
         messages.push(message);
-        var user = usersObj.getUser(message.sen_id);
         if(isRealString(message.msg)){
+            console.log("message is a valid string");
             if(message.tag==1){
+                var user = usersObj.getUser(message.rec_id);
+                console.log(user.sock_id);
                 socket.to(user.sock_id).emit('newMessage',generateMessage(message.sen_id,message.msg)); //personal message
              }else{
+                console.log(message.rec_id);
                 io.to(message.rec_id).emit('newMessage',generateMessage(message.sen_id,message.msg));     //group message
              }
         }
@@ -85,8 +103,9 @@ app.post('/add-friend',(req,res)=>{
 server.listen(port,()=>{
     usersObj.addUser('user1',[],['room1']);
     usersObj.addUser('user2',[],['room1']);
-    roomsObj.addChatroom('room1','ABCD','user2',['user1','user2'],['msg1']);
-    mssgsObj.addMessage('msg1','user2','HI',1,'room1');
+    roomsObj.addChatroom('room1','ABCD','user1',['user1','user2'],['msg1']);
+    roomsObj.addChatroom('room2','EFGH','',[],[]);
+    mssgsObj.addMessage('msg1','user1','Welcome',0,'room1');
     console.log('Added first enteries hardcoded');
     //console.log(users);
     //console.log(chatrooms);

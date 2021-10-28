@@ -11,6 +11,15 @@ socket.on('connect',()=>{
       })
       jQuery('#users').html(ol);
   })
+
+  socket.emit('update-socket-id',params,err=>{
+      console.log(err);
+  })
+
+  socket.emit('join-room',params,err=>{
+    console.log(err);
+  })
+
 });
 
 socket.on('disconnect',()=>{
