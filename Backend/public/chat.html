@@ -1,53 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Chat | Chat App</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-	<link rel="stylesheet" type="text/css" href="./styles.css">
+  <title>Chat | Chat App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="./styles.css">
 </head>
 <body class="chat">
         
         <div class="chat__sidebar">
-        	<h3>People</h3>
-        	<div id="users"></div>
+          <h3>Chats</h3>
+          <div id="users"></div>
         </div>
 
         <div class="chat__main">
             <ol id="messages" class="chat__messages"></ol>
             <div class="chat__footer">
-            	<form id="message-form">
-            	    <input type="text" name="message" placeholder="Message" autofocus autocomplete="off" />
-        	        <button>Send</button>
+              <form id="message-form">
+                  <input type="text" name="sen_id" placeholder="Sender id" autofocus autocomplete="off" />
+                  <input type="text" name="message" placeholder="Message" autofocus autocomplete="off" />
+                  <input type="text" name="tag" placeholder="tag" autofocus autocomplete="off" />
+                  <input type="text" name="rec_id" placeholder="Receiving id" autofocus autocomplete="off" />
+                  <button>Send</button>
                 </form>
-                <button id="send-location">Send Locaion</button>
             </div>
         </div>
 
        <!-- template for messages-->
         <script type="text/template" id="message-template">
             <li class="message">
-       	        <div class="message__title">
-       	    	    <h4>{{from}}</h4>
-       	    	    <span>{{createAt}}</span>
-       	        </div>
-       	        <div class="message__body">
-       	    	    <p>{{text}}</p>
-       	        </div>
-            </li>
-        </script>
-
-         <script type="text/template" id="location-message-template">
-            <li class="message">
-       	        <div class="message__title">
-       	    	    <h4>{{from}}</h4>
-       	    	    <span>{{createAt}}</span>
-       	        </div>
-       	        <div class="message__body">
-       	    	    <p>
-       	    	    	<a href="{{url}}" target="_blank">My current location</a>
-       	    	    </p>
-       	        </div>
+                <div class="message__title">
+                  <h4>{{from}}</h4>
+                  <span>{{createAt}}</span>
+                </div>
+                <div class="message__body">
+                  <p>{{text}}</p>
+                </div>
             </li>
         </script>
 

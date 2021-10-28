@@ -1,30 +1,22 @@
 var socket = io();
 
 socket.on('connect',()=>{
-	var params = jQuery.deparam(window.location.search);
+  var params = jQuery.deparam(window.location.search);
 
-	socket.emit('join',params,(err)=>{
-       if(err){
-         alert(err);
-         window.location.href = '/';
-       }else{
-         console.log('No error');
-       }
-	});
+  socket.emit('get-chat-list',params,chat_list=>{
+      var ol = jQuery('<ol></ol>');
+    
+      chat_list.forEach(user=>{
+        ol.append(jQuery('<li></li>').text(user));
+      })
+      jQuery('#users').html(ol);
+  })
 });
 
 socket.on('disconnect',()=>{
     console.log('disconnected from the server');
 });
 
-socket.on('updateUserList',(users)=>{
-    var ol = jQuery('<ol></ol>');
-    
-    users.forEach(user=>{
-      ol.append(jQuery('<li></li>').text(user));
-    })
-    jQuery('#users').html(ol);
-});
 
 function scrollToBottom(){
      //Selectors
@@ -38,7 +30,7 @@ function scrollToBottom(){
      var lastMessageHeight = newMessage.prev().innerHeight();
 
      if(clientHeight+scrollTop+newMessageHeight+lastMessageHeight>=scrollHeight){
-     	messages.scrollTop(scrollHeight);
+      messages.scrollTop(scrollHeight);
      }
 }
 
@@ -51,51 +43,25 @@ socket.on('newMessage',(message)=>{
            createAt: formattedTime
        });
 
-	 jQuery('#messages').append(html);
-	 scrollToBottom();
-});
-
-socket.on('newLocationMessage',(message)=>{
-	var formattedTime = moment(message.createAt).format('h:mm a');
-       var template = jQuery('#location-message-template').html();
-       var html = Mustache.render(template,{
-           from: message.from,
-           url: message.url,
-           createAt: formattedTime
-       });
-
-	 jQuery('#messages').append(html);
-	 scrollToBottom();
+   jQuery('#messages').append(html);
+   scrollToBottom();
 });
 
 jQuery('#message-form').on('submit',(e)=>{
    e.preventDefault();  //preventing the default behaviour of submit button
    
+   var sender_id = jQuery('[name=sen_id]');
    var messageTextBox = jQuery('[name=message]');
+   var tag_ = jQuery('[name=tag]');
+   var receiver_id = jQuery('[name=rec_id]');
 
    socket.emit('createMessage',{
-   	    text: messageTextBox.val()
+        mid: new Date().getTime(),
+        sen_id: sender_id.val(),
+        msg: messageTextBox.val(),
+        tag: tag_.val(),
+        rec_id: receiver_id.val()
    },function(){
        messageTextBox.val('');
    })
-});
-
-var locationbutton = jQuery('#send-location');
-locationbutton.on('click',()=>{
-  if(!navigator.geolocation){
-  	return alert('Geolocation not supported by your browser.');
-  }
-
-  locationbutton.attr('disabled','disabled').text('Sending location...');
-
-  navigator.geolocation.getCurrentPosition((position)=>{
-  	  locationbutton.removeAttr('disabled').text('Send location');
-      socket.emit('createLocationMessage',{
-      	latitude : position.coords.latitude,
-      	longitude : position.coords.longitude
-      });
-  },()=>{
-  	locationbutton.removeAttr('disabled').text('Send location');
-  	alert('Unable to fetch location');
-  });
 });

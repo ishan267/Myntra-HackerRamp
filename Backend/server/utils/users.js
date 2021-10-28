@@ -32,13 +32,27 @@ class Chatrooms{
 
 class Users{
 
-	addUser(uid,friends,chatrooms){
-		var user = {uid,friends,c_rooms};
+	addUser(uid,friends,c_rooms,sock_id=0){
+		var user = {uid,friends,c_rooms,sock_id};
 		users.push(user);
 		return user;
 	}
+    addFriend(uid1,uid2){
+    	for(var i=0;i<users.length;i++){
+    		if(users[i].uid==uid1){
+    			users[i].friends.push(uid2);
+    			break;
+    		}
+    	}
+    	for(var i=0;i<users.length;i++){
+    		if(users[i].uid==uid2){
+    			users[i].friends.push(uid1);
+    			break;
+    		}
+    	}
+    }
 	getUser(uid){
-        return users.filter(user=>user.uid===id)[0];
+        return users.filter(user=>user.uid==uid)[0];
 	}
 	removeUser(uid){
 
@@ -74,9 +88,9 @@ class Messages{
 	
 	addMessage(mid,sen_id,msg,tag,rec_id){
 		var message = {mid,sen_id,msg,tag,rec_id};
-		this.messages.push(message);
+		messages.push(message);
 		return message;
 	}
 }
 
-module.exports = {Users,Chatrooms,Messages};
+module.exports = {users,chatrooms,messages,Users,Chatrooms,Messages};
