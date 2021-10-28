@@ -20,10 +20,34 @@ export const fetchMessage=()=>{
   }
 }
 
-export const addMessage=()=>{
+export const addMessage=(newMessage)=>{
+  return async (dispatch,getState)=>{
+
+    try{  
+      
+       //request to send database to add newMessage
+
+      dispatch({
+          type:ADD_MESSAGE,
+          messageData:{
+            id:newMessage.id,
+            createdAt:newMessage.createdAt,
+            text:newMessage.text,
+            receiverId:newMessage.receiverId,
+            senderId:newMessage.senderId,
+            tag:newMessage.tag, 
+            productsDiscussed:newMessage.productsDiscussed
+           
+          }
+      })
+    }catch(err){
+        throw err;
+    }
 
 }
 
+}
+//less prior
 export const deleteMessage=()=>{
 
 }

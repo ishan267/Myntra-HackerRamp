@@ -34,7 +34,7 @@ const ChatOverviewScreen = ({navigation}) => {
       setIsLoading(true);
       dispatch(chatroomAction.fetchChatroom()).then(() => {
       setIsLoading(false);
-      console.log("chatrooms",chatrooms)
+     
     });
     },[dispatch])
 
@@ -45,14 +45,21 @@ const ChatOverviewScreen = ({navigation}) => {
     useEffect(()=>{
       dispatch(friendsAction.fetchFriends()).then(()=>{console.log("friends",friends)})
     },[dispatch])
-
+   
+    // console.log("chatrooms",chatrooms)
     return (
       <Container>
         <FlatList 
           data={chatrooms}
           keyExtractor={item=>item.id}
-          renderItem={({item}) => (
-            <Card onPress={() => navigation.navigate('ChatDetails', {userName: item.userName})}>
+          renderItem={({item}) => {
+            //filtering of messages will be done here before sending ;
+             
+             const roomMessage=messages.filter(message=>{message})
+            
+           return (
+            
+            <Card onPress={() => navigation.navigate('ChatDetails', {userName: item.userName,message:roomMessage})}>
               <UserInfo>
                 <UserImgWrapper>
                   <UserImg source={item.userImg} />
@@ -66,7 +73,8 @@ const ChatOverviewScreen = ({navigation}) => {
                 </TextSection>
               </UserInfo>
             </Card>
-          )}
+          )
+        }}
         />
       </Container>
     );

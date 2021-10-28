@@ -23,12 +23,13 @@ export default (state=initialState,action)=>{
         case ADD_MESSAGE:{
              const newMessage=new message(
                 action.messageData.id,
-                action.messageData.recieverId,
+                action.messageData.createdAt,
+                action.messageData.text,
+                action.messageData.receiverId,
                 action.messageData.senderId,
                 action.messageData.tag,
-                action.chatroomData.time,
-                action.chatroomData.productsDiscussed,
-                action.chatroomData.text
+                action.messageData.productsDiscussed,
+                
              )
              return {
                 ...state,

@@ -4,10 +4,14 @@ import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {db,auth} from '../../firebase';
+import * as messagesAction from '../../store/actions/messages';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ChatDetailScreen = () => {
   const [messages, setMessages] = useState([]);
   //const [messageRef, setMessageRef] = useState(db.ref('/messages'));
+
+  const dispatch=useDispatch();
 
   useEffect(() => {
     setMessages([
@@ -20,6 +24,7 @@ const ChatDetailScreen = () => {
           name: 'React Native',
           avatar: 'https://placeimg.com/140/140/any',
         },
+       
       },
       {
         _id: 2,
@@ -30,15 +35,23 @@ const ChatDetailScreen = () => {
           name: 'React Native',
           avatar: 'https://placeimg.com/140/140/any',
         },
+        
       },
     ]);
   }, []);
 
   const onSend = useCallback((messages = []) => {
+    
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
     const {_id, createdAt, text, user} = messages[0];
     //messageRef.push({from: user, message: text});
   }, []);
+
+  const onSendHandler=(message)=>{
+    //addMessage action will be dispatched from here
+     dispatch(messagesAction.addMessage(message));
+  }
+  
 
   const renderSend = (props) => {
     return (
@@ -83,7 +96,7 @@ const ChatDetailScreen = () => {
     <GiftedChat
       messages={messages}
       showAvatarForEveryMessage={true}
-      onSend={(messages) => onSend(messages)}
+      onSend={(messages) => {console.log("m",messages),onSend(messages)}}
       user={{
             _id:auth?.currentUser?.email,
             name:auth?.currentUser?.displayName
