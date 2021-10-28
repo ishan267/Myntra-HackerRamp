@@ -22,11 +22,30 @@ export const fetchFriends=()=>{
 
 }
 
-export const addFriends=()=>{
+export const addFriends=(newFriend)=>{
     //post request will be sent to database
+    return async (dispatch,getState)=>{
+
+        try{  
+          
+           //request to send database to add newChatroom
+    
+          dispatch({
+              type:ADD_FRIEND,
+              friendData:{
+                id:newFriend.id,
+                name:newFriend.name,
+                friends:newFriend.friends,
+                chatrooms:newChatroom.chatrooms,
+              }
+          })
+        }catch(err){
+            throw err;
+        }
+    }
 
 }
-
+//less prior
 export const deleteFriends=()=>{
     //post request will be sent to database
 

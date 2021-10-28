@@ -28,6 +28,18 @@ class Chatrooms{
 			}
 		}
 	}
+	isPresentInRoom(cid,uid){
+		for(var i=0;i<chatrooms.length;i++){
+			if(chatrooms[i].cid==cid){
+				for(var j=0;j<chatrooms[i].members.length;j++){
+					if(chatrooms[i].members[j]==uid)return true;
+				}
+				return false;
+				break;
+			}
+		}
+		return false;
+	}
 }
 
 class Users{
@@ -75,7 +87,7 @@ class Users{
 		for(var i=0;i<users.length;i++){
 			if(users[i].uid==uid){
               users[i].c_rooms.push(cid);
-              ch = new Chatrooms();
+              var ch = new Chatrooms();
               ch.updateRoomUser(cid,uid);
               break;
 			}
