@@ -7,6 +7,9 @@ import * as chatroomAction from '../../store/actions/chatroom'
 import * as messagesAction from '../../store/actions/messages'
 import * as friendsAction from '../../store/actions/friends';
 
+import { io } from "socket.io-client";
+import SocketIOClient from "socket.io-client";
+
 import {
   Container,
   Card,
@@ -20,9 +23,15 @@ import {
   TextSection,
 } from '../../styles/MessageStyles';
 
+//const socket = SocketIOClient("http://localhost:8080");
+
 const ChatOverviewScreen = ({navigation}) => {
 
-  const [isLoading, setIsLoading] = useState(false);
+    const userId = useSelector((state) => state.auth.userId);;
+    const [msg,setMsg] = useState(null);
+    const [msgList,setMsgList] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const dispatch=useDispatch();
     const chatrooms=useSelector(state=>state.chatroom.availableChatrooms);
@@ -33,10 +42,24 @@ const ChatOverviewScreen = ({navigation}) => {
     useEffect(()=>{
       setIsLoading(true);
       dispatch(chatroomAction.fetchChatroom()).then(() => {
-      setIsLoading(false);
-     
+        setIsLoading(false);
     });
     },[dispatch])
+
+    /*useEffect(()=>{
+      console.log('socket about to connect to server');
+      socket.on("connect", () => {
+        console.log('my socket id is', socket.id);
+        console.log('my userid is', userId);
+        socket.emit('update-socket-id', userId);
+      });
+      socket.on('newMessage', (message) => {
+        console.log('message received from->', message.from);
+        console.log(message.text);
+        setMsg(message);
+        setMsgList([...msgList, message]);
+      })
+    },[]);*/
 
     useEffect(()=>{
       dispatch(messagesAction.fetchMessage()).then(()=>{console.log("messages",messages)})

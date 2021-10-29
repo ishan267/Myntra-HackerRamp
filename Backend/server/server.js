@@ -25,8 +25,8 @@ io.on('connection',(socket)=>{
     console.log('New user connected');
 
     //update socket id
-    socket.on('update-socket-id',(params,callback)=>{
-        var user=usersObj.getUser(params.uid);
+    socket.on('update-socket-id',(uid,callback)=>{
+        var user=usersObj.getUser(uid);
         for(var i=0;i<users.length;i++){
             if(users[i].uid==user.uid){
                 users[i].sock_id=socket.id;
@@ -103,6 +103,8 @@ app.post('/add-friend',(req,res)=>{
 server.listen(port,()=>{
     usersObj.addUser('user1',[],['room1']);
     usersObj.addUser('user2',[],['room1']);
+    usersObj.addUser('GhgR6m57mmaEZ4GMoicKuB6YzMv1',[],[]);
+    usersObj.addUser('RX1dV5bEfHZxETs9mD3THqXd3f23',[],[]);
     roomsObj.addChatroom('room1','ABCD','user1',['user1','user2'],['msg1']);
     roomsObj.addChatroom('room2','EFGH','',[],[]);
     mssgsObj.addMessage('msg1','user1','Welcome',0,'room1');

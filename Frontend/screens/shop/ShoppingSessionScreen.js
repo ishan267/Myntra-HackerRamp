@@ -6,6 +6,7 @@ import {
   Platform,
   ActivityIndicator,
   StyleSheet,
+  TextInput,
   Button,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -16,6 +17,8 @@ import Colors from "../../constants/Colors";
 import { Card } from "react-native-elements";
 
 const ShoppingSessionScreen = () => {
+
+
   const joinHandler = (id, title) => {
     // props.navigation.navigate("ProductDetail", {
     //   sessionId: id,
@@ -23,6 +26,7 @@ const ShoppingSessionScreen = () => {
     // });
     console.log("clicked");
   };
+
 
   return (
     <View>
@@ -64,5 +68,6 @@ ShoppingSessionScreen.navigationOptions = (navData) => {
     ),
   };
 };
+
 
 export default ShoppingSessionScreen;
