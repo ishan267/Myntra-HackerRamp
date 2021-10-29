@@ -92,6 +92,14 @@ io.on('connection',(socket)=>{
     })
 })
 
+app.post('/get-friend-list',(req,res)=>{
+    var uid = req.body.uid;
+    frnds = [];
+    for(var i=0;i<users.length;i++){
+        if(users[i].friends.includes(uid))frnds.push(users[i]);
+    }
+    res.status(201).send(frnds);
+})
 
 app.post('/add-friend',(req,res)=>{
     usersObj.addFriend(req.body.uid1,req.body.uid2);
@@ -101,13 +109,15 @@ app.post('/add-friend',(req,res)=>{
 })
 
 server.listen(port,()=>{
-    usersObj.addUser('user1',[],['room1']);
-    usersObj.addUser('user2',[],['room1']);
-    usersObj.addUser('GhgR6m57mmaEZ4GMoicKuB6YzMv1',[],[]);
-    usersObj.addUser('RX1dV5bEfHZxETs9mD3THqXd3f23',[],[]);
-    roomsObj.addChatroom('room1','ABCD','user1',['user1','user2'],['msg1']);
-    roomsObj.addChatroom('room2','EFGH','',[],[]);
-    mssgsObj.addMessage('msg1','user1','Welcome',0,'room1');
+    ids = ['Y7z8PA4X3oa1J8s7LdJUqKSCWCs2','jnDoAoWRJffAT2JtKBDrA01rdiB2','E2st6ZE60mOdnFGXt0D1GtpGbTC2','RX1dV5bEfHZxETs9mD3THqXd3f23','GhgR6m57mmaEZ4GMoicKuB6YzMv1'];
+    usersObj.addUser(ids[0],'Klaus Mikaelson',[ids[1],ids[2],ids[3],ids[4]],['room2']);
+    usersObj.addUser(ids[1],'Nar',[ids[0],ids[2]],['room1','room2']);
+    usersObj.addUser(ids[2],'Mada',[ids[0],ids[1]],['room1','room2']);
+    usersObj.addUser(ids[3],'Alpha Male',[ids[0],ids[4]],['room1','room2']);
+    usersObj.addUser(ids[4],'Sigma Male',[ids[0],ids[3]],['room1','room2']);
+    roomsObj.addChatroom('room1','Original Room',ids[0],[ids[0],ids[1],ids[2],ids[3],ids[4]],['msg1']);
+    roomsObj.addChatroom('room2','Mastizaade',ids[3],[ids[1],ids[2],ids[3],ids[4]],[]);
+    mssgsObj.addMessage('msg1',ids[0],'You all look well...i aim to change that .',0,'room1');
     console.log('Added first enteries hardcoded');
     //console.log(users);
     //console.log(chatrooms);
