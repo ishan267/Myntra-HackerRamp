@@ -98,8 +98,8 @@ class Users{
 
 class Messages{
 	
-	addMessage(mid,sen_id,msg,tag,rec_id){
-		var message = {mid,sen_id,msg,tag,rec_id};
+	addMessage(id,senderId,text,tag,receiverId,createdAt){
+		var message = {id,senderId,text,tag,receiverId,createdAt};
 		messages.push(message);
 		return message;
 	}

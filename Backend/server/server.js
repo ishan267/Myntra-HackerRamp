@@ -68,32 +68,19 @@ io.on('connection',(socket)=>{
         console.log("HERE")
         console.log(message);
         messages.push(message);
-        if(isRealString(message.msg)){
+        if(isRealString(message.text)){
             console.log("message is a valid string");
             if(message.tag==1){
-                var user = usersObj.getUser(message.rec_id);
+                var user = usersObj.getUser(message.receiverId);
                 console.log(user.sock_id);
-                socket.to(user.sock_id).emit('newMessage',generateMessage(message.sen_id,message.msg)); //personal message
+                socket.to(user.sock_id).emit('newMessage',generateMessage(message.senderId,message.text)); //personal message
              }else{
-                console.log(message.rec_id);
-                io.to(message.rec_id).emit('newMessage',generateMessage(message.sen_id,message.msg));     //group message
+                console.log(message.receiverId);
+                io.to(message.receiverId).emit('newMessage',generateMessage(message.senderId,message.text));     //group message
              }
         }
         //callback();
     });
-
-    socket.on('get-chat-list',(params,callback)=>{
-        var uid = params.uid;
-        var chat_list = [];
-        for(var i=0;i<users.length;i++){
-            if(users[i].uid==uid){
-                chat_list = users[i].friends;
-                chat_list = chat_list.concat(users[i].c_rooms);
-                break;
-            }
-        }
-        return callback(chat_list);
-    })
 })
 
 app.post('/get-friend-list',(req,res)=>{
@@ -103,6 +90,19 @@ app.post('/get-friend-list',(req,res)=>{
         if(users[i].friends.includes(uid))frnds.push(users[i]);
     }
     res.status(201).send(frnds);
+})
+
+app.post('/get-chatroom-list',(req,res)=>{
+    var uid = req.body.uid;
+    rooms = [];
+    for(var i=0;i<chatrooms.length;i++){
+        if(chatrooms[i].members.includes(uid))rooms.push(chatrooms[i]);
+    }
+    res.status(201).send(rooms);
+})
+
+app.get('/get-message-list',(req,res)=>{
+    res.status(201).send(messages);
 })
 
 app.post('/add-friend',(req,res)=>{
@@ -121,11 +121,12 @@ server.listen(port,()=>{
     usersObj.addUser(ids[4],'Sigma Male',[ids[0],ids[3]],['room1','room2']);
     roomsObj.addChatroom('room1','Original Room',ids[0],[ids[0],ids[1],ids[2],ids[3],ids[4]],['msg1']);
     roomsObj.addChatroom('room2','Mastizaade',ids[3],[ids[1],ids[2],ids[3],ids[4]],[]);
-    mssgsObj.addMessage('msg1',ids[0],'You all look well...i aim to change that .',0,'room1');
+    mssgsObj.addMessage('msg1',ids[0],'You all look well...i aim to change that .',0,'room1',"10th century");
+    mssgsObj.addMessage('msg2',ids[3],'Aur Bhai kya haal chaal',1,ids[4],'today');
+    mssgsObj.addMessage('msg3',ids[4],'Bs Badiya tu bata',1,ids[3],'today');
     console.log('Added first enteries hardcoded');
     //console.log(users);
     //console.log(chatrooms);
     //console.log(messages);
   console.log(`Server is up on port ${port}`);
 });
- 
