@@ -23,9 +23,10 @@ console.log('HI');
 
 io.on('connection',(socket)=>{
     console.log('New user connected');
-
+    //console.log("after emit new msg");
     //update socket id
     socket.on('update-socket-id',(uid,callback)=>{
+        console.log("updata socket id event received with id ",uid);
         var user=usersObj.getUser(uid);
         for(var i=0;i<users.length;i++){
             if(users[i].uid==user.uid){
@@ -33,6 +34,7 @@ io.on('connection',(socket)=>{
                 break;
             }
         }
+        
         callback(socket.id);
     })
 
@@ -75,7 +77,7 @@ io.on('connection',(socket)=>{
                 io.to(message.rec_id).emit('newMessage',generateMessage(message.sen_id,message.msg));     //group message
              }
         }
-        callback();
+        //callback();
     });
 
     socket.on('get-chat-list',(params,callback)=>{
