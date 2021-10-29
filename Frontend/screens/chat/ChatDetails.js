@@ -7,8 +7,9 @@ import {db,auth} from '../../firebase';
 import * as messagesAction from '../../store/actions/messages';
 import { useSelector, useDispatch } from 'react-redux';
 
-const ChatDetailScreen = () => {
+const ChatDetailScreen = (props) => {
   const [messages, setMessages] = useState([]);
+  const socket = props.navigation.getParam('socket');
   //const [messageRef, setMessageRef] = useState(db.ref('/messages'));
 
   const dispatch=useDispatch();

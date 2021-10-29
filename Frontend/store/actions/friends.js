@@ -8,12 +8,31 @@ export const fetchFriends=()=>{
 
     return async(dispatch,getState)=>{
         try{
-            // fetch request will be sent to database to get loadedFriends
-            const loadedFriends=[];
-            dispatch({
-                type:FETCH_FRIENDS,
-                loadedFriends:loadedFriends
-            })
+            const respone =  await fetch(
+                'http://localhost:8080/get-chat-list',
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    uid: getState().auth.userId
+                  })
+                }
+              );
+        
+              if (!response.ok) {
+                throw new Error('Something went wrong!');
+              }
+        
+              const resData = await response.json();
+              console.log("response received",resData);
+                // fetch request will be sent to database to get loadedFriends
+                const loadedFriends=resData.slice();;
+                dispatch({
+                    type:FETCH_FRIENDS,
+                    loadedFriends:loadedFriends
+                })
 
         }catch(err){
             throw err;

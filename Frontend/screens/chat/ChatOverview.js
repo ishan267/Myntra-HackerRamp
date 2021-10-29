@@ -26,8 +26,6 @@ import {
 const ChatOverviewScreen = ({navigation}) => {
 
     const userId = useSelector((state) => state.auth.userId);;
-    const [msg,setMsg] = useState(null);
-    const [msgList,setMsgList] = useState([]);
     const socket = SocketIOClient("http://localhost:8080",{jsonp: false});
 
     const [isLoading, setIsLoading] = useState(false);
@@ -37,9 +35,6 @@ const ChatOverviewScreen = ({navigation}) => {
     const messages=useSelector(state=>state.messages.allMessages);
     const friends=useSelector(state=>state.friends.allFriends);
 
-
-    const [rec,setRec] = useState("to");
-    const [txt,setTxt] = useState("enter msg");
 
     useEffect(()=>{
       setIsLoading(true);
@@ -54,9 +49,7 @@ const ChatOverviewScreen = ({navigation}) => {
         console.log("connection successfull");
         console.log('my socket id is', socket.id);
         console.log('my userid is', userId);
-        socket.emit('update-socket-id',userId,err=>{
-          //console.log(err);
-      })
+        socket.emit('update-socket-id',userId,err=>{})
       });
       socket.on('newMessage', (msg) => {
         console.log('message received from->',msg.from);
@@ -85,16 +78,16 @@ const ChatOverviewScreen = ({navigation}) => {
     return (
       <Container>
         <FlatList 
-          data={chatrooms}
+          data={friends}
           keyExtractor={item=>item.id}
           renderItem={({item}) => {
             //filtering of messages will be done here before sending ;
              
-             const roomMessage=messages.filter(message=>{message})
+           const roomMessage=messages.filter(message=>{message})
             
            return (
             
-            <Card onPress={() => navigation.navigate('ChatDetails', {userName: item.userName,message:roomMessage})}>
+            <Card onPress={() => navigation.navigate('ChatDetails', {userName: item.userName,message:roomMessage,socket:socket})}>
               <UserInfo>
                 <UserImgWrapper>
                   <UserImg source={item.userImg} />
