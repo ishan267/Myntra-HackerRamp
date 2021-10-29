@@ -28,9 +28,10 @@ export default (state=initialState,action)=>{
                 action.messageData.receiverId,
                 action.messageData.senderId,
                 action.messageData.tag,
-                action.messageData.productsDiscussed,
-                
+                action.messageData.productsDiscussed  
              )
+             
+            console.log("in reducer new message is",newMessage);
              return {
                 ...state,
                 allMessages: state.allMessages.concat(newMessage)

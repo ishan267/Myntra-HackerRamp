@@ -12,6 +12,7 @@
     "@react-native-async-storage/async-storage": "^1.15.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.11",
+    "cors": "^2.8.5",
     "expo": "^41.0.1",
     "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",

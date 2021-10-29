@@ -5,11 +5,11 @@ export const ADD_FRIEND="ADD_FRIEND";
 export const DELETE_FRIEND="DELETE_FRIEND";
 
 export const fetchFriends=()=>{
-
+    console.log("fetch friends called");
     return async(dispatch,getState)=>{
         try{
-            const respone =  await fetch(
-                'http://localhost:8080/get-chat-list',
+            const response =  await fetch(
+                'http://localhost:8080/get-friend-list',
                 {
                   method: 'POST',
                   headers: {
@@ -20,7 +20,7 @@ export const fetchFriends=()=>{
                   })
                 }
               );
-        
+
               if (!response.ok) {
                 throw new Error('Something went wrong!');
               }

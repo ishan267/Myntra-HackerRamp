@@ -26,7 +26,8 @@ export const addMessage=(newMessage)=>{
     try{  
       
        //request to send database to add newMessage
-
+       //not required as msg already sent using socket
+      console.log("inside message action creator")
       dispatch({
           type:ADD_MESSAGE,
           messageData:{

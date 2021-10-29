@@ -22,10 +22,11 @@ import {
   MessageText,
   TextSection,
 } from '../../styles/MessageStyles';
+import message from '../../models/message';
 
 const ChatOverviewScreen = ({navigation}) => {
 
-    const userId = useSelector((state) => state.auth.userId);;
+    const userId = useSelector((state) => state.auth.userId);
     const socket = SocketIOClient("http://localhost:8080",{jsonp: false});
 
     const [isLoading, setIsLoading] = useState(false);
@@ -38,12 +39,13 @@ const ChatOverviewScreen = ({navigation}) => {
 
     useEffect(()=>{
       setIsLoading(true);
-      dispatch(chatroomAction.fetchChatroom()).then(() => {
+      dispatch(friendsAction.fetchFriends()).then(() => {
         setIsLoading(false);
     });
     },[dispatch])
 
     useEffect(()=>{
+      console.log("current messages are ",messages);
       console.log('socket about to connect to server');
       socket.on("connect", () => {
         console.log("connection successfull");
@@ -57,14 +59,8 @@ const ChatOverviewScreen = ({navigation}) => {
         //setMsg(message);
         //setMsgList([...msgList, message]);
       })
-      /*socket.emit('createMessage',{
-        mid: new Date().getTime(),
-        sen_id: userId,
-        msg: txt,
-        tag: 1,
-        rec_id: rec
-      })*/
     },[]);
+
 
     useEffect(()=>{
       dispatch(messagesAction.fetchMessage()).then(()=>{console.log("messages",messages)})
@@ -79,25 +75,23 @@ const ChatOverviewScreen = ({navigation}) => {
       <Container>
         <FlatList 
           data={friends}
-          keyExtractor={item=>item.id}
+          keyExtractor={item=>item.uid}
           renderItem={({item}) => {
-            //filtering of messages will be done here before sending ;
-             
-           const roomMessage=messages.filter(message=>{message})
-            
+          
+
            return (
             
-            <Card onPress={() => navigation.navigate('ChatDetails', {userName: item.userName,message:roomMessage,socket:socket})}>
+            <Card onPress={() => navigation.navigate('ChatDetails', {userName: item.uname,recvId:item.uid,socket:socket})}>
               <UserInfo>
                 <UserImgWrapper>
-                  <UserImg source={item.userImg} />
+                  <UserImg source={require('../../assets/users/user-4.jpg')} />
                 </UserImgWrapper>
                 <TextSection>
                   <UserInfoText>
-                    <UserName>{item.userName}</UserName>
-                    <PostTime>{item.messageTime}</PostTime>
+                    <UserName>{item.uname}</UserName>
+                    <PostTime>{'1 hours ago'}</PostTime>
                   </UserInfoText>
-                  <MessageText>{item.messageText}</MessageText>
+                  <MessageText>{'Hey there, this is my test for a post of my social app in React Native.'}</MessageText>
                 </TextSection>
               </UserInfo>
             </Card>

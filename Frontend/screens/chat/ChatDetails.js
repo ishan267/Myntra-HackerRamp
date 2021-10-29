@@ -9,49 +9,72 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const ChatDetailScreen = (props) => {
   const [messages, setMessages] = useState([]);
+  //const socket = props.navigation.getParam('socket');
+  const userId = useSelector((state) => state.auth.userId);
+  const recId = props.navigation.getParam('recvId');
   const socket = props.navigation.getParam('socket');
+  const allMessages=useSelector(state=>state.messages.allMessages);
+  const roomMessages=allMessages.filter((message)=>{
+    if(message.senderId==recId || message.receiverId==recId)
+      return true;
+    else
+      return false;
+  });
   //const [messageRef, setMessageRef] = useState(db.ref('/messages'));
-
   const dispatch=useDispatch();
 
+  let msglist = [];
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-       
-      },
-      {
-        _id: 2,
-        text: 'Hello world',
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-        
-      },
-    ]);
-  }, []);
+    console.log("room messages changed",roomMessages);
+    msglist = roomMessages.map((msg)=>{
+      return(
+        {
+          _id: msg.id,
+          text: msg.text,
+          createdAt: msg.createdAt,
+          user: {
+            _id: msg.senderId,
+          }
+        }
+      )
+    })
+    console.log("new msg list is",msglist);
+  }, [roomMessages]);
 
-  const onSend = useCallback((messages = []) => {
-    
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-    const {_id, createdAt, text, user} = messages[0];
-    //messageRef.push({from: user, message: text});
-  }, []);
+  useEffect(()=>{
+    setMessages(msglist);
+  },[])
 
-  const onSendHandler=(message)=>{
+  function sendPersonalMessage(msg,id)
+    {
+      console.log("personal message called");
+      socket.emit('createMessage',{
+        mid: new Date().getTime(),
+        sen_id: userId,
+        msg: msg,
+        tag: 1,
+        rec_id: id
+      })
+    }
+
+
+  const onSend = useCallback((msg = []) => {
+  
+    setMessages((previousMessages) => GiftedChat.append(previousMessages, msg));
+    const message={
+      id: msg[0]._id,
+      createdAt: msg[0].createdAt,
+      text: msg[0].text,
+      receiverId: recId,
+      senderId: msg[0].user._id,
+      tag: '1',
+      productsDiscussed:''
+    }
+    console.log("message is",message);
     //addMessage action will be dispatched from here
-     dispatch(messagesAction.addMessage(message));
-  }
+    dispatch(messagesAction.addMessage(message));
+    sendPersonalMessage(message.text,recId);
+  }, []);
   
 
   const renderSend = (props) => {
@@ -97,11 +120,10 @@ const ChatDetailScreen = (props) => {
     <GiftedChat
       messages={messages}
       showAvatarForEveryMessage={true}
-      onSend={(messages) => {console.log("m",messages),onSend(messages)}}
+      onSend={(msg) => onSend(msg)}
       user={{
-            _id:auth?.currentUser?.email,
-            name:auth?.currentUser?.displayName
-      }}
+            _id:userId
+          }}
       renderBubble={renderBubble}
       alwaysShowSend
       renderSend={renderSend}
