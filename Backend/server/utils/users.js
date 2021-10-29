@@ -44,8 +44,8 @@ class Chatrooms{
 
 class Users{
 
-	addUser(uid,friends,c_rooms,sock_id=0){
-		var user = {uid,friends,c_rooms,sock_id};
+	addUser(uid,uname,friends,c_rooms,sock_id=0){
+		var user = {uid,uname,friends,c_rooms,sock_id};
 		users.push(user);
 		return user;
 	}
