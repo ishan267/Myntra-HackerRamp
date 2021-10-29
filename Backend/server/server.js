@@ -79,19 +79,6 @@ io.on('connection',(socket)=>{
         }
         //callback();
     });
-
-    socket.on('get-chat-list',(params,callback)=>{
-        var uid = params.uid;
-        var chat_list = [];
-        for(var i=0;i<users.length;i++){
-            if(users[i].uid==uid){
-                chat_list = users[i].friends;
-                chat_list = chat_list.concat(users[i].c_rooms);
-                break;
-            }
-        }
-        return callback(chat_list);
-    })
 })
 
 app.post('/get-friend-list',(req,res)=>{
@@ -101,6 +88,15 @@ app.post('/get-friend-list',(req,res)=>{
         if(users[i].friends.includes(uid))frnds.push(users[i]);
     }
     res.status(201).send(frnds);
+})
+
+app.post('/get-chatroom-list',(req,res)=>{
+    var uid = req.body.uid;
+    rooms = [];
+    for(var i=0;i<chatrooms.length;i++){
+        if(chatrooms[i].members.includes(uid))rooms.push(chatrooms[i]);
+    }
+    res.status(201).send(rooms);
 })
 
 app.post('/add-friend',(req,res)=>{
