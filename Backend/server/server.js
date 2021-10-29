@@ -27,7 +27,6 @@ io.on('connection',(socket)=>{
     //update socket id
     socket.on('update-socket-id',(uid,callback)=>{
         console.log("updata socket id event received with id ",uid);
-        //socket.emit('newMessage',"heyy");
         var user=usersObj.getUser(uid);
         for(var i=0;i<users.length;i++){
             if(users[i].uid==user.uid){
@@ -78,7 +77,7 @@ io.on('connection',(socket)=>{
                 io.to(message.rec_id).emit('newMessage',generateMessage(message.sen_id,message.msg));     //group message
              }
         }
-        callback();
+        //callback();
     });
 
     socket.on('get-chat-list',(params,callback)=>{

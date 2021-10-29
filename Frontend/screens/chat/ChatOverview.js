@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react';
-import {View,FlatList,Text,Platform,ActivityIndicator,StyleSheet} from 'react-native';
+import {View,FlatList,Text,Platform,ActivityIndicator,StyleSheet,TextInput,Button} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
 import { useSelector, useDispatch } from 'react-redux';
@@ -38,6 +38,9 @@ const ChatOverviewScreen = ({navigation}) => {
     const friends=useSelector(state=>state.friends.allFriends);
 
 
+    const [rec,setRec] = useState("to");
+    const [txt,setTxt] = useState("enter msg");
+
     useEffect(()=>{
       setIsLoading(true);
       dispatch(chatroomAction.fetchChatroom()).then(() => {
@@ -52,15 +55,22 @@ const ChatOverviewScreen = ({navigation}) => {
         console.log('my socket id is', socket.id);
         console.log('my userid is', userId);
         socket.emit('update-socket-id',userId,err=>{
-          console.log(err);
+          //console.log(err);
       })
       });
       socket.on('newMessage', (msg) => {
-        //console.log('message received from->', message.from);
-        console.log("msg received ",msg);
+        console.log('message received from->',msg.from);
+        console.log(msg.text);
         //setMsg(message);
         //setMsgList([...msgList, message]);
       })
+      /*socket.emit('createMessage',{
+        mid: new Date().getTime(),
+        sen_id: userId,
+        msg: txt,
+        tag: 1,
+        rec_id: rec
+      })*/
     },[]);
 
     useEffect(()=>{
