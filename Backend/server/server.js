@@ -1,3 +1,4 @@
+let cors = require("cors");
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io'); 
@@ -15,6 +16,7 @@ var usersObj = new Users();
 var roomsObj = new Chatrooms();
 var mssgsObj = new Messages();
 
+app.use(cors());
 app.use(express.json());
 
 app.use(express.static(publicPath));
