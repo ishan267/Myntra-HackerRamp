@@ -119,9 +119,12 @@ server.listen(port,()=>{
     usersObj.addUser(ids[4],'Sigma Male',[ids[0],ids[3]],['room1','room2']);
     roomsObj.addChatroom('room1','Original Room',ids[0],[ids[0],ids[1],ids[2],ids[3],ids[4]],['msg1']);
     roomsObj.addChatroom('room2','Mastizaade',ids[3],[ids[1],ids[2],ids[3],ids[4]],[]);
-    mssgsObj.addMessage('msg1',ids[0],'You all look well...i aim to change that .',0,'room1',"10th century");
-    mssgsObj.addMessage('msg2',ids[3],'Aur Bhai kya haal chaal',1,ids[4],'today');
-    mssgsObj.addMessage('msg3',ids[4],'Bs Badiya tu bata',1,ids[3],'today');
+    mssgsObj.addMessage('msg1',ids[0],'You all look well...i aim to change that .',0,'room1',Date.now());
+    mssgsObj.addMessage('msg2',ids[3],'Aur Bhai kya haal chaal',1,ids[4],Date.now());
+    mssgsObj.addMessage('msg3',ids[4],'Bs Badiya tu bata',1,ids[3],Date.now());
+    mssgsObj.addMessage('msg4',ids[3],'Message pohcha kya',0,'room1',Date.now());
+    mssgsObj.addMessage('msg5',ids[4],'Ha pohch gaya',0,'room1',Date.now());
+
     console.log('Added first enteries hardcoded');
     //console.log(users);
     //console.log(chatrooms);
