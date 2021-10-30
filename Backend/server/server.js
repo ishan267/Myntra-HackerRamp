@@ -78,7 +78,20 @@ io.on('connection',(socket)=>{
                 socket.to(user.sock_id).emit('newMessage',message); //personal message
              }else{
                 console.log(message.receiverId);
-                io.to(message.receiverId).emit('newMessage',message);     //group message
+                //io.to(message.receiverId).emit('newMessage',message);     //group message
+                console.log("caller socket id",socket.id);
+                for(var i=0;i<chatrooms.length;i++){
+                    if(chatrooms[i].cid==message.receiverId){
+                        console.log(`participants in room ${message.receiverId} are : `);
+                        for(var j=0;j<chatrooms[i].members.length;j++){
+                            var temp_user=usersObj.getUser(chatrooms[i].members[j]);
+                            console.log(temp_user.sock_id);
+                        }
+                console.log('printed');
+                break;
+                    }
+                }
+                socket.broadcast.to(message.receiverId).emit('newMessage',message);
              }
         }
         //callback();

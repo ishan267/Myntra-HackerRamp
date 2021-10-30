@@ -69,7 +69,7 @@ const ChatDetailScreen = (props) => {
   const onSend = useCallback((msg = []) => {
   
     //setMessages((previousMessages) => GiftedChat.append(previousMessages, msg));
-    msglist=GiftedChat.append(msglist, msg);
+    //msglist=GiftedChat.append(msglist, msg);
     //msglist.push(msg);
     const message={
       id: msg[0]._id,

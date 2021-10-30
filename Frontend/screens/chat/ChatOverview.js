@@ -34,9 +34,14 @@ const ChatOverviewScreen = ({navigation}) => {
     const dispatch=useDispatch();
     const friends=useSelector(state=>state.friends.allFriends);
     const chatrooms=useSelector(state=>state.chatroom.availableChatrooms);
-    //const messages=useSelector(state=>state.messages.allMessages);
+    const messages=useSelector(state=>state.messages.allMessages);
 
     const chatList = friends.concat(chatrooms);
+    /*const recentChats = new Map();
+    for(let i=0;i<messages.length();i++)
+    {
+
+    }*/
 
     useEffect(()=>{
       setIsLoading(true);
@@ -68,7 +73,8 @@ const ChatOverviewScreen = ({navigation}) => {
         socket.emit('update-socket-id',userId,err=>{})
       });
       socket.on('newMessage', (msg) => {
-        console.log("message received is",msg);
+        console.log("socket id is",socket.id);
+        console.log("socket message received is",msg);
         dispatch(messagesAction.addMessage(msg));
       })
     },[]);
