@@ -7,50 +7,84 @@ import {db,auth} from '../../firebase';
 import * as messagesAction from '../../store/actions/messages';
 import { useSelector, useDispatch } from 'react-redux';
 
-const ChatDetailScreen = () => {
-  const [messages, setMessages] = useState([]);
-  //const [messageRef, setMessageRef] = useState(db.ref('/messages'));
 
+const ChatDetailScreen = (props) => {
+  //const [messages, setMessages] = useState([]);
+  const userId = useSelector((state) => state.auth.userId);
+  const recId = props.navigation.getParam('recvId');
+  const socket = props.navigation.getParam('socket');
+  const tag = props.navigation.getParam('tag');
+  //console.log("tag is",tag);
   const dispatch=useDispatch();
 
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-       
-      },
-      {
-        _id: 2,
-        text: 'Hello world',
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-        
-      },
-    ]);
-  }, []);
-
-  const onSend = useCallback((messages = []) => {
-    
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-    const {_id, createdAt, text, user} = messages[0];
-    //messageRef.push({from: user, message: text});
-  }, []);
-
-  const onSendHandler=(message)=>{
-    //addMessage action will be dispatched from here
-     dispatch(messagesAction.addMessage(message));
+  const allMessages=useSelector(state=>state.messages.allMessages);
+ // console.log("all msgs",allMessages);
+  let roomMessages=[];
+  if(tag=="1")      //personal msg
+  {
+    roomMessages=allMessages.filter((message)=>{
+      if(message.tag==1 && (message.senderId==recId || message.receiverId==recId))
+        return true;
+      else
+        return false;
+    });
   }
+  else{             //group msg
+    roomMessages=allMessages.filter((message)=>{
+      if(message.tag==0 && message.receiverId==recId)
+        return true;
+      else
+        return false;
+    });
+  }
+  
+  let msglist = roomMessages.map((msg)=>{
+    return(
+      {
+        _id: msg.id,
+        text: msg.text,
+        createdAt: msg.createdAt,
+        user: {
+          _id: msg.senderId,
+        }
+      }
+    )
+  })
+
+  useEffect(() => {
+    console.log("room messages changed");
+    msglist.sort(function(a,b){
+      return new Date(b.createdAt)-new Date(a.createdAt);
+    });
+    console.log("new msg list is",msglist);
+  }, [msglist]);
+
+  function sendPersonalMessage(msg)
+    {
+      console.log("socket personal message called",msg);
+      socket.emit('createMessage',msg);
+    }
+
+
+  const onSend = useCallback((msg = []) => {
+  
+    //setMessages((previousMessages) => GiftedChat.append(previousMessages, msg));
+    msglist=GiftedChat.append(msglist, msg);
+    //msglist.push(msg);
+    const message={
+      id: msg[0]._id,
+      createdAt: msg[0].createdAt,
+      text: msg[0].text,
+      receiverId: recId,
+      senderId: msg[0].user._id,
+      tag: tag,
+      productsDiscussed:''
+    }
+    console.log("message to be sent is",message);
+    //addMessage action will be dispatched from here
+    dispatch(messagesAction.addMessage(message));
+    sendPersonalMessage(message);
+  }, []);
   
 
   const renderSend = (props) => {
@@ -94,13 +128,12 @@ const ChatDetailScreen = () => {
 
   return (
     <GiftedChat
-      messages={messages}
+      messages={msglist}
       showAvatarForEveryMessage={true}
-      onSend={(messages) => {console.log("m",messages),onSend(messages)}}
+      onSend={(msg) => onSend(msg)}
       user={{
-            _id:auth?.currentUser?.email,
-            name:auth?.currentUser?.displayName
-      }}
+            _id:userId
+          }}
       renderBubble={renderBubble}
       alwaysShowSend
       renderSend={renderSend}
@@ -121,7 +154,7 @@ const styles = StyleSheet.create({
 
 ChatDetailScreen.navigationOptions = navData => {
     return {
-      headerTitle: navData.navigation.getParam('userName'),
+      headerTitle: navData.navigation.getParam('name'),
     
     };
   };

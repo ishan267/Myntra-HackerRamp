@@ -1,3 +1,4 @@
+let cors = require("cors");
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io'); 
@@ -15,6 +16,7 @@ var usersObj = new Users();
 var roomsObj = new Chatrooms();
 var mssgsObj = new Messages();
 
+app.use(cors());
 app.use(express.json());
 
 app.use(express.static(publicPath));
@@ -70,7 +72,7 @@ io.on('connection',(socket)=>{
         messages.push(message);
         if(isRealString(message.text)){
             console.log("message is a valid string");
-            if(message.tag==1){
+            if(message.tag=='1'){
                 var user = usersObj.getUser(message.receiverId);
                 console.log(user.sock_id);
                 socket.to(user.sock_id).emit('newMessage',message); //personal message
