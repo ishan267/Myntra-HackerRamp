@@ -27,6 +27,7 @@ import ChatOverviewScreen from "../screens/chat/ChatOverview";
 import ChatDetailScreen from "../screens/chat/ChatDetails";
 import ShoppingSessionScreen from "../screens/shop/ShoppingSessionScreen";
 import NewSessionScreen from "../screens/ShoppingSession/NewSessionScreen";
+import NewFriendScreen from "../screens/chat/NewFriendScreen";
 
 const defaultNavOptions = {
   headerStyle: {
@@ -45,6 +46,7 @@ const ChatsNavigator = createStackNavigator(
   {
     ChatOverview: ChatOverviewScreen,
     ChatDetails: ChatDetailScreen,
+    NewFriend:NewFriendScreen
   },
   {
     navigationOptions: {
