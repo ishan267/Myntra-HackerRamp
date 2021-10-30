@@ -6,37 +6,44 @@ export const DELETE_CHATROOM="DELETE_CHATROOM";
 export const UPDATE_CHATROOM="UPDATE_CHATROOM";
 
 export const fetchChatroom = () => {
+  console.log("fetch chatrooms called");
     return async (dispatch, getState) => {
        
-      // any async code you want!
-      // const userId = getState().auth.userId;
       try {
-        // const response = await fetch(
-        //   'https://sellshop-deeb5-default-rtdb.firebaseio.com/products.json'
-        // );
+          const response =  await fetch(
+          'http://localhost:8080/get-chatroom-list',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              uid: getState().auth.userId
+            })
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Something went wrong!');
+        }
   
-        // if (!response.ok) {
-        //   throw new Error('Something went wrong!');
-        // }
-  
-        // const resData = await response.json();
-        // const loadedProducts = [];
-  
-        // for (const key in resData) {
-        //   loadedProducts.push(
-        //     new Product(
-        //       key,
-        //       resData[key].ownerId,
-        //       resData[key].title,
-        //       resData[key].imageUrl,
-        //       resData[key].description,
-        //       resData[key].price
-        //     )
-        //   );
-        // }
-        const loadedChatrooms=[];
+        const resData = await response.json();
+        console.log("response received for chatrooms",resData);
+        const rooms = [];
+        for(let i=0;i<resData.length;i++)
+        {
+          const room = {
+            id:resData[i].cid,
+            name:resData[i].cname,
+            adminId:resData[i].admin,
+            usersId:resData[i].members.slice(),
+            messagesId:resData[i].msgs.slice()
+          }
+          rooms.push(room);
+        }
+        console.log("array of is",rooms);
+        const loadedChatrooms=rooms.slice();
         
-     
         dispatch({
           type: FETCH_CHATROOMS,
           chatrooms:loadedChatrooms,

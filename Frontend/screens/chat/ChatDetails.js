@@ -13,16 +13,31 @@ const ChatDetailScreen = (props) => {
   const userId = useSelector((state) => state.auth.userId);
   const recId = props.navigation.getParam('recvId');
   const socket = props.navigation.getParam('socket');
-  
+  const tag = props.navigation.getParam('tag');
+  //console.log("tag is",tag);
   const dispatch=useDispatch();
 
   const allMessages=useSelector(state=>state.messages.allMessages);
-  const roomMessages=allMessages.filter((message)=>{
-    if(message.senderId==recId || message.receiverId==recId)
-      return true;
-    else
-      return false;
-  });
+ // console.log("all msgs",allMessages);
+  let roomMessages=[];
+  if(tag=="1")      //personal msg
+  {
+    roomMessages=allMessages.filter((message)=>{
+      if(message.tag==1 && (message.senderId==recId || message.receiverId==recId))
+        return true;
+      else
+        return false;
+    });
+  }
+  else{             //group msg
+    roomMessages=allMessages.filter((message)=>{
+      if(message.tag==0 && message.receiverId==recId)
+        return true;
+      else
+        return false;
+    });
+  }
+  
   let msglist = roomMessages.map((msg)=>{
     return(
       {
@@ -62,10 +77,10 @@ const ChatDetailScreen = (props) => {
       text: msg[0].text,
       receiverId: recId,
       senderId: msg[0].user._id,
-      tag: '1',
+      tag: tag,
       productsDiscussed:''
     }
-    console.log("message is",message);
+    console.log("message to be sent is",message);
     //addMessage action will be dispatched from here
     dispatch(messagesAction.addMessage(message));
     sendPersonalMessage(message);
@@ -139,7 +154,7 @@ const styles = StyleSheet.create({
 
 ChatDetailScreen.navigationOptions = navData => {
     return {
-      headerTitle: navData.navigation.getParam('userName'),
+      headerTitle: navData.navigation.getParam('name'),
     
     };
   };

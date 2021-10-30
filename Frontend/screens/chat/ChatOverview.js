@@ -32,14 +32,22 @@ const ChatOverviewScreen = ({navigation}) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch=useDispatch();
-    const chatrooms=useSelector(state=>state.chatroom.availableChatrooms);
-    const messages=useSelector(state=>state.messages.allMessages);
     const friends=useSelector(state=>state.friends.allFriends);
+    const chatrooms=useSelector(state=>state.chatroom.availableChatrooms);
+    //const messages=useSelector(state=>state.messages.allMessages);
 
+    const chatList = friends.concat(chatrooms);
 
     useEffect(()=>{
       setIsLoading(true);
       dispatch(friendsAction.fetchFriends()).then(() => {
+        setIsLoading(false);
+    });
+    },[dispatch])
+
+    useEffect(()=>{
+      setIsLoading(true);
+      dispatch(chatroomAction.fetchChatroom()).then(() => {
         setIsLoading(false);
     });
     },[dispatch])
@@ -52,7 +60,6 @@ const ChatOverviewScreen = ({navigation}) => {
     },[dispatch])
 
     useEffect(()=>{
-      console.log("current messages are ",messages);
       console.log('socket about to connect to server');
       socket.on("connect", () => {
         console.log("connection successfull");
@@ -65,35 +72,29 @@ const ChatOverviewScreen = ({navigation}) => {
         dispatch(messagesAction.addMessage(msg));
       })
     },[]);
-
-
-    useEffect(()=>{
-      dispatch(messagesAction.fetchMessage()).then(()=>{console.log("messages",messages)})
-    },[dispatch]);
-
-    useEffect(()=>{
-      dispatch(friendsAction.fetchFriends()).then(()=>{console.log("friends",friends)})
-    },[dispatch])
    
     // console.log("chatrooms",chatrooms)
     return (
       <Container>
         <FlatList 
-          data={friends}
-          keyExtractor={item=>item.uid}
+          data={chatList}
+          keyExtractor={item=>item.id}
           renderItem={({item}) => {
           
-
+            //console.log("friendlist",friends);
+            //console.log("roomlist",chatrooms);
            return (
             
-            <Card onPress={() => navigation.navigate('ChatDetails', {userName: item.uname,recvId:item.uid,socket:socket})}>
+            <Card onPress={() => navigation.navigate('ChatDetails',
+            {name: item.name,recvId:item.id,tag:(item.adminId==undefined)?"1":"0",socket:socket}
+            )}>
               <UserInfo>
                 <UserImgWrapper>
                   <UserImg source={require('../../assets/users/user-4.jpg')} />
                 </UserImgWrapper>
                 <TextSection>
                   <UserInfoText>
-                    <UserName>{item.uname}</UserName>
+                    <UserName>{item.name}</UserName>
                     <PostTime>{'1 hours ago'}</PostTime>
                   </UserInfoText>
                   <MessageText>{'Hey there, this is my test for a post of my social app in React Native.'}</MessageText>
