@@ -10,7 +10,7 @@ const port = process.env.PORT || 8080;
 const app = express();
 var server = http.createServer(app); 
 var io = socketIO(server);
-const {generateMessage,generateLocationMessage} = require('./utils/message');
+const {generateMessage} = require('./utils/message');
 var usersObj = new Users();
 var roomsObj = new Chatrooms();
 var mssgsObj = new Messages();
@@ -48,7 +48,7 @@ io.on('connection',(socket)=>{
         usersObj.addUserToRoom(params.uid,params.cid);
 
         //Telling other users that a new user joined
-        socket.broadcast.to(params.cid).emit('newMessage',generateMessage('Admin',`${params.uid} has joined`));
+        socket.broadcast.to(params.cid).emit('newMessage',generateMessage('msg0','Admin',`${params.uid} has joined`,0,params.cid));
 
         console.log(users);
         console.log(chatrooms);
