@@ -71,10 +71,10 @@ io.on('connection',(socket)=>{
             if(message.tag==1){
                 var user = usersObj.getUser(message.receiverId);
                 console.log(user.sock_id);
-                socket.to(user.sock_id).emit('newMessage',generateMessage(message.senderId,message.text)); //personal message
+                socket.to(user.sock_id).emit('newMessage',message); //personal message
              }else{
                 console.log(message.receiverId);
-                io.to(message.receiverId).emit('newMessage',generateMessage(message.senderId,message.text));     //group message
+                io.to(message.receiverId).emit('newMessage',message);     //group message
              }
         }
         //callback();
