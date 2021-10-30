@@ -75,7 +75,16 @@ const ChatOverviewScreen = ({navigation}) => {
       socket.on('newMessage', (msg) => {
         console.log("socket id is",socket.id);
         console.log("socket message received is",msg);
-        dispatch(messagesAction.addMessage(msg));
+        console.log("redux messages are ",messages);
+        /*let i;
+        for(i=0;i<messages.length;i++)
+        {
+          console.log(messages[i].id);
+          if(messages[i].id==msg.id)
+            break;
+        }
+        if(i==messages.length)*/
+            dispatch(messagesAction.addMessage(msg));
       })
     },[]);
    

@@ -24,11 +24,13 @@ console.log('HI');
 
 
 io.on('connection',(socket)=>{
-    console.log('New user connected');
+    console.log('New user connected with socket id',socket.id);
     //console.log("after emit new msg");
     //update socket id
     socket.on('update-socket-id',(uid,callback)=>{
-        console.log("updata socket id event received with id ",uid);
+        console.log("update socket id event received");
+        console.log("->with user id",uid);
+        console.log("->with socket id",socket.id);
         var user=usersObj.getUser(uid);
         for(var i=0;i<users.length;i++){
             if(users[i].uid==user.uid){
@@ -79,6 +81,8 @@ io.on('connection',(socket)=>{
              }else{
                 console.log(message.receiverId);
                 //io.to(message.receiverId).emit('newMessage',message);     //group message
+                var user = usersObj.getUser(message.senderId);
+                console.log("caller user id",user.sock_id);
                 console.log("caller socket id",socket.id);
                 for(var i=0;i<chatrooms.length;i++){
                     if(chatrooms[i].cid==message.receiverId){
