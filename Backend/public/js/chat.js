@@ -3,21 +3,8 @@ var socket = io();
 socket.on('connect',()=>{
   var params = jQuery.deparam(window.location.search);
 
-  socket.emit('get-chat-list',params,chat_list=>{
-      var ol = jQuery('<ol></ol>');
-    
-      chat_list.forEach(user=>{
-        ol.append(jQuery('<li></li>').text(user));
-      })
-      jQuery('#users').html(ol);
-  })
-
   socket.emit('update-socket-id',params,err=>{
       console.log(err);
-  })
-
-  socket.emit('join-room',params,err=>{
-    console.log(err);
   })
 
 });

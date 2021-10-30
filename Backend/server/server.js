@@ -35,6 +35,8 @@ io.on('connection',(socket)=>{
             }
         }
         
+        for(var i=0;i<user.c_rooms.length;i++)socket.join(user.c_rooms[i]);    //joining its chatrooms
+
         callback(socket.id);
     })
 
