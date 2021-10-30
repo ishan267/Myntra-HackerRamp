@@ -84,12 +84,18 @@ io.on('connection',(socket)=>{
                 var user = usersObj.getUser(message.senderId);
                 console.log("caller user id",user.sock_id);
                 console.log("caller socket id",socket.id);
+
+                // to be deleted
+                var user = usersObj.getUser(message.senderId);
+                console.log(user.sock_id);
+                //to be deleted
+
                 for(var i=0;i<chatrooms.length;i++){
                     if(chatrooms[i].cid==message.receiverId){
                         console.log(`participants in room ${message.receiverId} are : `);
                         for(var j=0;j<chatrooms[i].members.length;j++){
                             var temp_user=usersObj.getUser(chatrooms[i].members[j]);
-                            console.log(temp_user.sock_id);
+                            console.log(temp_user.uname,"   ",temp_user.sock_id);
                         }
                 console.log('printed');
                 break;

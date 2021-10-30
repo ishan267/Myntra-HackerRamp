@@ -6,9 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as chatroomAction from '../../store/actions/chatroom'
 import * as messagesAction from '../../store/actions/messages'
 import * as friendsAction from '../../store/actions/friends';
+import Colors from '../../constants/Colors';
 
 import '../../helper/UserAgent';
 import SocketIOClient from "socket.io-client";
+import { Ionicons } from "@expo/vector-icons";
+
 
 import {
   Container,
@@ -21,6 +24,7 @@ import {
   PostTime,
   MessageText,
   TextSection,
+ 
 } from '../../styles/MessageStyles';
 import message from '../../models/message';
 
@@ -90,6 +94,7 @@ const ChatOverviewScreen = ({navigation}) => {
    
     // console.log("chatrooms",chatrooms)
     return (
+      <>
       <Container>
         <FlatList 
           data={chatList}
@@ -119,7 +124,30 @@ const ChatOverviewScreen = ({navigation}) => {
           )
         }}
         />
+         <View style={{height:40,width:40,
+                     backgroundColor:Colors.primary,
+                     borderRadius:20,
+                     justifyContent:'center',
+                     alignItems:'center', 
+                     marginLeft:'80%',
+                     shadowColor: '#000',
+                     shadowOffset: { width: 0, height: 3},
+                     shadowOpacity: 1,
+                     shadowRadius: 3,  
+                     elevation: 6,
+                     marginBottom:60
+                    }}
+                    onPress={()=>navigation.navigate('NewFriend')}
+          >
+      <Text style={{color:'white',fontSize:40}}  onPress={()=>navigation.navigate('NewFriend')} >+</Text>
+
+</View>
       </Container>
+      
+       
+        
+      
+      </>
     );
 };
 
@@ -139,6 +167,8 @@ ChatOverviewScreen.navigationOptions = navData => {
     )
   };
 };
+
+
 
 
 export default ChatOverviewScreen;

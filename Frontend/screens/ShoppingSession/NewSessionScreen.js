@@ -6,27 +6,13 @@ import {
   Platform,
   ActivityIndicator,
   StyleSheet,
-  Button,
+  
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
-import Colors from "../../constants/Colors";
-import { SearchBar, FAB } from "react-native-elements";
+import FriendList from "../../components/chat/FriendList";
 
-import {
-  Container,
-  Card,
-  UserInfo,
-  UserImgWrapper,
-  UserImg,
-  UserInfoText,
-  UserName,
-  PostTime,
-  MessageText,
-  TextSection,
-} from "../../styles/MessageStyles";
-
-const Messages = [
+const MyFriends= [
   {
     id: "1",
     userName: "Jenny Doe",
@@ -69,44 +55,12 @@ const Messages = [
   },
 ];
 
+
 const NewSessionScreen = () => {
+
   return (
-    <View style={styles.body}>
-      <SearchBar
-        placeholder="Search for friends.."
-        lightTheme="true"
-        color={Colors.accent}
-        // onChangeText={this.updateSearch}
-        // value={search}
-      />
-      <FlatList
-        data={Messages}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Card>
-            <UserInfo>
-              <UserImgWrapper>
-                <UserImg source={item.userImg} />
-              </UserImgWrapper>
-              <TextSection>
-                <UserInfoText>
-                  <UserName>{item.userName}</UserName>
-                  <Button
-                    color={Colors.primary}
-                    title="Add"
-                    onPress={() => {
-                      // joinHandler(itemData.item.id, itemData.item.title);
-                      console.log("Add clicked");
-                    }}
-                  />
-                </UserInfoText>
-                <MessageText>{item.messageText}</MessageText>
-              </TextSection>
-            </UserInfo>
-          </Card>
-        )}
-      />
-      <FAB title="Create" placement="right" color={Colors.primary} />
+    <View style={styles.body}> 
+      <FriendList Data={MyFriends} type="session"/> 
     </View>
   );
 };
