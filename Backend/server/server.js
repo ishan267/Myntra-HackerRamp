@@ -11,7 +11,7 @@ const port = process.env.PORT || 8080;
 const app = express();
 var server = http.createServer(app); 
 var io = socketIO(server);
-const {generateMessage,generateLocationMessage} = require('./utils/message');
+const {generateMessage} = require('./utils/message');
 var usersObj = new Users();
 var roomsObj = new Chatrooms();
 var mssgsObj = new Messages();
@@ -50,7 +50,7 @@ io.on('connection',(socket)=>{
         usersObj.addUserToRoom(params.uid,params.cid);
 
         //Telling other users that a new user joined
-        socket.broadcast.to(params.cid).emit('newMessage',generateMessage('Admin',`${params.uid} has joined`));
+        socket.broadcast.to(params.cid).emit('newMessage',generateMessage('msg0','Admin',`${params.uid} has joined`,0,params.cid));
 
         console.log(users);
         console.log(chatrooms);
@@ -72,11 +72,11 @@ io.on('connection',(socket)=>{
             console.log("message is a valid string");
             if(message.tag==1){
                 var user = usersObj.getUser(message.receiverId);
-                console.log("socket id of user is",user.sock_id);
-                socket.to(user.sock_id).emit('newMessage',generateMessage(message.senderId,message.text)); //personal message
+                console.log(user.sock_id);
+                socket.to(user.sock_id).emit('newMessage',message); //personal message
              }else{
                 console.log(message.receiverId);
-                io.to(message.receiverId).emit('newMessage',generateMessage(message.senderId,message.text));     //group message
+                io.to(message.receiverId).emit('newMessage',message);     //group message
              }
         }
         //callback();
@@ -121,9 +121,12 @@ server.listen(port,()=>{
     usersObj.addUser(ids[4],'Sigma Male',[ids[0],ids[3]],['room1','room2']);
     roomsObj.addChatroom('room1','Original Room',ids[0],[ids[0],ids[1],ids[2],ids[3],ids[4]],['msg1']);
     roomsObj.addChatroom('room2','Mastizaade',ids[3],[ids[1],ids[2],ids[3],ids[4]],[]);
-    mssgsObj.addMessage('msg1',ids[0],'You all look well...i aim to change that .',0,'room1',"10th century");
-    mssgsObj.addMessage('msg2',ids[3],'Aur Bhai kya haal chaal',1,ids[4],'today');
-    mssgsObj.addMessage('msg3',ids[4],'Bs Badiya tu bata',1,ids[3],'today');
+    mssgsObj.addMessage('msg1',ids[0],'You all look well...i aim to change that .',0,'room1',Date.now());
+    mssgsObj.addMessage('msg2',ids[3],'Aur Bhai kya haal chaal',1,ids[4],Date.now());
+    mssgsObj.addMessage('msg3',ids[4],'Bs Badiya tu bata',1,ids[3],Date.now());
+    mssgsObj.addMessage('msg4',ids[3],'Message pohcha kya',0,'room1',Date.now());
+    mssgsObj.addMessage('msg5',ids[4],'Ha pohch gaya',0,'room1',Date.now());
+
     console.log('Added first enteries hardcoded');
     //console.log(users);
     //console.log(chatrooms);
