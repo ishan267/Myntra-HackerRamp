@@ -26,9 +26,20 @@ export const fetchFriends=()=>{
               }
         
               const resData = await response.json();
-              console.log("response received",resData);
-                // fetch request will be sent to database to get loadedFriends
-                const loadedFriends=resData.slice();
+              console.log("response received for friends",resData);
+              const friends = [];
+              for(let i=0;i<resData.length;i++)
+              {
+                const friend = {
+                  id:resData[i].uid,
+                  name:resData[i].uname,
+                  friends:resData[i].friends,
+                  chatrooms:resData[i].c_rooms.slice()
+                }
+                friends.push(friend);
+              }
+              console.log("array of friends is",friends);
+                const loadedFriends=friends.slice();
                 dispatch({
                     type:FETCH_FRIENDS,
                     loadedFriends:loadedFriends

@@ -37,6 +37,8 @@ io.on('connection',(socket)=>{
             }
         }
         
+        for(var i=0;i<user.c_rooms.length;i++)socket.join(user.c_rooms[i]);    //joining its chatrooms
+
         callback(socket.id);
     })
 
@@ -70,13 +72,32 @@ io.on('connection',(socket)=>{
         messages.push(message);
         if(isRealString(message.text)){
             console.log("message is a valid string");
-            if(message.tag==1){
+            if(message.tag=='1'){
                 var user = usersObj.getUser(message.receiverId);
                 console.log(user.sock_id);
                 socket.to(user.sock_id).emit('newMessage',message); //personal message
              }else{
                 console.log(message.receiverId);
-                io.to(message.receiverId).emit('newMessage',message);     //group message
+                //io.to(message.receiverId).emit('newMessage',message);     //group message
+                console.log("caller socket id",socket.id);
+
+                // to be deleted
+                var user = usersObj.getUser(message.senderId);
+                console.log(user.sock_id);
+                //to be deleted
+
+                for(var i=0;i<chatrooms.length;i++){
+                    if(chatrooms[i].cid==message.receiverId){
+                        console.log(`participants in room ${message.receiverId} are : `);
+                        for(var j=0;j<chatrooms[i].members.length;j++){
+                            var temp_user=usersObj.getUser(chatrooms[i].members[j]);
+                            console.log(temp_user.uname,"   ",temp_user.sock_id);
+                        }
+                console.log('printed');
+                break;
+                    }
+                }
+                socket.broadcast.to(message.receiverId).emit('newMessage',message);
              }
         }
         //callback();
