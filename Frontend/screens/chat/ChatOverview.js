@@ -61,20 +61,8 @@ const ChatOverviewScreen = ({navigation}) => {
         socket.emit('update-socket-id',userId,err=>{})
       });
       socket.on('newMessage', (msg) => {
-        
-        const message={
-          id: msg.createAt,
-          createdAt: msg.createAt,
-          text: msg.text,
-          receiverId: userId,
-          senderId: msg.from,
-          tag: '1',
-          productsDiscussed:''
-        }
-        console.log("message received is",message);
-        dispatch(messagesAction.addMessage(message));
-        //setMsg(message);
-        //setMsgList([...msgList, message]);
+        console.log("message received is",msg);
+        dispatch(messagesAction.addMessage(msg));
       })
     },[]);
 

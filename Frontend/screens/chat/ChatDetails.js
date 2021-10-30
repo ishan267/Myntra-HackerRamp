@@ -39,22 +39,15 @@ const ChatDetailScreen = (props) => {
   useEffect(() => {
     console.log("room messages changed");
     msglist.sort(function(a,b){
-      return new Date(a.createdAt)-new Date(b.createdAt);
+      return new Date(b.createdAt)-new Date(a.createdAt);
     });
     console.log("new msg list is",msglist);
-    //setMessages(msglist);
   }, [msglist]);
 
-  function sendPersonalMessage(msg,id)
+  function sendPersonalMessage(msg)
     {
-      console.log("socket personal message called");
-      socket.emit('createMessage',{
-        id: new Date().getTime(),
-        senderId: userId,
-        text: msg,
-        tag: 1,
-        receiverId: id
-      })
+      console.log("socket personal message called",msg);
+      socket.emit('createMessage',msg);
     }
 
 
@@ -75,7 +68,7 @@ const ChatDetailScreen = (props) => {
     console.log("message is",message);
     //addMessage action will be dispatched from here
     dispatch(messagesAction.addMessage(message));
-    sendPersonalMessage(message.text,recId);
+    sendPersonalMessage(message);
   }, []);
   
 
