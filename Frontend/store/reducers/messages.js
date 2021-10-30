@@ -32,6 +32,13 @@ export default (state=initialState,action)=>{
              )
              
             console.log("in reducer new message is",newMessage);
+            let i;
+            for(i=0;i<state.allMessages.length;i++)
+            {
+                if(state.allMessages[i].id==newMessage.id)
+                    return state;
+            }
+
              return {
                 ...state,
                 allMessages: state.allMessages.concat(newMessage)
