@@ -28,7 +28,7 @@ export const fetchFriends=()=>{
               const resData = await response.json();
               console.log("response received",resData);
                 // fetch request will be sent to database to get loadedFriends
-                const loadedFriends=resData.slice();;
+                const loadedFriends=resData.slice();
                 dispatch({
                     type:FETCH_FRIENDS,
                     loadedFriends:loadedFriends

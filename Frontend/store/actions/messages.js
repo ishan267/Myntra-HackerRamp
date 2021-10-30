@@ -8,7 +8,16 @@ export const fetchMessage=()=>{
   return async (dispatch,getState)=>{
 
       try{  
-        const loadedMessages=[];
+        const response =  await fetch(
+          'http://localhost:8080/get-message-list'
+        );
+        if (!response.ok) {
+          throw new Error('Something went wrong!');
+        }
+  
+        const resData = await response.json();
+        console.log("response received for messages",resData);
+        const loadedMessages=resData.slice();
         dispatch({
             type:FETCH_MESSAGE,
             loadedMessages:loadedMessages

@@ -72,7 +72,7 @@ io.on('connection',(socket)=>{
             console.log("message is a valid string");
             if(message.tag==1){
                 var user = usersObj.getUser(message.receiverId);
-                console.log(user.sock_id);
+                console.log("socket id of user is",user.sock_id);
                 socket.to(user.sock_id).emit('newMessage',generateMessage(message.senderId,message.text)); //personal message
              }else{
                 console.log(message.receiverId);

@@ -45,6 +45,13 @@ const ChatOverviewScreen = ({navigation}) => {
     },[dispatch])
 
     useEffect(()=>{
+      setIsLoading(true);
+      dispatch(messagesAction.fetchMessage()).then(() => {
+        setIsLoading(false);
+    });
+    },[dispatch])
+
+    useEffect(()=>{
       console.log("current messages are ",messages);
       console.log('socket about to connect to server');
       socket.on("connect", () => {
@@ -54,8 +61,18 @@ const ChatOverviewScreen = ({navigation}) => {
         socket.emit('update-socket-id',userId,err=>{})
       });
       socket.on('newMessage', (msg) => {
-        console.log('message received from->',msg.from);
-        console.log(msg.text);
+        
+        const message={
+          id: msg.createAt,
+          createdAt: msg.createAt,
+          text: msg.text,
+          receiverId: userId,
+          senderId: msg.from,
+          tag: '1',
+          productsDiscussed:''
+        }
+        console.log("message received is",message);
+        dispatch(messagesAction.addMessage(message));
         //setMsg(message);
         //setMsgList([...msgList, message]);
       })
