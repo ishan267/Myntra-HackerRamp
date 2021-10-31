@@ -27,6 +27,7 @@ import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import Toast from 'react-native-toast-message';
 import { Searchbar } from 'react-native-paper';
+import CustomModal from "../components/UI/CustomModal";
 
 const Data= [
     {
@@ -83,6 +84,7 @@ const Data= [
       
       const [dataSelected,setSelectedState]=useState([]);
       const [selectedFriends,setSelectedFriends]=useState([]);
+      const [modalVisible, setModalVisible] = useState(false);
 
       useEffect(()=>{
         
@@ -122,10 +124,11 @@ const Data= [
            }
 
            if(name==='chatroom'){
-
+               setModalVisible(true);
            }
 
            if(name==='session'){
+               setModalVisible(true);
 
            }
           
@@ -136,9 +139,7 @@ const Data= [
 
       return(
           <>
-   
-      <Toast ref={(ref) => Toast.setRef(ref)} />
-   
+       <CustomModal visible={modalVisible} setModalVisible={setModalVisible}/>
      <Searchbar
       placeholder="Search"
       onChangeText={onChangeSearch}
