@@ -16,11 +16,8 @@ const SESSIONS = [
     title: "Session3",
     time: "12:30 PM",
   },
-  {
-    id: "4",
-    title: "Session4",
-    time: "12:30 PM",
-  }
+  
+  
 ];
 
 export default SESSIONS;

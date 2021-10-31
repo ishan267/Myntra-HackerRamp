@@ -128,9 +128,9 @@ const ChatOverviewScreen = ({navigation}) => {
                      elevation: 6,
                      marginBottom:60
                     }}
-                    onPress={()=>navigation.navigate('NewFriend')}
+                    onPress={()=>navigation.navigate('FriendList')}
           >
-      <Text style={{color:'white',fontSize:40}}  onPress={()=>navigation.navigate('NewFriend',{title:"Create Chatroom",name:"chatroom"})} >+</Text>
+      <Text style={{color:'white',fontSize:40}}  onPress={()=>navigation.navigate('FriendList',{title:"Create Chatroom",name:"chatroom"})} >+</Text>
 
 </View>
       </Container>

@@ -22,12 +22,10 @@ import AuthScreen from "../screens/user/AuthScreen";
 import StartupScreen from "../screens/StartupScreen";
 import Colors from "../constants/Colors";
 import * as authActions from "../store/actions/auth";
-
 import ChatOverviewScreen from "../screens/chat/ChatOverview";
 import ChatDetailScreen from "../screens/chat/ChatDetails";
 import ShoppingSessionScreen from "../screens/shop/ShoppingSessionScreen";
-import NewSessionScreen from "../screens/ShoppingSession/NewSessionScreen";
-import NewFriendScreen from "../screens/chat/NewFriendScreen";
+import FriendListScreen from "../screens/FriendsListScreen";
 
 const defaultNavOptions = {
   headerStyle: {
@@ -46,77 +44,20 @@ const ChatsNavigator = createStackNavigator(
   {
     ChatOverview: ChatOverviewScreen,
     ChatDetails: ChatDetailScreen,
-    NewFriend:NewFriendScreen
+    FriendList:FriendListScreen
   },
   {
-    // navigationOptions: {
-    //   drawerIcon: (drawerConfig) => (
-    //     <Ionicons
-    //       name={Platform.OS === "android" ? "md-list" : "ios-list"}
-    //       size={23}
-    //       color={drawerConfig.tintColor}
-    //     />
-    //   ),
-    // },
     defaultNavigationOptions: defaultNavOptions,
   }
 );
 
-const VirtualShopNavigator = createStackNavigator(
+const SessionNavigator = createStackNavigator(
   {
     VirtualShopOverview: ShoppingSessionScreen,
+    // FriendList:FriendListScreen
   },
   {
-    navigationOptions: {
-      drawerIcon: (drawerConfig) => (
-        <Ionicons
-          name={Platform.OS === "android" ? "md-list" : "ios-list"}
-          size={23}
-          color={drawerConfig.tintColor}
-        />
-      ),
-    },
     defaultNavigationOptions: defaultNavOptions,
-  }
-);
-
-const NewsessionNavigator = createStackNavigator(
-  {
-    NewSessionOverview: NewSessionScreen,
-  },
-  {
-    navigationOptions: {
-      drawerIcon: (drawerConfig) => (
-        <Ionicons
-          name={Platform.OS === "android" ? "md-add" : "ios-add"}
-          size={23}
-          color={drawerConfig.tintColor}
-        />
-      ),
-    },
-    defaultNavigationOptions: defaultNavOptions,
-  }
-);
-
-const SessionNavigator = createDrawerNavigator(
-  {
-    AllSessions: VirtualShopNavigator,
-    NewSession: NewsessionNavigator,
-  },
-  {
-    contentOptions: {
-      activeTintColor: Colors.primary,
-    },
-    contentComponent: (props) => {
-      //const dispatch = useDispatch();
-      return (
-        <View style={{ flex: 1, paddingTop: 30 }}>
-          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
-            <DrawerNavigatorItems {...props} />
-          </SafeAreaView>
-        </View>
-      );
-    },
   }
 );
 
@@ -124,6 +65,7 @@ const ProductsNavigator = createStackNavigator(
   {
     ProductsOverview: ProductsOverviewScreen,
     ProductDetail: ProductDetailScreen,
+    // FriendList:FriendListScreen,
     Cart: CartScreen,
   },
   {

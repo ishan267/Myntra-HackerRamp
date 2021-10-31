@@ -16,7 +16,7 @@ import ProductItem from "../../components/shop/ProductItem";
 import Colors from "../../constants/Colors";
 import { Card } from "react-native-elements";
 
-const ShoppingSessionScreen = () => {
+const ShoppingSessionScreen = ({navigation}) => {
 
 
   const joinHandler = (id, title) => {
@@ -33,6 +33,7 @@ const ShoppingSessionScreen = () => {
       <FlatList
         // onRefresh={loadProducts}
         // refreshing={isRefreshing}
+        style={{height:'95%'}}
         data={SESSIONS}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
@@ -48,6 +49,11 @@ const ShoppingSessionScreen = () => {
           </Card>
         )}
       />
+       <View style={styles.buttonCont} onPress={()=>navigation.navigate('FriendList')}>
+      <Text style={{color:'white',fontSize:40}}  
+      onPress={()=>navigation.navigate('FriendList',{title:"Create New Session",name:"session",})} >+</Text>
+
+       </View>
     </View>
   );
 };
@@ -55,19 +61,30 @@ const ShoppingSessionScreen = () => {
 ShoppingSessionScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "Virtual Shopping Session",
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
+  
   };
 };
+
+const styles=StyleSheet.create({
+   buttonCont:{
+    height:40,
+    width:40,
+    backgroundColor:'green',
+    borderRadius:20,
+    justifyContent:'center',
+    alignItems:'center', 
+    marginLeft:'80%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3},
+    shadowOpacity: 1,
+    shadowRadius: 3,  
+    elevation: 6,
+    // marginBottom:'10%',
+    marginTop:'-10%',
+    
+    zIndex:100
+   }
+})
 
 
 export default ShoppingSessionScreen;

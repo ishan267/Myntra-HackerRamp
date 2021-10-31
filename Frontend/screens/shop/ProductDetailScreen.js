@@ -27,7 +27,7 @@ const ProductDetailScreen = props => {
           color={Colors.primary}
           title="share"
           onPress={() => {
-              props.navigation.navigate("NewFriend", {
+              props.navigation.navigate("FriendList", {
               product:selectedProduct,
               title:'Select Friends',
               name:'share'
