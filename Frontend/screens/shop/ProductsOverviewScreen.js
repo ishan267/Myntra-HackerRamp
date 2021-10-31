@@ -19,6 +19,7 @@ import ProductItem from "../../components/shop/ProductItem";
 import * as cartActions from "../../store/actions/cart";
 import * as productsActions from "../../store/actions/products";
 import Colors from "../../constants/Colors";
+import { Searchbar } from 'react-native-paper';
 
 const ProductsOverviewScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +64,10 @@ const ProductsOverviewScreen = (props) => {
     });
   };
 
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const onChangeSearch = query => setSearchQuery(query);
+
   if (error) {
     return (
       <View style={styles.centered}>
@@ -94,12 +99,12 @@ const ProductsOverviewScreen = (props) => {
 
   return (
     <View>
-      <SearchBar
-        placeholder="Search for products"
-        lightTheme="true"
-        // onChangeText={this.updateSearch}
-        // value={search}
-      />
+       <Searchbar
+      placeholder="Search"
+      onChangeText={onChangeSearch}
+      value={searchQuery}
+    />
+    
       <FlatList
         onRefresh={loadProducts}
         refreshing={isRefreshing}
@@ -137,7 +142,7 @@ const ProductsOverviewScreen = (props) => {
 
 ProductsOverviewScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: "Bajaj",
+    headerTitle: "Myntra",
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

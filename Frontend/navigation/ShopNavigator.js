@@ -49,15 +49,15 @@ const ChatsNavigator = createStackNavigator(
     NewFriend:NewFriendScreen
   },
   {
-    navigationOptions: {
-      drawerIcon: (drawerConfig) => (
-        <Ionicons
-          name={Platform.OS === "android" ? "md-list" : "ios-list"}
-          size={23}
-          color={drawerConfig.tintColor}
-        />
-      ),
-    },
+    // navigationOptions: {
+    //   drawerIcon: (drawerConfig) => (
+    //     <Ionicons
+    //       name={Platform.OS === "android" ? "md-list" : "ios-list"}
+    //       size={23}
+    //       color={drawerConfig.tintColor}
+    //     />
+    //   ),
+    // },
     defaultNavigationOptions: defaultNavOptions,
   }
 );
@@ -88,7 +88,7 @@ const NewsessionNavigator = createStackNavigator(
     navigationOptions: {
       drawerIcon: (drawerConfig) => (
         <Ionicons
-          name={Platform.OS === "android" ? "md-list" : "ios-list"}
+          name={Platform.OS === "android" ? "md-add" : "ios-add"}
           size={23}
           color={drawerConfig.tintColor}
         />

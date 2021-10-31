@@ -60,7 +60,7 @@ const NewSessionScreen = () => {
 
   return (
     <View style={styles.body}> 
-      <FriendList Data={MyFriends} type="session"/> 
+      <FriendList Data={MyFriends} type="session" button="Create"/> 
     </View>
   );
 };

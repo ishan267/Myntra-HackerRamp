@@ -63,36 +63,27 @@ const AllFriends= [
   ];
   
 
-const NewFriendScreen=()=>{
-
-    const selectedFriends=[];
-
-    let onClickHandler; 
+const NewFriendScreen=(props)=>{
+    const{state}=props.navigation;
+    const name=state.params.name
+    let buttonType="";
+    if(name==='share'){
+      buttonType='Send'
+    }
 
   return (
       
     <View style={styles.body}>
-      
-       <FriendList Data={AllFriends} onclick={onClickHandler} type="friend"/>
-      
+       <FriendList Data={AllFriends}  type={name} button={buttonType}/>
      </View>
       
   );
 }
+
 NewFriendScreen.navigationOptions = (navData) => {
+  console.log("navdata",navData.navigation.state.params.title);
   return {
-    headerTitle: "Add New Friend",
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
+    headerTitle: navData.navigation.state.params.title,
   };
 };
 

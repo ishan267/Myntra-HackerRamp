@@ -25,6 +25,21 @@ const ProductDetailScreen = props => {
       <View style={styles.actions}>
         <Button
           color={Colors.primary}
+          title="share"
+          onPress={() => {
+              props.navigation.navigate("NewFriend", {
+              product:selectedProduct,
+              title:'Select Friends',
+              name:'share'
+
+            });
+          }}
+        />
+      </View>
+
+      <View style={styles.actions}>
+        <Button
+          color={Colors.primary}
           title="Add to Cart"
           onPress={() => {
             dispatch(cartActions.addToCart(selectedProduct));

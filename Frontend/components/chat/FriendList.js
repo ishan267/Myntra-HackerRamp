@@ -30,8 +30,9 @@ import { Searchbar } from 'react-native-paper';
 
 
 
+
   const FriendList=(props)=>{
-      const{Data,type}=props;
+      const{Data,type,button}=props;
       const data=[...Data];
       
       const [dataSelected,setSelectedState]=useState([]);
@@ -69,23 +70,19 @@ import { Searchbar } from 'react-native-paper';
       }
 
       const onPressHandler=()=>{
-          if(selectedFriends.length==0){
-                Toast.show({type:'error',text1:'Please select friends',style:styles.toast});
-                return;
 
-             }
+           if(type==='share'){
+              
+           }
 
-          //selected friends will be added to the respective field of chatroom or friend list or session
-          //user will be rediredcted to the respected screen
-         if(type==='friend'){
-             
-             Toast.show({text1:'New Friend added'});
+           if(type==='chatroom'){
 
-         }else{
-            
-            Toast.show({text1:'New session Created',text2:'Enjoy your shopping'});
+           }
 
-         }
+           if(type==='session'){
+
+           }
+          
       }
       const [searchQuery, setSearchQuery] = React.useState('');
 
@@ -134,7 +131,15 @@ import { Searchbar } from 'react-native-paper';
         <View style={styles.buttonCont}
            
           >
-        <Text style={{color:'white',fontSize:15,zIndex:10}}  onPress={onPressHandler} >{type==='friend'?'Done' :'Create'}</Text>
+        <Text style={{color:'white',fontSize:15,zIndex:10}}  onPress={onPressHandler} >
+          {button===''?
+          <Ionicons
+          name={Platform.OS === "android" ?"md-arrow-forward":"ios-add"}
+          size={23}
+          color='white'
+         />: button
+          }
+          </Text>
 
       </View>
         

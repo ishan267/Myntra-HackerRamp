@@ -130,7 +130,7 @@ const ChatOverviewScreen = ({navigation}) => {
                     }}
                     onPress={()=>navigation.navigate('NewFriend')}
           >
-      <Text style={{color:'white',fontSize:40}}  onPress={()=>navigation.navigate('NewFriend')} >+</Text>
+      <Text style={{color:'white',fontSize:40}}  onPress={()=>navigation.navigate('NewFriend',{title:"Create Chatroom",name:"chatroom"})} >+</Text>
 
 </View>
       </Container>
@@ -145,21 +145,8 @@ const ChatOverviewScreen = ({navigation}) => {
 ChatOverviewScreen.navigationOptions = navData => {
   return {
     headerTitle: 'All Chats',
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    )
   };
 };
-
-
 
 
 export default ChatOverviewScreen;
