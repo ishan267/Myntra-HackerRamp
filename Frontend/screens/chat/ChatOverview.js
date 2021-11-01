@@ -41,32 +41,6 @@ const ChatOverviewScreen = ({navigation}) => {
     const messages=useSelector(state=>state.messages.allMessages);
 
     const chatList = friends.concat(chatrooms);
-    /*const recentChats = new Map();
-    for(let i=0;i<messages.length();i++)
-    {
-
-    }*/
-
-    useEffect(()=>{
-      setIsLoading(true);
-      dispatch(friendsAction.fetchFriends()).then(() => {
-        setIsLoading(false);
-    });
-    },[dispatch])
-
-    useEffect(()=>{
-      setIsLoading(true);
-      dispatch(chatroomAction.fetchChatroom()).then(() => {
-        setIsLoading(false);
-    });
-    },[dispatch])
-
-    useEffect(()=>{
-      setIsLoading(true);
-      dispatch(messagesAction.fetchMessage()).then(() => {
-        setIsLoading(false);
-    });
-    },[dispatch])
 
     useEffect(()=>{
       console.log('socket about to connect to server');

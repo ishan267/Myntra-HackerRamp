@@ -1,3 +1,4 @@
+import baseUrl from "../../helper/baseUrl";
 import user from "../../models/user"
 
 export const FETCH_FRIENDS="FETCH_FRIENDS";
@@ -9,7 +10,8 @@ export const fetchFriends=()=>{
     return async(dispatch,getState)=>{
         try{
             const response =  await fetch(
-                'http://localhost:8080/get-friend-list',
+                //'http://localhost:8080/get-friend-list',
+                `${baseUrl}/get-friend-list`,
                 {
                   method: 'POST',
                   headers: {

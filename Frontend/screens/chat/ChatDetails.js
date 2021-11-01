@@ -44,8 +44,10 @@ const ChatDetailScreen = (props) => {
         _id: msg.id,
         text: msg.text,
         createdAt: msg.createdAt,
+        image:'',
         user: {
           _id: msg.senderId,
+          avatar:'https://icons.iconarchive.com/icons/papirus-team/papirus-status/512/avatar-default-icon.png'
         }
       }
     )

@@ -17,6 +17,7 @@ const ProductDetailScreen = props => {
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(prod => prod.id === productId)
   );
+  console.log("selected product is",selectedProduct);
   const dispatch = useDispatch();
 
   return (
@@ -31,7 +32,6 @@ const ProductDetailScreen = props => {
               product:selectedProduct,
               title:'Select Friends',
               name:'share'
-
             });
           }}
         />

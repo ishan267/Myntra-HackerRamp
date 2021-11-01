@@ -18,6 +18,9 @@ import HeaderButton from "../../components/UI/HeaderButton";
 import ProductItem from "../../components/shop/ProductItem";
 import * as cartActions from "../../store/actions/cart";
 import * as productsActions from "../../store/actions/products";
+import * as chatroomAction from '../../store/actions/chatroom'
+import * as messagesAction from '../../store/actions/messages'
+import * as friendsAction from '../../store/actions/friends';
 import Colors from "../../constants/Colors";
 import { Searchbar } from 'react-native-paper';
 
@@ -28,11 +31,14 @@ const ProductsOverviewScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
 
-  const loadProducts = useCallback(async () => {
+  const loadItems = useCallback(async () => {
     setError(null);
     setIsRefreshing(true);
     try {
       await dispatch(productsActions.fetchProducts());
+      await dispatch(friendsAction.fetchFriends());
+      await dispatch(chatroomAction.fetchChatroom());
+      await dispatch(messagesAction.fetchMessage());
     } catch (err) {
       setError(err.message);
     }
@@ -42,20 +48,20 @@ const ProductsOverviewScreen = (props) => {
   useEffect(() => {
     const willFocusSub = props.navigation.addListener(
       "willFocus",
-      loadProducts
+      loadItems
     );
 
     return () => {
       willFocusSub.remove();
     };
-  }, [loadProducts]);
+  }, [loadItems]);
 
   useEffect(() => {
     setIsLoading(true);
-    loadProducts().then(() => {
+    loadItems().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadProducts]);
+  }, [dispatch, loadItems]);
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate("ProductDetail", {
@@ -74,7 +80,7 @@ const ProductsOverviewScreen = (props) => {
         <Text>An error occurred!</Text>
         <Button
           title="Try again"
-          onPress={loadProducts}
+          onPress={loadItems}
           color={Colors.primary}
         />
       </View>
@@ -106,7 +112,7 @@ const ProductsOverviewScreen = (props) => {
     />
     
       <FlatList
-        onRefresh={loadProducts}
+        onRefresh={loadItems}
         refreshing={isRefreshing}
         data={products}
         keyExtractor={(item) => item.id}

@@ -1,15 +1,18 @@
 import message from "../../models/message";
+import baseUrl from "../../helper/baseUrl";
 
 export const FETCH_MESSAGE="FETCH_MESSAGE";
 export const ADD_MESSAGE="ADD_MESSAGE";
 export const DELETE_MESSAGE="DELETE_MESSAGE";
 
 export const fetchMessage=()=>{
+  console.log("fetch messages called");
   return async (dispatch,getState)=>{
 
       try{  
         const response =  await fetch(
-          'http://localhost:8080/get-message-list'
+          //'http://localhost:8080/get-message-list'
+          `${baseUrl}/get-message-list`
         );
         if (!response.ok) {
           throw new Error('Something went wrong!');

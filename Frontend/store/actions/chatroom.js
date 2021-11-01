@@ -1,4 +1,5 @@
 import chatroom from "../../models/chatroom";
+import baseUrl from "../../helper/baseUrl";
 
 export const FETCH_CHATROOMS="FETCH_CHATROOMS";
 export const CREATE_CHATROOM="CREATE_CHATROOM";
@@ -11,7 +12,8 @@ export const fetchChatroom = () => {
        
       try {
           const response =  await fetch(
-          'http://localhost:8080/get-chatroom-list',
+          //'http://localhost:8080/get-chatroom-list'
+          `${baseUrl}/get-chatroom-list`,
           {
             method: 'POST',
             headers: {
