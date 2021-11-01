@@ -8,7 +8,10 @@ import * as messagesAction from '../../store/actions/messages'
 import * as friendsAction from '../../store/actions/friends';
 import Colors from '../../constants/Colors';
 
-import '../../helper/UserAgent';
+//import '../../helper/UserAgent';
+navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
+  return "react-native";
+ }); 
 import SocketIOClient from "socket.io-client";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -31,8 +34,10 @@ import message from '../../models/message';
 const ChatOverviewScreen = ({navigation}) => {
 
     const userId = useSelector((state) => state.auth.userId);
-    const socket = SocketIOClient("http://localhost:8080",{jsonp: false});
-
+    //const socket = SocketIOClient({baseUrl},{jsonp: false});
+    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {
+          jsonp: false,
+        });
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch=useDispatch();
@@ -55,6 +60,11 @@ const ChatOverviewScreen = ({navigation}) => {
         console.log("socket message received is",msg);
         dispatch(messagesAction.addMessage(msg));
       })
+      socket.on("connect_error", (err) => {
+        console.log("Error");
+        console.log(err instanceof Error);
+        console.log(err.message); 
+      });
     },[]);
    
     // console.log("chatrooms",chatrooms)
