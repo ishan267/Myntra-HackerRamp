@@ -11,7 +11,7 @@ import Colors from '../../constants/Colors';
 import '../../helper/UserAgent';
 import SocketIOClient from "socket.io-client";
 import { Ionicons } from "@expo/vector-icons";
-
+import baseUrl from '../../helper/baseUrl';
 
 import {
   Container,
@@ -31,7 +31,7 @@ import message from '../../models/message';
 const ChatOverviewScreen = ({navigation}) => {
 
     const userId = useSelector((state) => state.auth.userId);
-    const socket = SocketIOClient("http://localhost:8080",{jsonp: false});
+    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com/",{jsonp: false});
 
     const [isLoading, setIsLoading] = useState(false);
 
