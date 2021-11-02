@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Button,
+  Alert,
 } from "react-native";
 import {
     Container,
@@ -41,6 +42,7 @@ import CustomModal from "../components/UI/CustomModal";
       const [selectedFriends,setSelectedFriends]=useState([]);
       const [modalVisible, setModalVisible] = useState(false);
       const[chatroomName,setChatroomName]=useState("");
+      const [sessionTime,setSessionTime]=useState({});
       
 
       useEffect(()=>{
@@ -48,23 +50,6 @@ import CustomModal from "../components/UI/CustomModal";
       setAllFriends(friends);
       },[])
       
-
-      function handleSubmit()
-      {
-        if(state.params.name=='share')
-        {
-
-        }
-        else if(state.params.name=="chatroom")
-        {
-
-        }
-        else if(state.params.name=="session")
-        {
-
-        }
-      }
-
       const onClickHandler=(index)=>{
         let newData=[...allFriends];
          if(allFriends[index].isSelected===false)
@@ -82,6 +67,11 @@ import CustomModal from "../components/UI/CustomModal";
 
       const onPressHandler=()=>{
 
+        if(selectedFriends.length===0) {
+          Alert.alert("No friend is selected");
+          return;
+        }
+
            if(name==='share'){
               props.navigation.navigate('ProductDetail')
            }
@@ -91,8 +81,8 @@ import CustomModal from "../components/UI/CustomModal";
            }
 
            if(name==='session'){
-               setModalVisible(true);
 
+               setModalVisible(true);
            }
           
       }
@@ -102,14 +92,21 @@ import CustomModal from "../components/UI/CustomModal";
 
       return(
           <>
-      <CustomModal visible={modalVisible} setModalVisible={setModalVisible}/>
+        
+      <CustomModal 
+      type={name} 
+      visible={modalVisible} 
+      setModalVisible={setModalVisible}
+      setChatroomName={setChatroomName}
+      navigation={props.navigation}
+      selectedFriend={selectedFriends}
+      />
      <Searchbar
       placeholder="Search"
       onChangeText={onChangeSearch}
       value={searchQuery}
     />
     <Container>
-    
     
         <FlatList
         data={allFriends}
