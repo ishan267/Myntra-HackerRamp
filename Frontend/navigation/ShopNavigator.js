@@ -54,7 +54,7 @@ const ChatsNavigator = createStackNavigator(
 const SessionNavigator = createStackNavigator(
   {
     VirtualShopOverview: ShoppingSessionScreen,
-    // FriendList:FriendListScreen
+    FriendList:FriendListScreen
   },
   {
     defaultNavigationOptions: defaultNavOptions,
@@ -65,7 +65,7 @@ const ProductsNavigator = createStackNavigator(
   {
     ProductsOverview: ProductsOverviewScreen,
     ProductDetail: ProductDetailScreen,
-    // FriendList:FriendListScreen,
+    FriendList:FriendListScreen,
     Cart: CartScreen,
   },
   {
