@@ -25,27 +25,28 @@ import { useSelector, useDispatch } from 'react-redux';
 import Colors from "../constants/Colors";
   
 import { Ionicons } from "@expo/vector-icons";
-import Toast from 'react-native-toast-message';
 import { Searchbar } from 'react-native-paper';
 import CustomModal from "../components/UI/CustomModal";
 
   const FriendsListScreen=(props)=>{
       const {state}= props.navigation
       const name=state.params.name;
-      console.log("name",name);
+
       let button='';
       if(name==='share')  button='Send'
 
       const friends=useSelector(state=>state.friends.allFriends);
-      friends.map((d)=>{d.isSelected=false});
-      
-      const [dataSelected,setSelectedState]=useState([]);
+
+      const [allFriends,setAllFriends]=useState([]);
       const [selectedFriends,setSelectedFriends]=useState([]);
       const [modalVisible, setModalVisible] = useState(false);
+      const[chatroomName,setChatroomName]=useState("");
+      
 
       useEffect(()=>{
-        setSelectedState(friends);
-      },[])
+      setAllFriends(friends);
+      },[friends])
+      
 
       function handleSubmit()
       {
@@ -64,18 +65,18 @@ import CustomModal from "../components/UI/CustomModal";
       }
 
       const onClickHandler=(index)=>{
-        let newData=[...dataSelected];
-         if(dataSelected[index].isSelected===false)
+        let newData=[...allFriends];
+         if(allFriends[index].isSelected===false)
           newData[index].isSelected=true; 
          else{
-              const id=dataSelected[index].id;
-              console.log("id",id);
-              newData[index].isSelected=false;
+           newData[index].isSelected=false;
          }
-         setSelectedState(newData);
+
+         setAllFriends(newData);
          const selectedFriends=newData.filter((f)=>f.isSelected===true);
          setSelectedFriends(selectedFriends);
-         console.log("selected",selectedFriends);
+         console.log("all",allFriends);
+         console.log("selected",selectedFriends)
       }
 
       const onPressHandler=()=>{
@@ -100,15 +101,17 @@ import CustomModal from "../components/UI/CustomModal";
 
       return(
           <>
-       <CustomModal visible={modalVisible} setModalVisible={setModalVisible}/>
+      <CustomModal visible={modalVisible} setModalVisible={setModalVisible}/>
      <Searchbar
       placeholder="Search"
       onChangeText={onChangeSearch}
       value={searchQuery}
     />
+    <Container>
+    
     
         <FlatList
-        data={dataSelected}
+        data={allFriends}
         keyExtractor={(item) => item.id}
         renderItem={({ item,index }) => (
           <Card>
@@ -119,7 +122,7 @@ import CustomModal from "../components/UI/CustomModal";
               <TextSection>
                 <UserInfoText>
                   <UserName>{item.name}</UserName>
-                  <View style={[styles.iconCont,{backgroundColor:item.isSelected===true? 'red':'green'}]}> 
+                  <View  style={[styles.iconCont,{backgroundColor:item.isSelected===true? 'red':'green'}]}> 
                   <Ionicons
                      name={Platform.OS === "android" ? (item.isSelected===false ?"md-add":"md-remove") : (item.isSelected===false?"ios-add":"ios-remove")}
                      size={23}
@@ -128,10 +131,7 @@ import CustomModal from "../components/UI/CustomModal";
                   />
                   </View>
                 </UserInfoText>
-                
-
-                
-              </TextSection>
+             </TextSection>
             </UserInfo>
           </Card>
         )}
@@ -148,6 +148,7 @@ import CustomModal from "../components/UI/CustomModal";
           </Text>
 
       </View>
+      </Container>
         
       </>
       )
@@ -158,6 +159,7 @@ import CustomModal from "../components/UI/CustomModal";
    
     return {
       headerTitle: navData.navigation.state.params.title,
+    
     };
   };
 
