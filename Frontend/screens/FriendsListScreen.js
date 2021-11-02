@@ -44,8 +44,9 @@ import CustomModal from "../components/UI/CustomModal";
       
 
       useEffect(()=>{
+      friends.map((f)=>f.isSelected=false);
       setAllFriends(friends);
-      },[friends])
+      },[])
       
 
       function handleSubmit()
