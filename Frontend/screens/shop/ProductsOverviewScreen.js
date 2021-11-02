@@ -36,9 +36,7 @@ const ProductsOverviewScreen = (props) => {
     setIsRefreshing(true);
     try {
       await dispatch(productsActions.fetchProducts());
-      await dispatch(friendsAction.fetchFriends());
-      await dispatch(chatroomAction.fetchChatroom());
-      await dispatch(messagesAction.fetchMessage());
+     // await dispatch(chatroomAction.addSocket());
     } catch (err) {
       setError(err.message);
     }

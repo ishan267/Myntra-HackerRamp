@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
+  return "react-native";
+ }); 
+import SocketIOClient from "socket.io-client";
+
 import {
   View,
   FlatList,
@@ -21,7 +27,6 @@ import {
     MessageText,
     TextSection,
   } from "../styles/MessageStyles";
-import { useSelector, useDispatch } from 'react-redux';
   
 import Colors from "../constants/Colors";
   
@@ -34,21 +39,40 @@ import * as messagesAction from '.././store/actions/messages';
       const {state}= props.navigation
       const name=state.params.name;
 
+      const userId = useSelector((state) => state.auth.userId);
+      
+      const dispatch=useDispatch();
+
       let button='';
       if(name==='share')  button='Send'
 
       const friends=useSelector(state=>state.friends.allFriends);
+      const chatrooms=useSelector(state=>state.chatroom.availableChatrooms);
 
       const [allFriends,setAllFriends]=useState([]);
       const [selectedFriends,setSelectedFriends]=useState([]);
       const [modalVisible, setModalVisible] = useState(false);
       const[chatroomName,setChatroomName]=useState("");
       const [sessionTime,setSessionTime]=useState({});
-      
+
+      const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
+      useEffect(() => {
+        console.log('socket about to connect to server');
+        socket.on("connect", () => {
+          console.log("connection successfull");
+          console.log('my socket id is', socket.id);
+          console.log('my userid is', userId);
+          socket.emit('update-socket-id', userId, err => { })
+        });
+      }, []);
 
       useEffect(()=>{
-      friends.map((f)=>f.isSelected=false);
-      setAllFriends(friends);
+        friends.map((f)=>f.isSelected=false);
+        chatrooms.map((f)=>f.isSelected=false);
+        if(name=="chatroom")
+          setAllFriends(friends);
+        else
+          setAllFriends(friends.concat(chatrooms));
       },[])
       
       const onClickHandler=(index)=>{
@@ -73,18 +97,36 @@ import * as messagesAction from '.././store/actions/messages';
           return;
         }
 
-           if(name==='share'){
-              props.navigation.navigate('ProductDetail')
-           }
+        if (name === 'share') {
+          const product = state.params.product;
+          console.log("product is",product);
+          let message=null;
+          for(let i=0;i<selectedFriends.length;i++)
+          {
+              message={
+                id: new Date().getTime(),
+                createdAt: new Date().getTime(),
+                text: product.title,
+                receiverId: selectedFriends[i].id,
+                senderId: userId,
+                tag: (selectedFriends[i].adminId==undefined)?'1':'0',
+                productsDiscussed:'',
+                image:product.imageUrl
+              }
+              dispatch(messagesAction.addMessage(message));
+              socket.emit('createMessage',message);
+          }
+          props.navigation.navigate('ProductDetail')
+        }
 
-           if(name==='chatroom'){
-               setModalVisible(true);
-           }
+        if (name === 'chatroom') {
+          setModalVisible(true);
+        }
 
-           if(name==='session'){
+        if (name === 'session') {
 
-               setModalVisible(true);
-           }
+          setModalVisible(true);
+        }
           
       }
       const [searchQuery, setSearchQuery] = React.useState('');
@@ -100,7 +142,7 @@ import * as messagesAction from '.././store/actions/messages';
       setModalVisible={setModalVisible}
       setChatroomName={setChatroomName}
       navigation={props.navigation}
-      selectedFriend={selectedFriends}
+      selectedFriends={selectedFriends}
       />
      <Searchbar
       placeholder="Search"

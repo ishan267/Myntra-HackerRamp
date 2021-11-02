@@ -1,10 +1,15 @@
 import chatroom from "../../models/chatroom";
 import baseUrl from "../../helper/baseUrl";
+navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
+  return "react-native";
+ }); 
+import SocketIOClient from "socket.io-client";
 
 export const FETCH_CHATROOMS="FETCH_CHATROOMS";
 export const CREATE_CHATROOM="CREATE_CHATROOM";
 export const DELETE_CHATROOM="DELETE_CHATROOM";
 export const UPDATE_CHATROOM="UPDATE_CHATROOM";
+//export const ADD_SOCKET="ADD SOCKET";
 
 export const fetchChatroom = () => {
   console.log("fetch chatrooms called");
@@ -80,6 +85,7 @@ export const fetchChatroom = () => {
       }
   }
   }
+
   //less prior
   export const updateChatroom=()=>{
 
@@ -89,6 +95,29 @@ export const fetchChatroom = () => {
 
   }
 
+  /*export const addSocket = () => {
+    console.log("add socket called");
+      return async (dispatch, getState) => {
+         
+        try {
+          const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
+          socket.on("connect", () => {
+            console.log("connection successfull");
+            console.log('my socket id is', socket.id);
+            console.log('my userid is', getState().auth.userId);
+            socket.emit('update-socket-id',getState().auth.userId,err=>{})
+          });
+          dispatch({
+            type: ADD_SOCKET,
+            socket: socket,
+          });
+        } catch (err) {
+          console.log("Error caught");
+          throw err;
+        }
+      };
+    };*/
+  
 
   // {
   //   id: '1',

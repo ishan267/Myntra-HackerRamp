@@ -50,7 +50,7 @@ export const addMessage=(newMessage)=>{
             senderId:newMessage.senderId,
             tag:newMessage.tag, 
             productsDiscussed:newMessage.productsDiscussed,
-            image:''
+            image:newMessage.image
           }
       })
     }catch(err){

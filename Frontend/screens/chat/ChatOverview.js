@@ -6,8 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as chatroomAction from '../../store/actions/chatroom'
 import * as messagesAction from '../../store/actions/messages'
 import * as friendsAction from '../../store/actions/friends';
-import Colors from '../../constants/Colors';
-
+import Colors from '../../constants/Colors'
 //import '../../helper/UserAgent';
 navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
   return "react-native";
@@ -48,6 +47,27 @@ const ChatOverviewScreen = ({navigation}) => {
     const chatList = friends.concat(chatrooms);
 
     useEffect(()=>{
+      setIsLoading(true);
+      dispatch(messagesAction.fetchMessage()).then(() => {
+        setIsLoading(false);
+    });
+    },[dispatch])
+
+    useEffect(()=>{
+      setIsLoading(true);
+      dispatch(friendsAction.fetchFriends()).then(() => {
+        setIsLoading(false);
+    });
+    },[dispatch])
+
+    useEffect(()=>{
+      setIsLoading(true);
+      dispatch(chatroomAction.fetchChatroom()).then(() => {
+        setIsLoading(false);
+    });
+    },[dispatch])
+
+    useEffect(()=>{
       console.log('socket about to connect to server');
       socket.on("connect", () => {
         console.log("connection successfull");
@@ -67,7 +87,15 @@ const ChatOverviewScreen = ({navigation}) => {
       });
     },[]);
    
-    // console.log("chatrooms",chatrooms)
+    if (isLoading) {
+      return (
+        <View style={styles.centered}>
+          <ActivityIndicator size="large" color={Colors.primary} />
+        </View>
+      );
+    }
+  
+
     return (
       <>
       <Container>
@@ -134,5 +162,13 @@ ChatOverviewScreen.navigationOptions = navData => {
   };
 };
 
+
+const styles = StyleSheet.create({
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
+  searchBar: {
+    height: 45,
+    padding: 10,
+  },
+});
 
 export default ChatOverviewScreen;

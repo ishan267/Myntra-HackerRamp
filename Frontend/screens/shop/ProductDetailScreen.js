@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import {
   ScrollView,
   View,
@@ -7,7 +8,6 @@ import {
   Button,
   StyleSheet
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import * as cartActions from '../../store/actions/cart';
@@ -19,7 +19,7 @@ const ProductDetailScreen = props => {
   );
   console.log("selected product is",selectedProduct);
   const dispatch = useDispatch();
-
+       
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />

@@ -5,11 +5,13 @@ import {
     CREATE_CHATROOM,
     DELETE_CHATROOM,
     UPDATE_CHATROOM,
+    //ADD_SOCKET
 } from "../actions/chatroom";
 
 
 const initialState = {
     availableChatrooms: [], 
+    socket:null
   };
   
   export default (state = initialState, action) => {
@@ -60,6 +62,12 @@ const initialState = {
             chatroom => chatroom.id !== action.chatroomid
           ),
         };
+      /*case ADD_SOCKET:
+        console.log("reducer add socket called")
+        return {
+          ...state,
+         socket:action.socket,
+        };*/
        
     }
     return state;

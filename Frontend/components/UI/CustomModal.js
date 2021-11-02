@@ -3,12 +3,14 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import DatePicker from 'react-native-date-picker'
 import Colors from "../../constants/Colors";
+import * as chatroomAction from '../../store/actions/chatroom';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CustomModal = (props) => {
     
-    
-    const modalVisible=props.visible;
-    const setModalVisible=props.setModalVisible;
+  const dispatch=useDispatch();
+  const modalVisible = props.visible;
+  const setModalVisible = props.setModalVisible;
     const [chatroomName,setChatroomName]=useState(null)
 
   const [date, setDate] = useState(new Date())
@@ -32,6 +34,9 @@ const CustomModal = (props) => {
       }else{
         if(props.type==='chatroom'){
           setModalVisible(!modalVisible);
+          console.log("selected friends are",props.selectedFriends);
+          //for(let i=0;i<props.selectedFriends.length;i++)
+            //  dispatch(messagesAction.createChatroom(props.selectedFriends[i]));
           props.navigation.navigate('ChatOverview',{selectedFriends:props.selectedFriends,chatroomName:chatroomName});
           setChatroomName(null);
         }
