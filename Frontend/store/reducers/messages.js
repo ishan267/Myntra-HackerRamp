@@ -28,7 +28,8 @@ export default (state=initialState,action)=>{
                 action.messageData.receiverId,
                 action.messageData.senderId,
                 action.messageData.tag,
-                action.messageData.productsDiscussed  
+                action.messageData.productsDiscussed, 
+                action.messageData.image 
              )
              
             console.log("in reducer new message is",newMessage);

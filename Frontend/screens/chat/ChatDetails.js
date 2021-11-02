@@ -14,11 +14,11 @@ const ChatDetailScreen = (props) => {
   const recId = props.navigation.getParam('recvId');
   const socket = props.navigation.getParam('socket');
   const tag = props.navigation.getParam('tag');
-  //console.log("tag is",tag);
+
   const dispatch=useDispatch();
 
   const allMessages=useSelector(state=>state.messages.allMessages);
- // console.log("all msgs",allMessages);
+
   let roomMessages=[];
   if(tag=="1")      //personal msg
   {
@@ -44,7 +44,7 @@ const ChatDetailScreen = (props) => {
         _id: msg.id,
         text: msg.text,
         createdAt: msg.createdAt,
-        image:'',
+        image:msg.image,
         user: {
           _id: msg.senderId,
           avatar:'https://icons.iconarchive.com/icons/papirus-team/papirus-status/512/avatar-default-icon.png'
@@ -80,7 +80,8 @@ const ChatDetailScreen = (props) => {
       receiverId: recId,
       senderId: msg[0].user._id,
       tag: tag,
-      productsDiscussed:''
+      productsDiscussed:'',
+      image:''
     }
     console.log("message to be sent is",message);
     //addMessage action will be dispatched from here

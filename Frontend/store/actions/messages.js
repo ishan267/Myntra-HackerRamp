@@ -49,8 +49,8 @@ export const addMessage=(newMessage)=>{
             receiverId:newMessage.receiverId,
             senderId:newMessage.senderId,
             tag:newMessage.tag, 
-            productsDiscussed:newMessage.productsDiscussed
-           
+            productsDiscussed:newMessage.productsDiscussed,
+            image:''
           }
       })
     }catch(err){

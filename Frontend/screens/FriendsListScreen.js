@@ -28,6 +28,7 @@ import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Searchbar } from 'react-native-paper';
 import CustomModal from "../components/UI/CustomModal";
+import * as messagesAction from '.././store/actions/messages';
 
   const FriendsListScreen=(props)=>{
       const {state}= props.navigation

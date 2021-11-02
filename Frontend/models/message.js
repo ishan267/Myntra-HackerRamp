@@ -1,5 +1,5 @@
 class message{
-    constructor(id,createdAt,text,receiverId,senderId,tag,productDiscussed){
+    constructor(id,createdAt,text,receiverId,senderId,tag,productDiscussed,image){
         this.id=id;
         this.createdAt=createdAt;
         this.text=text;
@@ -7,7 +7,7 @@ class message{
         this.senderId=senderId
         this.tag=tag; 
         this.productsDiscussed=productDiscussed;   
-
+        this.image=image;
     }
 }
 export default message;
