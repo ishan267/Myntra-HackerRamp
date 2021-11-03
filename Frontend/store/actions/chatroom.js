@@ -71,14 +71,14 @@ export const fetchChatroom = () => {
   
         dispatch({
             type:CREATE_CHATROOM,
-            chatroomData:{
+            /*chatroomData:{
               id:newChatroom.id,
               name:newChatroom.name,
-              adminId:newChatroom.text,
-              usersId:newChatroom.receiverId,
-              messagesId:newChatroom.senderId,
-
-            }
+              adminId:newChatroom.adminId,
+              usersId:newChatroom.usersId,
+              messagesId:newChatroom.messagesId
+            }*/
+            chatroomData:newChatroom
         })
       }catch(err){
           throw err;

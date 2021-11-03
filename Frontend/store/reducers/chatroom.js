@@ -1,5 +1,6 @@
 import chatroom from "../../models/chatroom";
 
+
 import {
     FETCH_CHATROOMS,
     CREATE_CHATROOM,
@@ -15,12 +16,14 @@ const initialState = {
   };
   
   export default (state = initialState, action) => {
+    
     switch (action.type) {
       case FETCH_CHATROOMS:   //Done ,action part left
         return {  
         availableChatrooms: action.chatrooms, 
         };
       case CREATE_CHATROOM:          //Done ,action part left
+      console.log("reducer for create chatroom called");
         const newChatroom = new chatroom(
           action.chatroomData.id,
           action.chatroomData.name,
@@ -28,10 +31,12 @@ const initialState = {
           action.chatroomData.usersId,
           action.chatroomData.messagesId,
         );
-        return {
+        console.log("room to be added is",newChatroom);
+        return state;
+        /*return {
           ...state,
           availableChatrooms: state.availableChatrooms.concat(newChatroom)
-        };
+        };*/
       case UPDATE_CHATROOM:
         const productIndex = state.userProducts.findIndex(
           prod => prod.id === action.pid
