@@ -26,6 +26,7 @@ import ChatOverviewScreen from "../screens/chat/ChatOverview";
 import ChatDetailScreen from "../screens/chat/ChatDetails";
 import ShoppingSessionScreen from "../screens/shop/ShoppingSessionScreen";
 import FriendListScreen from "../screens/FriendsListScreen";
+import CurrentShopppingScreen from "../screens/ShoppingSession/CurrentShoppingScreen";
 
 const defaultNavOptions = {
   headerStyle: {
@@ -54,6 +55,7 @@ const ChatsNavigator = createStackNavigator(
 const SessionNavigator = createStackNavigator(
   {
     VirtualShopOverview: ShoppingSessionScreen,
+    CurrentShoppping:CurrentShopppingScreen,
     FriendList:FriendListScreen
   },
   {

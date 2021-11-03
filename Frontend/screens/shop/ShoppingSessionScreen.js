@@ -16,15 +16,15 @@ import ProductItem from "../../components/shop/ProductItem";
 import Colors from "../../constants/Colors";
 import { Card } from "react-native-elements";
 
-const ShoppingSessionScreen = ({navigation}) => {
-
+const ShoppingSessionScreen = (props) => {
+  const navigation=props.navigation
 
   const joinHandler = (id, title) => {
-    // props.navigation.navigate("ProductDetail", {
-    //   sessionId: id,
-    //   sessioinTitle: title,
-    // });
-    console.log("clicked");
+    navigation.navigate("CurrentShoppping", {
+      sessionId: id,
+      sessioinTitle: title,
+    });
+   
   };
 
 
@@ -38,14 +38,16 @@ const ShoppingSessionScreen = ({navigation}) => {
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <Card>
+            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
             <Text>{itemData.item.title}</Text>
+            <View style={{width:90}}>
             <Button
               color={Colors.primary}
               title={itemData.item.time}
-              onPress={() => {
-                joinHandler(itemData.item.id, itemData.item.title);
-              }}
+              onPress={joinHandler}
             />
+            </View>
+            </View>
           </Card>
         )}
       />

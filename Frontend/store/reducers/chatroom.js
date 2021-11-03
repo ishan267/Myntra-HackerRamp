@@ -21,6 +21,8 @@ const initialState = {
         return {  
         availableChatrooms: action.chatrooms, 
         };
+
+
       case CREATE_CHATROOM:          //Done ,action part left
       console.log("reducer for create chatroom called with room",action.chatroomData);
         const newChatroom = new chatroom(
