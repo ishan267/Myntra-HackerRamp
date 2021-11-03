@@ -1,15 +1,8 @@
-import chatroom from "../../models/chatroom";
 import baseUrl from "../../helper/baseUrl";
-navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
-  return "react-native";
- }); 
-import SocketIOClient from "socket.io-client";
-
 export const FETCH_CHATROOMS="FETCH_CHATROOMS";
 export const CREATE_CHATROOM="CREATE_CHATROOM";
 export const DELETE_CHATROOM="DELETE_CHATROOM";
 export const UPDATE_CHATROOM="UPDATE_CHATROOM";
-//export const ADD_SOCKET="ADD SOCKET";
 
 export const fetchChatroom = () => {
   console.log("fetch chatrooms called");
@@ -17,7 +10,6 @@ export const fetchChatroom = () => {
        
       try {
           const response =  await fetch(
-          //'http://localhost:8080/get-chatroom-list'
           `${baseUrl}/get-chatroom-list`,
           {
             method: 'POST',

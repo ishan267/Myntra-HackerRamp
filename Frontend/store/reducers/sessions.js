@@ -1,17 +1,15 @@
-import chatroom from "../../models/chatroom";
-
+import Session from "../../models/session";
 
 import {
-    FETCH_CHATROOMS,
-    CREATE_CHATROOM,
-    DELETE_CHATROOM,
-    UPDATE_CHATROOM,
-    //ADD_SOCKET
-} from "../actions/chatroom";
+    FETCH_SESSIONS,
+    CREATE_SESSION,
+    DELETE_SESSION,
+    UPDATE_SESSION,
+} from "../actions/sessions";
 
 
 const initialState = {
-    availableChatrooms: []
+    availableSessions: [], 
   };
   
   export default (state = initialState, action) => {
@@ -35,7 +33,7 @@ const initialState = {
           ...state,
           availableChatrooms: state.availableChatrooms.concat(newChatroom)
         };
-      case UPDATE_CHATROOM:
+      /*case UPDATE_CHATROOM:
         const productIndex = state.userProducts.findIndex(
           prod => prod.id === action.pid
         );
@@ -64,14 +62,7 @@ const initialState = {
           availableChatrooms: state.availableChatrooms.filter(
             chatroom => chatroom.id !== action.chatroomid
           ),
-        };
-      /*case ADD_SOCKET:
-        console.log("reducer add socket called")
-        return {
-          ...state,
-         socket:action.socket,
         };*/
-       
     }
     return state;
   };
