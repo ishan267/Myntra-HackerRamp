@@ -16,6 +16,12 @@ const CustomModal = (props) => {
   const [chatroomName,setChatroomName]=useState(null);
   const userId = useSelector((state) => state.auth.userId);
 
+  const [date, setDate] = useState(new Date());
+  // const [time, setTime] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+
  
 
     const onTextChangeHandler=(e)=>{
@@ -28,10 +34,13 @@ const CustomModal = (props) => {
        setModalVisible(!modalVisible);
        setChatroomName(null);
     }
-
+    
+    const currdate=new Date().getDate();
+    const currmonth=new Date().getMonth();
+    const currYear=new Date().getFullYear();
     
     const onSubmitHandler=()=>{
-      if(chatroomName===null ||chatroomName===""){
+      if( chatroomName===null ||chatroomName===""){
         Alert.alert("Plese enter the name");
       }else{
         if(props.type==='chatroom'){
@@ -54,30 +63,64 @@ const CustomModal = (props) => {
           setChatroomName(null);
         }
         if(props.type==='session'){
+          
+           const selectedDate={
+            date:date.getDate(),
+            month:date.getMonth(),
+            year:date.getFullYear()
+           }
+
+           const selectedTime={
+             hour:date?.getHours(),
+             minute:date?.getMinutes(),
+           }
+
+           if(selectedDate.year<currYear){
+             Alert.alert("Invalid Date");
+             return;
+           }
+           
+           if(selectedDate.month<currmonth){
+             if(selectedDate.year===currYear){
+               Alert.alert("Invalid Date");
+               return;
+             }
+           }
+
+           if(selectedDate.date<currdate){
+             if(selectedDate.month===currmonth){
+               Alert.alert("Invalid Date");
+               return;
+             }
+           }
+
+
           setModalVisible(!modalVisible);
-          props.navigation.navigate('VirtualShopOverview',{selectedFriends:props.selectedFriends,sessionData:{}})
+          const sessionData={
+            sessionName:chatroomName,
+            date:selectedDate,
+            time:selectedTime 
+          }
+          console.log("sessionData",sessionData)
+          props.navigation.navigate('VirtualShopOverview',{selectedFriends:props.selectedFriends,sessionData:sessionData})
         }
       }
       
     }
 
-  const [date, setDate] = useState(new Date());
-  const [time,setTime]=useState("");
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-
-  const currdate=new Date().getDate();
-  const currtime=new Date().getTime();
+ 
+ 
 
   // console.log("curr date",currdate,currtime);
 
   const onChange = (event, selectedDate) => {
+
+  
+      const currentDate = selectedDate || date;
     
-    const currentDate = selectedDate || date;
-    
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-    console.log("event",event,currentDate)
+      setShow(Platform.OS === 'ios');
+      setDate(currentDate);  
+   
   };
 
   const showMode = (currentMode) => {
@@ -119,20 +162,48 @@ const CustomModal = (props) => {
            </View >):
            (
              <>
-         <View style={styles.actions}>
-        <Text onPress={showDatepicker}> Select Date</Text>
+           
+         <View style={[styles.actions,{backgroundColor:Colors.primary}]}>
+        <Text onPress={showDatepicker} style={{fontWeight:"700",color:'white',paddingTop:5}}> Select Date</Text>
       </View>
-      <Text></Text>   
-      <View style={styles.actions}>
-        <Text onPress={showTimepicker}> Select Time</Text>
+      <View style={{flexDirection:'row',borderBottomColor:Colors.primary,borderBottomWidth:2}}>
+      <Text>{date.getDate()}</Text> 
+      <Text>/</Text>  
+      <Text>{date.getMonth()}</Text>  
+      <Text>/</Text>  
+      <Text>{date.getFullYear()}</Text>   
       </View>
+      
+    
+      <View style={[styles.actions,{backgroundColor:Colors.primary}]}>
+        <Text onPress={showTimepicker} style={{fontWeight:"700",color:'white',paddingTop:5}}> Select Time</Text>
+      </View>
+      <View style={{flexDirection:'row',borderBottomColor:Colors.primary,borderBottomWidth:2}}>
+      <Text>{date.getHours()}</Text> 
+      <Text>:</Text>  
+      <Text>{date.getMinutes()}</Text>  
+    
+      {/* <Text>{time.get}</Text>    */}
+      </View>
+   
+     
+      <View style={{height:30}}>
+              <TextInput
+                  placeholder="Enter session name"
+                  onChangeText={onTextChangeHandler}
+                  value={chatroomName}
+                  style={{backgroundColor:'white'}}
+              />
+
+           </View >
+
       <Text></Text>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
           value={date}
           mode={mode}
-          is24Hour={true}
+          is24Hour={false}
           display="default"
           onChange={onChange}
         />
