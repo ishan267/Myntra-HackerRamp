@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
-//import DatePicker from 'react-native-date-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import Colors from "../../constants/Colors";
 import * as chatroomAction from '../../store/actions/chatroom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,12 +16,11 @@ const CustomModal = (props) => {
   const [chatroomName,setChatroomName]=useState(null);
   const userId = useSelector((state) => state.auth.userId);
 
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
+ 
 
     const onTextChangeHandler=(e)=>{
       
-      setChatroomName(e.target.value)
+      setChatroomName(e)
     }
 
     const onCancelHandler=()=>{
@@ -60,6 +60,38 @@ const CustomModal = (props) => {
       }
       
     }
+
+  const [date, setDate] = useState(new Date());
+  const [time,setTime]=useState("");
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const currdate=new Date().getDate();
+  const currtime=new Date().getTime();
+
+  // console.log("curr date",currdate,currtime);
+
+  const onChange = (event, selectedDate) => {
+    
+    const currentDate = selectedDate || date;
+    
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    console.log("event",event,currentDate)
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
     
  
   return (
@@ -78,8 +110,8 @@ const CustomModal = (props) => {
            {props.type==='chatroom' ? 
            (<View style={{height:30}}>
               <TextInput
-                  placeholder="Enter chatroomm name"
-                  onChange={onTextChangeHandler}
+                  placeholder="Enter chatroom name"
+                  onChangeText={onTextChangeHandler}
                   value={chatroomName}
                   style={{backgroundColor:'white'}}
               />
@@ -87,7 +119,26 @@ const CustomModal = (props) => {
            </View >):
            (
              <>
-             {/* <DatePicker date={date} onDateChange={setDate} /> */}
+         <View style={styles.actions}>
+        <Text onPress={showDatepicker}> Select Date</Text>
+      </View>
+      <Text></Text>   
+      <View style={styles.actions}>
+        <Text onPress={showTimepicker}> Select Time</Text>
+      </View>
+      <Text></Text>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
+     
+            
               </>
            )
            

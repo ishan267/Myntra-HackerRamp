@@ -22,6 +22,8 @@ const initialState = {
         return {  
         availableChatrooms: action.chatrooms, 
         };
+
+
       case CREATE_CHATROOM:          //Done ,action part left
       console.log("reducer for create chatroom called");
         const newChatroom = new chatroom(
@@ -37,6 +39,8 @@ const initialState = {
           ...state,
           availableChatrooms: state.availableChatrooms.concat(newChatroom)
         };*/
+
+        
       case UPDATE_CHATROOM:
         const productIndex = state.userProducts.findIndex(
           prod => prod.id === action.pid
