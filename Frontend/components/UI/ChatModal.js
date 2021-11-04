@@ -1,4 +1,4 @@
-import React, { useState ,useCallback} from "react";
+import React, { useState ,useCallback,useEffect} from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -11,52 +11,76 @@ import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from "@expo/vector-icons";
+import * as messagesAction from '../../store/actions/messages';
 
 const CartModal = (props) => {
     
   const dispatch=useDispatch();
   const modalVisible = props.visible;
   const  setModalVisible= props. setModalVisible;
+  const onCancelHandler = () => {
+    setModalVisible(!modalVisible);
+  }
+
   const userId = useSelector((state) => state.auth.userId);
+  const recId=props.recId;
+  console.log("chosen friend is",recId);
+  const socket = props.socket;
+  const sessionMessages = useSelector(state => state.messages.sessionMessages);
+  console.log("all session messages are",sessionMessages);
+  let roomMessages=[];
+  if(sessionMessages!=undefined)
+    roomMessages= sessionMessages.filter((message) => {
+      if (message.tag == 1 && (message.senderId == props.recId || message.receiverId == props.recId))
+        return true;
+      else
+        return false;
+    });
 
-
-    const onCancelHandler=()=>{
-       
-       setModalVisible(!modalVisible);
-     
-    }
-
-    const msglist=[
+  let msglist = roomMessages.map((msg) => {
+    return (
       {
-        id:"1",
-        createdAt:"10",
-        text:"hello friend",
-        receiverId:"198927",
-        senderId:"7867",
-        tag:'chat',
-        productsDiscussed:'',
-        image:''
-       }
-    ]
+        _id: msg.id,
+        text: msg.text,
+        createdAt: msg.createdAt,
+        image: msg.image,
+        user: {
+          _id: msg.senderId,
+          avatar: 'https://icons.iconarchive.com/icons/papirus-team/papirus-status/512/avatar-default-icon.png'
+        }
+      }
+    )
+  })
 
-    const onSend = useCallback((msg = []) => {
+  useEffect(() => {
+    console.log("room messages changed");
+    msglist.sort(function (a, b) {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+    console.log("new msg list is", msglist);
+  }, [msglist]);
 
-      //msglist.push(msg);
-      // const message={
-      //   id: msg[0]._id,
-      //   createdAt: msg[0].createdAt,
-      //   text: msg[0].text,
-      //   receiverId: recId,
-      //   senderId: msg[0].user._id,
-      //   tag: tag,
-      //   productsDiscussed:'',
-      //   image:''
-      // }
-      console.log("message to be sent is");
-      //addMessage action will be dispatched from here
-      // dispatch(messagesAction.addMessage(message));
-      // sendPersonalMessage(message);
-    }, []);
+  function sendPersonalMessage(msg) {
+    console.log("socket personal message called", msg);
+    socket.emit('createMessage', msg);
+  }
+
+  const onSend = useCallback((msg = []) => {
+    console.log("gifted chat default message",msg);
+    const message = {
+      id: msg[0]._id,
+      createdAt: msg[0].createdAt,
+      text: msg[0].text,
+      receiverId: recId,
+      senderId: msg[0].user._id,
+      tag: '1',
+      productsDiscussed: '',
+      image: ''
+    }
+    console.log("message to be sent is", message);
+    dispatch(messagesAction.addSessionMessage(message));
+    //sendPersonalMessage(message);
+  }, []);
 
     const renderSend = (props) => {
       return (
@@ -119,19 +143,17 @@ const CartModal = (props) => {
           onPress={onCancelHandler}
          />   
        </View>
-      <GiftedChat
-      messages={msglist}
-      showAvatarForEveryMessage={true}
-      onSend={(msg) => onSend(msg)}
-      user={{
-            _id:userId
-          }}
-      renderBubble={renderBubble}
-      alwaysShowSend
-      renderSend={renderSend}
-      scrollToBottom
-      scrollToBottomComponent={scrollToBottomComponent}
-    />
+          <GiftedChat
+          messages={msglist}
+          showAvatarForEveryMessage={true}
+          onSend={(msg) => onSend(msg)}
+          user={{_id:userId}}
+          renderBubble={renderBubble}
+          alwaysShowSend
+          renderSend={renderSend}
+          scrollToBottom
+          scrollToBottomComponent={scrollToBottomComponent}
+        />
     </View>
      
      

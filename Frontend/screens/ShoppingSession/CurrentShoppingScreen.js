@@ -1,4 +1,8 @@
 import React, { useEffect,useState } from 'react';
+navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
+  return "react-native";
+ }); 
+import SocketIOClient from "socket.io-client";
 import {View,FlatList,Text,Platform,ActivityIndicator,StyleSheet,TextInput,Button,TouchableHighlight} from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import Colors  from '../../constants/Colors';
@@ -20,6 +24,7 @@ import {
   import { Ionicons } from "@expo/vector-icons";
   import ChatModal from '../../components/UI/ChatModal';
   import CartModal from '../../components/UI/CartModal';
+import { useStore } from 'react-redux';
 
 const CurrentShopppingScreen=(props)=>{
 
@@ -34,12 +39,46 @@ const CurrentShopppingScreen=(props)=>{
     console.log("member ids are",membersId);
     console.log("members info are",members);
     //const joinees=[];
+    const [chosenId,setChosenId]=useState('');
+    //let chosenId='123';
+    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
+    const userId = useSelector((state) => state.auth.userId);
+  useEffect(() => {
+    console.log('socket about to connect to server');
+    socket.on("connect", () => {
+      console.log("connection successfull");
+      console.log('my socket id is', socket.id);
+      console.log('my userid is', userId);
+      socket.emit('update-socket-id', userId, err => { })
+    });
+    socket.on('newMessage', (msg) => {
+      console.log("socket id is", socket.id);
+      console.log("socket message received is", msg);
+      dispatch(messagesAction.addMessage(msg));
+    })
+    socket.on("connect_error", (err) => {
+      console.log("Error");
+      console.log(err instanceof Error);
+      console.log(err.message);
+    });
+  }, []);
+
+    function handleTooltip(frnd)
+    {
+      console.log("chosen friend to chat is",frnd);
+      setChosenId(frnd.id);
+      //chosenId=frnd.id;
+      console.log("chosen id is",frnd.id);
+      setToolTipVisible(!toolTipVisible);
+    }
 
     return(
        <>
        <ChatModal
             visible={chatModalVisible}
             setModalVisible={setChatModalVisible}
+            recId={chosenId}
+            socket={socket}
        />
        <CartModal
              visible={cartModalVisible}
@@ -76,14 +115,14 @@ const CurrentShopppingScreen=(props)=>{
                      color={Colors.primary}
                      onPress={()=>setCartModalVisible(true)}
                   />
-                  <View  style={{borderRightWidth:1,borderColor:'grey',paddingLeft:10,marginRight:10}}/>
-                  <Ionicons
-                     name={Platform.OS === "android" ? "chatbubbles":"ios-add"}
-                     size={23}
-                     color={Colors.primary}
-                     onPress={()=>setChatModalVisible(true)}
-                  />
-                 </View>
+                    <View  style={{borderRightWidth:1,borderColor:'grey',paddingLeft:10,marginRight:10}}/>
+                    <Ionicons
+                      name={Platform.OS === "android" ? "chatbubbles":"ios-add"}
+                      size={23}
+                      color={Colors.primary}
+                      onPress={()=>setChatModalVisible(true)}
+                    />
+                     </View>
                  </View>
                  </>
             
@@ -92,7 +131,7 @@ const CurrentShopppingScreen=(props)=>{
                  onClose={() =>setToolTipVisible(false)}
                   >
                <TouchableHighlight >
-               <Card onPress={()=>setToolTipVisible(!toolTipVisible)}>
+               <Card onPress={()=>handleTooltip(item)}>
                <UserInfo>
                  <UserImgWrapper>
                    <UserImg source={require('../../assets/users/user-4.jpg')} /> 

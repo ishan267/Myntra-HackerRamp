@@ -43,6 +43,7 @@ const ChatOverviewScreen = ({navigation}) => {
     const friends=useSelector(state=>state.friends.allFriends);
     const chatrooms=useSelector(state=>state.chatroom.availableChatrooms);
     const messages=useSelector(state=>state.messages.allMessages);
+    console.log("all messages are",messages);
 
     const chatList = friends.concat(chatrooms);
 
