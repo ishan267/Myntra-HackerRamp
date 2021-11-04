@@ -148,6 +148,7 @@ const CustomModal = (props) => {
     
       setShow(Platform.OS === 'ios');
       setDate(currentDate);  
+      console.log("date",currentDate.getTime());
    
   };
 
@@ -232,8 +233,9 @@ const CustomModal = (props) => {
           value={date}
           mode={mode}
           is24Hour={false}
-          display="default"
+          display='default'
           onChange={onChange}
+          isDarkModeEnabled={true}
         />
       )}
      

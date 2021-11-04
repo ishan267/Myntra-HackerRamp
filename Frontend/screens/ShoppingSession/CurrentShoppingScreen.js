@@ -17,10 +17,16 @@ import {
    
   } from '../../styles/MessageStyles';
   import { Ionicons } from "@expo/vector-icons";
+  import ChatModal from '../../components/UI/ChatModal';
+  import CartModal from '../../components/UI/CartModal';
 
 const CurrentShopppingScreen=()=>{
 
     const [toolTipVisible,setToolTipVisible]=useState(false);
+    const[cartModalVisible,setCartModalVisible]=useState(false);
+    const[chatModalVisible,setChatModalVisible]=useState(false);
+
+   
 
     const joinees=[
         {
@@ -39,6 +45,15 @@ const CurrentShopppingScreen=()=>{
 
     return(
        <>
+       <ChatModal
+            visible={chatModalVisible}
+            setModalVisible={setChatModalVisible}
+       />
+       <CartModal
+             visible={cartModalVisible}
+             setModalVisible={setCartModalVisible}
+       />
+
        <Container>
            <FlatList
            
@@ -67,14 +82,14 @@ const CurrentShopppingScreen=()=>{
                      name={Platform.OS === "android" ? "md-cart":"ios-add"}
                      size={23}
                      color={Colors.primary}
-                     onPress={()=>{}}
+                     onPress={()=>setCartModalVisible(true)}
                   />
                   <View  style={{borderRightWidth:1,borderColor:'grey',paddingLeft:10,marginRight:10}}/>
                   <Ionicons
                      name={Platform.OS === "android" ? "chatbubbles":"ios-add"}
                      size={23}
                      color={Colors.primary}
-                     onPress={()=>{}}
+                     onPress={()=>setChatModalVisible(true)}
                   />
                  </View>
                  </View>
