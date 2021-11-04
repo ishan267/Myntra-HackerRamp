@@ -2,6 +2,7 @@ import React, { useEffect,useState } from 'react';
 import {View,FlatList,Text,Platform,ActivityIndicator,StyleSheet,TextInput,Button,TouchableHighlight} from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import Colors  from '../../constants/Colors';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
     Container,
@@ -20,28 +21,19 @@ import {
   import ChatModal from '../../components/UI/ChatModal';
   import CartModal from '../../components/UI/CartModal';
 
-const CurrentShopppingScreen=()=>{
+const CurrentShopppingScreen=(props)=>{
 
     const [toolTipVisible,setToolTipVisible]=useState(false);
     const[cartModalVisible,setCartModalVisible]=useState(false);
     const[chatModalVisible,setChatModalVisible]=useState(false);
 
-   
-
-    const joinees=[
-        {
-            id:'1',
-            name:'Ishan Thapa',
-            
-
-    },
-    {
-        id:'1',
-        name:'Ishan Thapa',
-        
-
-}
-]
+    const friends=useSelector(state=>state.friends.allFriends);
+    const membersId=props.navigation.getParam('members');
+    const members=friends.filter((friend)=>membersId.includes(friend.id));
+    console.log("friends are",friends);
+    console.log("member ids are",membersId);
+    console.log("members info are",members);
+    //const joinees=[];
 
     return(
        <>
@@ -57,7 +49,7 @@ const CurrentShopppingScreen=()=>{
        <Container>
            <FlatList
            
-           data={joinees}
+           data={members}
            keyExtractor={item=>item.id}
            renderItem={({item}) => {
             return (
@@ -119,5 +111,11 @@ const CurrentShopppingScreen=()=>{
     )
 
 }
+
+CurrentShopppingScreen.navigationOptions = navData => {
+  return {
+    headerTitle: navData.navigation.getParam('title'),
+  };
+};
 
 export default CurrentShopppingScreen;

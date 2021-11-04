@@ -22,6 +22,7 @@ const ShoppingSessionScreen = (props) => {
   const userId = useSelector((state) => state.auth.userId);
   const sessionList = useSelector((state) => state.sessions.availableSessions);  
   const userSessions = sessionList.filter((session)=>{
+
       for(let i=0;i<session.members.length;i++)
       {
         if(session.members[i]==userId)
@@ -33,10 +34,12 @@ const ShoppingSessionScreen = (props) => {
   console.log("all sessions",sessionList);
   console.log("current user sesion",userSessions);
 
-  const joinHandler = (id, title) => {
+  const joinHandler = (title,members) => {
+    //console.log("title is",title);
+    //console.log("joineers are",members);
     navigation.navigate("CurrentShoppping", {
-      sessionId: id,
-      sessioinTitle: title,
+      title: title,
+      members:members
     });
    
   };
@@ -53,14 +56,14 @@ const ShoppingSessionScreen = (props) => {
         renderItem={(itemData) => (
           <Card>
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text>{itemData.item.title}</Text>
-            <View style={{width:90}}>
-            <Button
-              color={Colors.primary}
-              title={itemData.item.time}
-              onPress={joinHandler}
-            />
-            </View>
+              <Text>{itemData.item.title}</Text>
+              <View style={{width:90}}>
+                <Button
+                  color={Colors.primary}
+                  title={`${itemData.item.time.hour}:${itemData.item.time.minute}`}
+                  onPress={()=>joinHandler(itemData.item.title,itemData.item.members)}
+                />
+              </View>
             </View>
           </Card>
         )}

@@ -26,7 +26,7 @@ const initialState = {
           action.sessionData.title,
           action.sessionData.date,
           action.sessionData.time,
-          action.sessionData.friendsId,
+          action.sessionData.members,
           action.sessionData.adminId
         );
         console.log("session to be added is",newSession);
