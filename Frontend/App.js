@@ -13,6 +13,7 @@ import authReducer from './store/reducers/auth';
 import chatroomReducer from './store/reducers/chatroom';
 import friendsReducer from './store/reducers/friends';
 import messagesReducer from './store/reducers/messages';
+import sessionReducer from './store/reducers/sessions';
 
 import NavigationContainer from './navigation/NavigationContainer';
 
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   chatroom:chatroomReducer,
   friends:friendsReducer,
-  messages:messagesReducer
+  messages:messagesReducer,
+  sessions:sessionReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

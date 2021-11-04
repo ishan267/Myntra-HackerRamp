@@ -1,9 +1,10 @@
 class Session {
-  constructor(id, title, time, friends, adminId) {
+  constructor(id, title,date, time, friendsId, adminId) {
     this.id = id;
     this.title = title;
+    this.date = date;
     this.time = time;
-    this.members = friends;
+    this.members = friendsId;
     this.adminId = adminId;
   }
 }

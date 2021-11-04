@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import {
   View,
   FlatList,
@@ -11,13 +12,26 @@ import {
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
-import SESSIONS from "../../data/session-dummy-data";
+//import SESSIONS from "../../data/session-dummy-data";
 import ProductItem from "../../components/shop/ProductItem";
 import Colors from "../../constants/Colors";
 import { Card } from "react-native-elements";
 
 const ShoppingSessionScreen = (props) => {
   const navigation=props.navigation
+  const userId = useSelector((state) => state.auth.userId);
+  const sessionList = useSelector((state) => state.sessions.availableSessions);  
+  const userSessions = sessionList.filter((session)=>{
+      for(let i=0;i<session.members.length;i++)
+      {
+        if(session.members[i]==userId)
+            return true;
+      }
+      return false;
+  })
+  console.log("user id is",userId);
+  console.log("all sessions",sessionList);
+  console.log("current user sesion",userSessions);
 
   const joinHandler = (id, title) => {
     navigation.navigate("CurrentShoppping", {
@@ -34,7 +48,7 @@ const ShoppingSessionScreen = (props) => {
         // onRefresh={loadProducts}
         // refreshing={isRefreshing}
         style={{height:'95%'}}
-        data={SESSIONS}
+        data={userSessions}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <Card>

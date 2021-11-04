@@ -5,8 +5,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Colors from "../../constants/Colors";
 import * as chatroomAction from '../../store/actions/chatroom';
+import * as sessionAction from '../../store/actions/sessions';
 import { useSelector, useDispatch } from 'react-redux';
 import user from "../../models/user";
+
 
 const CustomModal = (props) => {
     
@@ -14,15 +16,29 @@ const CustomModal = (props) => {
   const modalVisible = props.visible;
   const setModalVisible = props.setModalVisible;
   const [chatroomName,setChatroomName]=useState(null);
+
   const userId = useSelector((state) => state.auth.userId);
+  const selectedFriends = props.selectedFriends;
+  let friendsIds= [];
+  let isSelected = new Map();
+  isSelected.set(userId,true);
+  for(let i=0;i<selectedFriends.length;i++)
+  {
+    if(selectedFriends[i].adminId==undefined)
+        isSelected.set(selectedFriends[i].id,true);
+    else 
+    {
+      for(let j=0;j<selectedFriends[i].usersId.length;j++)
+        isSelected.set(selectedFriends[i].usersId[j],true);
+    }
+  }
+  isSelected.forEach((value,key)=>{
+    friendsIds.push(key);
+  })
 
   const [date, setDate] = useState(new Date());
-  // const [time, setTime] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-
-
- 
 
     const onTextChangeHandler=(e)=>{
       
@@ -45,10 +61,10 @@ const CustomModal = (props) => {
       }else{
         if(props.type==='chatroom'){
           setModalVisible(!modalVisible);
-          console.log("selected friends are",props.selectedFriends);
+          console.log("selected friends are",selectedFriends);
           let chosenIds=[];
-          for(let i=0;i<props.selectedFriends.length;i++)
-                chosenIds.push(props.selectedFriends[i].id);
+          for(let i=0;i<selectedFriends.length;i++)
+                chosenIds.push(selectedFriends[i].id);
           chosenIds.push(userId);
           let newroom = {
             id : new Date().getTime(),
@@ -59,7 +75,7 @@ const CustomModal = (props) => {
           }
           console.log("new room is",newroom);
           dispatch(chatroomAction.createChatroom(newroom));
-          props.navigation.navigate('ChatOverview',{selectedFriends:props.selectedFriends,chatroomName:chatroomName});
+          props.navigation.navigate('ChatOverview',{selectedFriends:selectedFriends,chatroomName:chatroomName});
           setChatroomName(null);
         }
         if(props.type==='session'){
@@ -101,8 +117,20 @@ const CustomModal = (props) => {
             date:selectedDate,
             time:selectedTime 
           }
-          console.log("sessionData",sessionData)
-          props.navigation.navigate('VirtualShopOverview',{selectedFriends:props.selectedFriends,sessionData:sessionData})
+          console.log("sessionData",sessionData);
+          console.log("selected rooms/friends",selectedFriends);
+          console.log("selected friend ids",friendsIds);
+          let newSession={
+            id : new Date().getTime(),
+            title : sessionData.sessionName,
+            date : sessionData.date,
+            time : sessionData.time, 
+            members : friendsIds.slice(),
+            adminId : userId
+          };
+          console.log("new session to be created is",newSession);
+          dispatch(sessionAction.createSession(newSession));
+          props.navigation.navigate('VirtualShopOverview',{selectedFriends:selectedFriends,sessionData:sessionData})
         }
       }
       

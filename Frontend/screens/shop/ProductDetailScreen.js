@@ -30,7 +30,7 @@ const ProductDetailScreen = props => {
           onPress={() => {
               props.navigation.navigate("FriendList", {
               product:selectedProduct,
-              title:'Select Friends',
+              title:'Select',
               name:'share'
             });
           }}

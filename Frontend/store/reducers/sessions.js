@@ -15,25 +15,26 @@ const initialState = {
   export default (state = initialState, action) => {
     
     switch (action.type) {
-      case FETCH_CHATROOMS:   //Done ,action part left
+      case FETCH_SESSIONS:   //Done ,action part left
         return {  
         availableChatrooms: action.chatrooms, 
         };
-      case CREATE_CHATROOM:          //Done ,action part left
-      console.log("reducer for create chatroom called with room",action.chatroomData);
-        const newChatroom = new chatroom(
-          action.chatroomData.id,
-          action.chatroomData.name,
-          action.chatroomData.adminId,
-          action.chatroomData.usersId,
-          action.chatroomData.messagesId
+      case CREATE_SESSION:          //Done ,action part left
+      console.log("reducer for create session called with ",action.sessionData);
+        const newSession = new Session(
+          action.sessionData.id,
+          action.sessionData.title,
+          action.sessionData.date,
+          action.sessionData.time,
+          action.sessionData.friendsId,
+          action.sessionData.adminId
         );
-        console.log("room to be added is",newChatroom);
+        console.log("session to be added is",newSession);
         return {
           ...state,
-          availableChatrooms: state.availableChatrooms.concat(newChatroom)
+          availableSessions: state.availableSessions.concat(newSession)
         };
-      /*case UPDATE_CHATROOM:
+      /*case UPDATE_SESSION:
         const productIndex = state.userProducts.findIndex(
           prod => prod.id === action.pid
         );
@@ -56,7 +57,7 @@ const initialState = {
           ...state,
          availableChatrooms: updatedAvailableChatrooms,
         };
-      case DELETE_CHATROOM:     // Done only action part left
+      case DELETE_SESSION:     // Done only action part left
         return {
           ...state,
           availableChatrooms: state.availableChatrooms.filter(
