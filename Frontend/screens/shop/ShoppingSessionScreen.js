@@ -1,6 +1,7 @@
 import React,{ useEffect,useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import * as userActions from '../../store/actions/users'
+//import * as userActions from '../../store/actions/users'
+import * as sessionActions from '../../store/actions/sessions'; 
 import {
   View,
   FlatList,
@@ -24,20 +25,27 @@ const ShoppingSessionScreen = (props) => {
   const sessionList = useSelector((state) => state.sessions.availableSessions);  
   const userSessions = sessionList.filter((session)=>{
 
+    if(session.members!=undefined)
+    {
       for(let i=0;i<session.members.length;i++)
       {
         if(session.members[i]==userId)
             return true;
       }
+    }
       return false;
   })
   console.log("user id is",userId);
   console.log("all sessions",sessionList);
   console.log("current user sesion",userSessions);
-
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch=useDispatch();
+
   useEffect(()=>{
-    dispatch(userActions.fetchUsers());
+    setIsLoading(true);
+    dispatch(sessionActions.fetchSessions()).then(() => {
+      setIsLoading(false);
+  });
   },[dispatch])
 
 
@@ -50,6 +58,14 @@ const ShoppingSessionScreen = (props) => {
     });
    
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
 
   return (
@@ -109,7 +125,12 @@ const styles=StyleSheet.create({
     marginTop:'-10%',
     
     zIndex:100
-   }
+   },
+   centered: { flex: 1, justifyContent: "center", alignItems: "center" },
+  searchBar: {
+    height: 45,
+    padding: 10,
+  }
 })
 
 
