@@ -23,6 +23,7 @@ const ProductDetailScreen = props => {
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
+      <View  style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:10}}>
       <View style={styles.actions}>
         <Button
           color={Colors.primary}
@@ -36,7 +37,13 @@ const ProductDetailScreen = props => {
           }}
         />
       </View>
-
+      <View style={styles.actions}>
+        <Button
+          color={Colors.primary}
+          title="Add to session cart"
+          onPress={()=>{} }
+        />
+      </View>
       <View style={styles.actions}>
         <Button
           color={Colors.primary}
@@ -46,6 +53,9 @@ const ProductDetailScreen = props => {
           }}
         />
       </View>
+      </View>
+
+     
       <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
       <Text style={styles.description}>{selectedProduct.description}</Text>
     </ScrollView>
@@ -65,7 +75,8 @@ const styles = StyleSheet.create({
   },
   actions: {
     marginVertical: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+   
   },
   price: {
     fontSize: 20,
