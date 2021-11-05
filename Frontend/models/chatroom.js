@@ -1,5 +1,5 @@
 class chatroom{
-    constructor(id,name,adminId,usersId,messagesId,){
+    constructor(id,name,adminId,usersId,messagesId){
         this.id=id;
         this.name=name;
         this.adminId=adminId;
@@ -7,3 +7,5 @@ class chatroom{
         this.messagesId=messagesId;
     }
 }
+
+export default chatroom;

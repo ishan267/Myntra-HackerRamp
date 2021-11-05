@@ -26,7 +26,8 @@ import ChatOverviewScreen from "../screens/chat/ChatOverview";
 import ChatDetailScreen from "../screens/chat/ChatDetails";
 import ShoppingSessionScreen from "../screens/shop/ShoppingSessionScreen";
 import FriendListScreen from "../screens/FriendsListScreen";
-
+import CurrentShopppingScreen from "../screens/ShoppingSession/CurrentShoppingScreen";
+import PayScreen from "../screens/ShoppingSession/PayScreen";
 const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === "android" ? Colors.primary : "",
@@ -54,7 +55,9 @@ const ChatsNavigator = createStackNavigator(
 const SessionNavigator = createStackNavigator(
   {
     VirtualShopOverview: ShoppingSessionScreen,
-    // FriendList:FriendListScreen
+    CurrentShoppping:CurrentShopppingScreen,
+    PayScreen:PayScreen,
+    FriendList:FriendListScreen
   },
   {
     defaultNavigationOptions: defaultNavOptions,
@@ -65,7 +68,7 @@ const ProductsNavigator = createStackNavigator(
   {
     ProductsOverview: ProductsOverviewScreen,
     ProductDetail: ProductDetailScreen,
-    // FriendList:FriendListScreen,
+    FriendList:FriendListScreen,
     Cart: CartScreen,
   },
   {

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import {
   ScrollView,
   View,
@@ -7,7 +8,6 @@ import {
   Button,
   StyleSheet
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import * as cartActions from '../../store/actions/cart';
@@ -19,10 +19,11 @@ const ProductDetailScreen = props => {
   );
   console.log("selected product is",selectedProduct);
   const dispatch = useDispatch();
-
+       
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
+      <View  style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:10}}>
       <View style={styles.actions}>
         <Button
           color={Colors.primary}
@@ -30,13 +31,19 @@ const ProductDetailScreen = props => {
           onPress={() => {
               props.navigation.navigate("FriendList", {
               product:selectedProduct,
-              title:'Select Friends',
+              title:'Select',
               name:'share'
             });
           }}
         />
       </View>
-
+      <View style={styles.actions}>
+        <Button
+          color={Colors.primary}
+          title="Add to session cart"
+          onPress={()=>{} }
+        />
+      </View>
       <View style={styles.actions}>
         <Button
           color={Colors.primary}
@@ -46,6 +53,9 @@ const ProductDetailScreen = props => {
           }}
         />
       </View>
+      </View>
+
+     
       <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
       <Text style={styles.description}>{selectedProduct.description}</Text>
     </ScrollView>
@@ -65,7 +75,8 @@ const styles = StyleSheet.create({
   },
   actions: {
     marginVertical: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+   
   },
   price: {
     fontSize: 20,

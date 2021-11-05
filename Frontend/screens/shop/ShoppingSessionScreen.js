@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import {
   View,
   FlatList,
@@ -11,20 +12,36 @@ import {
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
-import SESSIONS from "../../data/session-dummy-data";
+//import SESSIONS from "../../data/session-dummy-data";
 import ProductItem from "../../components/shop/ProductItem";
 import Colors from "../../constants/Colors";
 import { Card } from "react-native-elements";
 
-const ShoppingSessionScreen = ({navigation}) => {
+const ShoppingSessionScreen = (props) => {
+  const navigation=props.navigation
+  const userId = useSelector((state) => state.auth.userId);
+  const sessionList = useSelector((state) => state.sessions.availableSessions);  
+  const userSessions = sessionList.filter((session)=>{
 
+      for(let i=0;i<session.members.length;i++)
+      {
+        if(session.members[i]==userId)
+            return true;
+      }
+      return false;
+  })
+  console.log("user id is",userId);
+  console.log("all sessions",sessionList);
+  console.log("current user sesion",userSessions);
 
-  const joinHandler = (id, title) => {
-    // props.navigation.navigate("ProductDetail", {
-    //   sessionId: id,
-    //   sessioinTitle: title,
-    // });
-    console.log("clicked");
+  const joinHandler = (title,members) => {
+    //console.log("title is",title);
+    //console.log("joineers are",members);
+    navigation.navigate("CurrentShoppping", {
+      title: title,
+      members:members
+    });
+   
   };
 
 
@@ -34,18 +51,20 @@ const ShoppingSessionScreen = ({navigation}) => {
         // onRefresh={loadProducts}
         // refreshing={isRefreshing}
         style={{height:'95%'}}
-        data={SESSIONS}
+        data={userSessions}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <Card>
-            <Text>{itemData.item.title}</Text>
-            <Button
-              color={Colors.primary}
-              title={itemData.item.time}
-              onPress={() => {
-                joinHandler(itemData.item.id, itemData.item.title);
-              }}
-            />
+            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+              <Text>{itemData.item.title}</Text>
+              <View style={{width:90}}>
+                <Button
+                  color={Colors.primary}
+                  title={`${itemData.item.time.hour}:${itemData.item.time.minute}`}
+                  onPress={()=>joinHandler(itemData.item.title,itemData.item.members)}
+                />
+              </View>
+            </View>
           </Card>
         )}
       />
@@ -69,7 +88,7 @@ const styles=StyleSheet.create({
    buttonCont:{
     height:40,
     width:40,
-    backgroundColor:'green',
+    backgroundColor:Colors.primary,
     borderRadius:20,
     justifyContent:'center',
     alignItems:'center', 

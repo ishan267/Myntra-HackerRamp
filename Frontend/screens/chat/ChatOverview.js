@@ -6,8 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as chatroomAction from '../../store/actions/chatroom'
 import * as messagesAction from '../../store/actions/messages'
 import * as friendsAction from '../../store/actions/friends';
-import Colors from '../../constants/Colors';
-
+import Colors from '../../constants/Colors'
 //import '../../helper/UserAgent';
 navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
   return "react-native";
@@ -46,8 +45,30 @@ const ChatOverviewScreen = ({navigation}) => {
     const friends=useSelector(state=>state.friends.allFriends);
     const chatrooms=useSelector(state=>state.chatroom.availableChatrooms);
     const messages=useSelector(state=>state.messages.allMessages);
+    console.log("all messages are",messages);
 
     const chatList = friends.concat(chatrooms);
+
+    useEffect(()=>{
+      setIsLoading(true);
+      dispatch(messagesAction.fetchMessage()).then(() => {
+        setIsLoading(false);
+    });
+    },[dispatch])
+
+    useEffect(()=>{
+      setIsLoading(true);
+      dispatch(friendsAction.fetchFriends()).then(() => {
+        setIsLoading(false);
+    });
+    },[dispatch])
+
+    useEffect(()=>{
+      setIsLoading(true);
+      dispatch(chatroomAction.fetchChatroom()).then(() => {
+        setIsLoading(false);
+    });
+    },[dispatch])
 
     useEffect(()=>{
       console.log('socket about to connect to server');
@@ -69,7 +90,15 @@ const ChatOverviewScreen = ({navigation}) => {
       });
     },[]);
    
-    // console.log("chatrooms",chatrooms)
+    if (isLoading) {
+      return (
+        <View style={styles.centered}>
+          <ActivityIndicator size="large" color={Colors.primary} />
+        </View>
+      );
+    }
+  
+
     return (
       <>
       <Container>
@@ -129,10 +158,20 @@ const ChatOverviewScreen = ({navigation}) => {
 };
 
 ChatOverviewScreen.navigationOptions = navData => {
+  console.log("navdata in chat",navData)
   return {
     headerTitle: 'All Chats',
+
   };
 };
 
+
+const styles = StyleSheet.create({
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
+  searchBar: {
+    height: 45,
+    padding: 10,
+  },
+});
 
 export default ChatOverviewScreen;

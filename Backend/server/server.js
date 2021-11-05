@@ -130,6 +130,10 @@ app.get('/get-message-list',(req,res)=>{
     res.status(201).send(messages);
 })
 
+app.get('/get-users',(req,res)=>{
+    res.status(201).send(users);
+})
+
 app.post('/add-friend',(req,res)=>{
     usersObj.addFriend(req.body.uid1,req.body.uid2);
     //console.log('after post request');
@@ -153,7 +157,7 @@ server.listen(port,()=>{
     mssgsObj.addMessage('msg5',ids[4],'Ha pohch gaya',0,'room1',Date.now());
 
     console.log('Added first enteries hardcoded');
-    //console.log(users);
+    console.log(users);
     //console.log(chatrooms);
     //console.log(messages);
   console.log(`Server is up on port ${port}`);
