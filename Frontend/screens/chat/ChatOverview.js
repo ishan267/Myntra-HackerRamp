@@ -159,6 +159,17 @@ ChatOverviewScreen.navigationOptions = navData => {
   console.log("navdata in chat",navData)
   return {
     headerTitle: 'All Chats',
+    headerLeft: (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
 
   };
 };

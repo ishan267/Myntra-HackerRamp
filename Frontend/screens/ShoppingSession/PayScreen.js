@@ -61,7 +61,7 @@ const PayScreen = (props) => {
         }
     ]
 
-    const [selectedToPay, setSelectedToPay] = useState([]);
+    const [selectedToPay, setSelectedToPay] = useState([]);  // this will be managed by redux
     const [checkoutList, setCheckoutList] = useState([]);
     const [showProducts, setShowProducts] = useState(false);
 
