@@ -13,7 +13,7 @@ navigator.__defineGetter__("userAgent", function () {   // you have to import re
  }); 
 import SocketIOClient from "socket.io-client";
 import { Ionicons } from "@expo/vector-icons";
-
+import baseUrl from '../../helper/baseUrl';
 
 import {
   Container,
@@ -33,10 +33,12 @@ import message from '../../models/message';
 const ChatOverviewScreen = ({navigation}) => {
 
     const userId = useSelector((state) => state.auth.userId);
+
     //const socket = SocketIOClient({baseUrl},{jsonp: false});
     const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {
           jsonp: false,
         });
+
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch=useDispatch();
@@ -159,6 +161,17 @@ ChatOverviewScreen.navigationOptions = navData => {
   console.log("navdata in chat",navData)
   return {
     headerTitle: 'All Chats',
+    headerLeft: (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
 
   };
 };

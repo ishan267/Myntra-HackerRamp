@@ -28,6 +28,9 @@ import ShoppingSessionScreen from "../screens/shop/ShoppingSessionScreen";
 import FriendListScreen from "../screens/FriendsListScreen";
 import CurrentShopppingScreen from "../screens/ShoppingSession/CurrentShoppingScreen";
 import PayScreen from "../screens/ShoppingSession/PayScreen";
+import AddFriendScreen from "../screens/AddFriend";
+
+
 const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === "android" ? Colors.primary : "",
@@ -48,9 +51,39 @@ const ChatsNavigator = createStackNavigator(
     FriendList:FriendListScreen
   },
   {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-chatbubble" : "ios-create"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+    },
+  
+
+    
     defaultNavigationOptions: defaultNavOptions,
   }
 );
+
+const AddFriendNavigator=createStackNavigator(
+  {
+     AddFriend:AddFriendScreen
+  },
+  {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-add" : "ios-cart"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+    },
+    defaultNavigationOptions: defaultNavOptions,
+  }
+)
 
 const SessionNavigator = createStackNavigator(
   {
@@ -153,10 +186,33 @@ const ShopNavigator = createDrawerNavigator(
   }
 );
 
+const ChatDrawerNavigator=createDrawerNavigator(
+ {
+   Chat: ChatsNavigator,
+   AddFriend:AddFriendNavigator
+ },{
+  contentOptions: {
+    activeTintColor: Colors.primary,
+   },
+    contentComponent: (props) => {
+ 
+      return (
+        <View style={{ flex: 1, paddingTop: 30 }}>
+          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
+            <DrawerNavigatorItems {...props} />
+            
+          </SafeAreaView>
+        </View>
+      );
+    },
+  },
+ 
+)
+
 const BottomNavigator = createBottomTabNavigator(
   {
     Products: ShopNavigator,
-    Chats: ChatsNavigator,
+    Chats:  ChatDrawerNavigator,
     Group_Shopping: SessionNavigator,
   },
   {
