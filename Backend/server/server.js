@@ -45,6 +45,14 @@ io.on('connection',(socket)=>{
         callback(socket.id);
     })
 
+    socket.on('add-session',(session,callback)=>{
+        socket.join(session.sessionId);
+        console.log(session);
+        sessions.push(session);
+        console.log('session pushed in sessions');
+        callback('session-added');
+    })
+
     socket.on('join-room',(params,callback)=>{
         if(roomsObj.isPresentInRoom(params.cid,params.uid)){
             return callback('Username already exists in this room');
@@ -106,6 +114,9 @@ io.on('connection',(socket)=>{
              }
         }
         //callback();
+
+        socket.on('update')
+
     });
 })
 
@@ -151,10 +162,10 @@ app.post('/update-cart',(req,res)=>{
     res.status(201).send('updated');
 })
 
-app.post('/add-session',(req,res)=>{
+/*app.post('/add-session',(req,res)=>{
     sessions.push(req.body);
     res.status(201).send('session added');
-})
+})*/
 
 
 app.get('/get-sessions',(req,res)=>{
