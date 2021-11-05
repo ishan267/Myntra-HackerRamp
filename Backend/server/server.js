@@ -4,7 +4,7 @@ const http = require('http');
 const socketIO = require('socket.io'); 
 const path = require('path');
 const {isRealString} = require('./utils/validation');
-const {users,chatrooms,messages,Users,Chatrooms,Messages} = require('./utils/users');
+const {users,chatrooms,messages,sessions,chats,Users,Chatrooms,Messages,Sessions} = require('./utils/users');
 
 const publicPath = path.join(__dirname,'../public');
 const port = process.env.PORT || 8080;
@@ -15,6 +15,7 @@ const {generateMessage} = require('./utils/message');
 var usersObj = new Users();
 var roomsObj = new Chatrooms();
 var mssgsObj = new Messages();
+var sessnObj = new Sessions();
 
 app.use(cors());
 app.use(express.json());
@@ -135,10 +136,29 @@ app.get('/get-users',(req,res)=>{
 })
 
 app.post('/add-friend',(req,res)=>{
-    usersObj.addFriend(req.body.uid1,req.body.uid2);
+    usersObj.addFriend(req.body.userId1,req.body.userId2);
     //console.log('after post request');
     //console.log(users);
     res.status(201).send(users);
+})
+
+app.post('/update-cart',(req,res)=>{
+    //console.log("HERE");
+    //console.log(req.body);
+    id = req.body.id;
+    cartsObj = req.cartsObj;
+    sessnObj.updateCarts(id,cartsObj);
+    res.status(201).send('updated');
+})
+
+app.post('/add-session',(req,res)=>{
+    sessions.push(req.body);
+    res.status(201).send('session added');
+})
+
+
+app.get('/get-sessions',(req,res)=>{
+    res.status(201).send(sessions);
 })
 
 server.listen(port,()=>{
@@ -162,3 +182,9 @@ server.listen(port,()=>{
     //console.log(messages);
   console.log(`Server is up on port ${port}`);
 });
+
+
+//cart = json object {
+//      productId1 : cartItemObject1
+//      productId2 : cartItemObject2
+//}
