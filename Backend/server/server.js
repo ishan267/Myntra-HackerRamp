@@ -45,12 +45,11 @@ io.on('connection',(socket)=>{
         callback(socket.id);
     })
 
-    socket.on('add-session',(session,callback)=>{
+    socket.on('add-session',(session)=>{
         socket.join(session.sessionId);
         console.log(session);
         sessions.push(session);
         console.log('session pushed in sessions');
-        callback('session-added');
     })
 
     socket.on('join-room',(params,callback)=>{
