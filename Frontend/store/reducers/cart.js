@@ -1,11 +1,13 @@
-import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions/cart';
+import { ADD_TO_CART, REMOVE_FROM_CART,ADD_TO_SESSION_CART,REMOVE_FROM_SESSION_CART } from '../actions/cart';
 import { ADD_ORDER } from '../actions/orders';
 import CartItem from '../../models/cart-item';
 import { DELETE_PRODUCT } from '../actions/products';
 
 const initialState = {
   items: {},
-  totalAmount: 0
+  totalAmount: 0,
+  sessionItems:{},
+  sessionAmount:0
 };
 
 export default (state = initialState, action) => {
@@ -16,7 +18,7 @@ export default (state = initialState, action) => {
       const prodTitle = addedProduct.title;
 
       let updatedOrNewCartItem;
-
+      console.log("cart state is",state);
       if (state.items[addedProduct.id]) {
         // already have the item in the cart
         updatedOrNewCartItem = new CartItem(
@@ -69,6 +71,29 @@ export default (state = initialState, action) => {
         items: updatedItems,
         totalAmount: state.totalAmount - itemTotal
       };
+      case ADD_TO_SESSION_CART:
+        addedProduct = action.product;
+        prodPrice = addedProduct.price;
+        prodTitle = addedProduct.title;
+  
+        //let updatedOrNewCartItem;
+        //console.log("cart state is",state);
+        if (state.sessionItems[addedProduct.id]) {
+          // already have the item in the cart
+          updatedOrNewCartItem = new CartItem(
+            state.sessionItems[addedProduct.id].quantity + 1,
+            prodPrice,
+            prodTitle,
+            state.sessionItems[addedProduct.id].sum + prodPrice
+          );
+        } else {
+          updatedOrNewCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice);
+        }
+        return {
+          ...state,
+          sessionItems: { ...state.sessionItems, [addedProduct.id]: updatedOrNewCartItem },
+          sessionAmount: state.sessionAmount + prodPrice
+        };
   }
 
   return state;
