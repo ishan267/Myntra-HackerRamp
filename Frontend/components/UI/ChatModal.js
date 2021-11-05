@@ -26,16 +26,16 @@ const CartModal = (props) => {
   const recId=props.recId;
   console.log("chosen friend is",recId);
   const socket = props.socket;
-  const sessionMessages = useSelector(state => state.messages.sessionMessages);
-  console.log("all session messages are",sessionMessages);
+  //const sessionMessages = useSelector(state => state.messages.sessionMessages);
+  //console.log("all session messages are",sessionMessages);
   let roomMessages=[];
-  if(sessionMessages!=undefined)
+  /*if(sessionMessages!=undefined)
     roomMessages= sessionMessages.filter((message) => {
       if (message.tag == 1 && (message.senderId == props.recId || message.receiverId == props.recId))
         return true;
       else
         return false;
-    });
+    });*/
 
   let msglist = roomMessages.map((msg) => {
     return (

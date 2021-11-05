@@ -38,6 +38,8 @@ const CurrentShopppingScreen=(props)=>{
     console.log("friends are",friends);
     console.log("member ids are",membersId);
     console.log("members info are",members);
+    const sessionMessages = useSelector(state => state.messages);
+    console.log("all session messages are",sessionMessages);
     //const joinees=[];
     const [chosenId,setChosenId]=useState('');
     //let chosenId='123';

@@ -10,8 +10,8 @@ import{
 }from "../actions/messages"
 
 const initialState={
+    sessionMessages:[],
     allMessages:[],
-    sessionMessages:[]
 }
 
 export default (state=initialState,action)=>{
@@ -41,7 +41,6 @@ export default (state=initialState,action)=>{
                 if(state.allMessages[i].id==newMessage.id)
                     return state;
             }
-
              return {
                 ...state,
                 allMessages: state.allMessages.concat(newMessage)
@@ -60,11 +59,12 @@ export default (state=initialState,action)=>{
             )
            console.log("in session reducer new message is",newMessage);
            let i;
-           for(i=0;i<state.sessionMessages.length;i++)
+           /*for(i=0;i<state.sessionMessages.length;i++)
            {
                if(state.sessionMessages[i].id==newMessage.id)
                    return state;
-           }
+           }*/
+           console.log("session messsages are",state);
             return {
                ...state,
                sessionMessages: state.sessionMessages.concat(newMessage)
