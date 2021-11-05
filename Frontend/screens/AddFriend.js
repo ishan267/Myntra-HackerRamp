@@ -76,7 +76,7 @@ import { set } from "react-native-reanimated";
         const filteredData=newData.filter( (f) => {f.isSelected===false});
         setAllFriends(filteredData);
         console.log("new",filteredData);
-        // props.navigation.navigate('ChatOverview',{addedFriends:selectedFriends})
+        props.navigation.navigate('ChatOverview',{addedFriends:selectedFriends})
           
       }
    
