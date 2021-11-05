@@ -72,27 +72,28 @@ export default (state = initialState, action) => {
         totalAmount: state.totalAmount - itemTotal
       };
       case ADD_TO_SESSION_CART:
-        addedProduct = action.product;
-        prodPrice = addedProduct.price;
-        prodTitle = addedProduct.title;
+        console.log("reducer add to session cart called");
+        let addedProd = action.product;
+        let productPrice = addedProd.price;
+        let productTitle = addedProd.title;
   
-        //let updatedOrNewCartItem;
+        let newCartItem;
         //console.log("cart state is",state);
-        if (state.sessionItems[addedProduct.id]) {
+        if (state.sessionItems[addedProd.id]) {
           // already have the item in the cart
-          updatedOrNewCartItem = new CartItem(
-            state.sessionItems[addedProduct.id].quantity + 1,
-            prodPrice,
-            prodTitle,
-            state.sessionItems[addedProduct.id].sum + prodPrice
+          newCartItem = new CartItem(
+            state.sessionItems[addedProd.id].quantity + 1,
+            productPrice,
+            productTitle,
+            state.sessionItems[addedProd.id].sum + productPrice
           );
         } else {
-          updatedOrNewCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice);
+          newCartItem = new CartItem(1, productPrice, productTitle, productPrice);
         }
         return {
           ...state,
-          sessionItems: { ...state.sessionItems, [addedProduct.id]: updatedOrNewCartItem },
-          sessionAmount: state.sessionAmount + prodPrice
+          sessionItems: { ...state.sessionItems, [addedProd.id]: newCartItem },
+          sessionAmount: state.sessionAmount + productPrice
         };
   }
 

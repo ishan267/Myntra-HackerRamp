@@ -1,5 +1,6 @@
-import React from "react";
+import React,{ useEffect,useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import * as userActions from '../../store/actions/users'
 import {
   View,
   FlatList,
@@ -33,6 +34,12 @@ const ShoppingSessionScreen = (props) => {
   console.log("user id is",userId);
   console.log("all sessions",sessionList);
   console.log("current user sesion",userSessions);
+
+  const dispatch=useDispatch();
+  useEffect(()=>{
+    dispatch(userActions.fetchUsers());
+  },[dispatch])
+
 
   const joinHandler = (title,members) => {
     //console.log("title is",title);
