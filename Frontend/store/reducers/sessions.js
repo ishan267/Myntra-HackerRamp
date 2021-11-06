@@ -16,8 +16,14 @@ const initialState = {
     
     switch (action.type) {
       case FETCH_SESSIONS:   //Done ,action part left
+        console.log("reducer called for fetch sessions");
+        let newarray=[];
+        if(action.loadedSessions!=undefined)
+          for(let i=0;i<action.loadedSessions.length;i++)
+            newarray.push(action.loadedSessions[i].session);
+        console.log("all sessions to be added are",newarray);
         return {  
-        availableChatrooms: action.chatrooms, 
+        availableSessions: newarray, 
         };
       case CREATE_SESSION:          //Done ,action part left
       console.log("reducer for create session called with ",action.sessionData);

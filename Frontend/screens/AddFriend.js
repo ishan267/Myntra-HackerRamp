@@ -4,6 +4,7 @@ navigator.__defineGetter__("userAgent", function () {   // you have to import re
   return "react-native";
  }); 
 import SocketIOClient from "socket.io-client";
+import * as friendActions from '.././store/actions/friends';
 import { HeaderButtons,Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/UI/HeaderButton"
 import {
@@ -35,6 +36,7 @@ import { Searchbar } from 'react-native-paper';
 import CustomModal from "../components/UI/CustomModal";
 import * as messagesAction from '.././store/actions/messages';
 import { set } from "react-native-reanimated";
+import user from "../models/user";
 
   const AddFriendScreen=(props)=>{
 
@@ -43,7 +45,11 @@ import { set } from "react-native-reanimated";
     
       
       const dispatch=useDispatch();
-      const friends=useSelector(state=>state.friends.allFriends);
+      //const friends=useSelector(state=>state.friends.allFriends);
+      const userId = useSelector((state) => state.auth.userId);
+      const allusers=useSelector(state=>state.users.availableUsers);
+      const users = allusers.filter((member)=>member.id!=userId);
+      console.log("current users are",users);
 
       
       const [allFriends,setAllFriends]=useState([]);
@@ -51,8 +57,8 @@ import { set } from "react-native-reanimated";
      
 
       useEffect(()=>{
-        friends.map((f)=>f.isSelected=false);
-        setAllFriends(friends);
+        users.map((f)=>f.isSelected=false);
+        setAllFriends(users);
       },[])
       
       const onClickHandler=(index)=>{
@@ -67,7 +73,9 @@ import { set } from "react-native-reanimated";
          const selectedFriends=newData.filter((f)=>f.isSelected===true);
          setSelectedFriends(selectedFriends);
          console.log("all",allFriends);
-         console.log("selected",selectedFriends)
+         console.log("selected",selectedFriends);
+         console.log("chosen friend is",allFriends[index]);
+         dispatch(friendActions.addFriend(allFriends[index]));
       }
 
       const onPressHandler=()=>{
