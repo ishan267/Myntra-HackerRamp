@@ -45,7 +45,7 @@ const CurrentShopppingScreen=(props)=>{
     //const joinees=[];
     const [chosenId,setChosenId]=useState('');
     //let chosenId='123';
-    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
+    const socket = SocketIOClient("http://localhost:8080", {jsonp: false});
     const userId = useSelector((state) => state.auth.userId);
   useEffect(() => {
     console.log('socket about to connect to server');

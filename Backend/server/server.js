@@ -144,6 +144,7 @@ app.get('/get-message-list',(req,res)=>{
 })
 
 app.get('/get-users',(req,res)=>{
+    console.log("get users called");
     res.status(201).send(users);
 })
 

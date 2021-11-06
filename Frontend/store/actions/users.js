@@ -6,7 +6,11 @@ export const fetchUsers = () => {
     return async (dispatch, getState) => {
        
       try {
-        const response =  await fetch(`${baseUrl}/get-users`);
+        console.log("before request sent to url",baseUrl);
+        const response =  await fetch(
+          'http://localhost:8080/get-users'
+        );
+        console.log("response received for fetch users",response);
 
         if (!response.ok) {
           throw new Error('Something went wrong!');
