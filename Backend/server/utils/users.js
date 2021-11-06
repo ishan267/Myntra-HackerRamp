@@ -137,6 +137,11 @@ class Sessions{
 			}
 		}
 	}
+	getUserCartsList(id){
+		for(var i=0;i<sessions.length;i++){
+			if(sessions[i].id==id)return sessions[i].carts;
+		}
+	}
 }
 
 module.exports = {users,chatrooms,messages,sessions,Users,Chatrooms,Messages,Sessions};

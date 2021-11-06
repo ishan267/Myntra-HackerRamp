@@ -45,19 +45,13 @@ io.on('connection',(socket)=>{
         callback(socket.id);
     })
 
-    socket.on('add-session',(session)=>{
-        socket.join(session.sessionId);
-        console.log(session);
-        sessions.push(session);
-        console.log('session pushed in sessions');
-    })
-
     socket.on('update-carts',(params)=>{
         id = params.id;
         cartsObj = params.cartsObj;
+        socket.join(session.sessionId);
         sessnObj.updateCarts(id,cartsObj);
         console.log('carts_updated');
-        socket.broadcast.to(params.id).emit('carts-updated',"ITS DONE");
+        socket.broadcast.to(params.id).emit('get-cart',sessnObj.getUserCartsList(id));
     })
 
     socket.on('join-room',(params,callback)=>{
@@ -150,6 +144,7 @@ app.get('/get-message-list',(req,res)=>{
 })
 
 app.get('/get-users',(req,res)=>{
+    console.log("get users called");
     res.status(201).send(users);
 })
 
@@ -169,10 +164,10 @@ app.post('/add-friend',(req,res)=>{
     res.status(201).send('updated');
 })*/
 
-/*app.post('/add-session',(req,res)=>{
+app.post('/add-session',(req,res)=>{
     sessions.push(req.body);
     res.status(201).send('session added');
-})*/
+})
 
 
 app.get('/get-sessions',(req,res)=>{

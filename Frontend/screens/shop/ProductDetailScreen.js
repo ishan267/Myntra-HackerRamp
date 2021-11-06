@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
+  return "react-native";
+ }); 
+import SocketIOClient from "socket.io-client";
 import { useSelector, useDispatch } from 'react-redux';
 import {
   ScrollView,
@@ -20,8 +24,45 @@ const ProductDetailScreen = props => {
   console.log("selected product is",selectedProduct);
   const dispatch = useDispatch();
 
+  const sessionList = useSelector((state) => state.sessions.availableSessions);
   const sessionCart = useSelector(state=>state.cart.sessionItems);
-  console.log("session cart is",sessionCart);
+  const sesionAmount = useSelector(state=>state.cart.sessionAmount);
+  //console.log("session cart is",sessionCart);
+  //console.log("session amount is ",sesionAmount);
+
+  /*const cart = useSelector(state=>state.cart.items);
+  console.log("cart is",cart);
+  const amount = useSelector(state=>state.cart.totalAmount);
+  console.log("amount is ",amount);*/
+
+  const userId = useSelector((state) => state.auth.userId);
+  const socket = SocketIOClient("http://localhost:8080", {jsonp: false});
+  useEffect( ()=>{
+    console.log('socket about to connect to server');
+    socket.on("connect", () => {
+      console.log("connection successfull");
+      console.log('my socket id is', socket.id);
+      console.log('my userid is', userId);
+      socket.emit('update-socket-id',userId,err=>{})
+    });
+    socket.on('newMessage', (msg) => {
+      console.log("socket id is",socket.id);
+      console.log("socket message received is",msg);
+      dispatch(messagesAction.addMessage(msg));
+    })
+    socket.on("connect_error", (err) => {
+      console.log("Error");
+      console.log(err instanceof Error);
+      console.log(err.message); 
+    });
+  },[]);
+
+  useEffect(()=>{
+    console.log("session cart is",sessionCart);
+    console.log("session amount is ",sesionAmount);
+    console.log("session list is",sessionList);
+
+  },[sessionCart])
        
   return (
     <ScrollView>
@@ -45,8 +86,8 @@ const ProductDetailScreen = props => {
           color={Colors.primary}
           title="Add to session cart"
           onPress={()=>{
-              dispatch(cartActions.addToSessionCart(selectedProduct));
-          } }
+            dispatch(cartActions.addToSessionCart(selectedProduct));
+          }}
         />
       </View>
       <View style={styles.actions}>

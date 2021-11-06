@@ -31,6 +31,7 @@ const ProductsOverviewScreen = (props) => {
   const [error, setError] = useState();
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
+ 
 
   const loadItems = useCallback(async () => {
     setError(null);
@@ -38,16 +39,11 @@ const ProductsOverviewScreen = (props) => {
     try {
       await dispatch(userActions.fetchUsers());
       await dispatch(productsActions.fetchProducts());
-     // await dispatch(chatroomAction.addSocket());
     } catch (err) {
       setError(err.message);
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
-
-  /*useEffect(()=>{
-    dispatch(userActions.fetchUsers());
-  },[dispatch])*/
 
   useEffect(() => {
     const willFocusSub = props.navigation.addListener(
