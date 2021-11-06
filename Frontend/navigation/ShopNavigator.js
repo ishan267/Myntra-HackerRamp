@@ -29,6 +29,7 @@ import FriendListScreen from "../screens/FriendsListScreen";
 import CurrentShopppingScreen from "../screens/ShoppingSession/CurrentShoppingScreen";
 import PayScreen from "../screens/ShoppingSession/PayScreen";
 import AddFriendScreen from "../screens/AddFriend";
+import ViewDetailScreen from "../screens/ShoppingSession/ViewDetailScreen";
 
 
 const defaultNavOptions = {
@@ -90,6 +91,7 @@ const SessionNavigator = createStackNavigator(
     VirtualShopOverview: ShoppingSessionScreen,
     CurrentShoppping:CurrentShopppingScreen,
     PayScreen:PayScreen,
+    ViewDetail:ViewDetailScreen,
     FriendList:FriendListScreen
   },
   {
