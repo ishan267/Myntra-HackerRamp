@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 navigator.__defineGetter__("userAgent", function () {   // you have to import rect native first !!
   return "react-native";
 });
 import SocketIOClient from "socket.io-client";
-import { View, FlatList, Text, Platform, ActivityIndicator, StyleSheet, TextInput, Button, TouchableHighlight } from 'react-native';
+import { View, FlatList, Text, Platform, ActivityIndicator, StyleSheet, TextInput, TouchableHighlight, ImageBackground } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import Colors from '../../constants/Colors';
 import { useSelector, useDispatch } from 'react-redux';
+import FloatingAnimation from '../../components/UI/FloatingAnimation';
+import userImage from "../../assets/users/user-4.jpg"
+import { Popover, Button, Box, Center, NativeBaseProvider } from "native-base"
+import * as Animatable from 'react-native-animatable';
+import UserAvatar from 'react-native-user-avatar';
+import { Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 
 import {
   Container,
@@ -25,28 +31,33 @@ import { Ionicons } from "@expo/vector-icons";
 import ChatModal from '../../components/UI/ChatModal';
 import CartModal from '../../components/UI/CartModal';
 import { useStore } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const CurrentShopppingScreen=(props)=>{
+const CurrentShopppingScreen = (props) => {
 
-    const [toolTipVisible,setToolTipVisible]=useState(false);
-    const[cartModalVisible,setCartModalVisible]=useState(false);
-    const[chatModalVisible,setChatModalVisible]=useState(false);
+  const [toolTipVisible, setToolTipVisible] = useState(false);
+  const [cartModalVisible, setCartModalVisible] = useState(false);
+  const [chatModalVisible, setChatModalVisible] = useState(false);
 
-    const users=useSelector(state=>state.users.availableUsers);
-    console.log("current users are",users);
-    //const friends=useSelector(state=>state.friends.allFriends);
-    //console.log("friends are",friends);
-    const membersId=props.navigation.getParam('members');
-    const members=users.filter((friend)=>membersId.includes(friend.id));
-    console.log("member ids are",membersId);
-    console.log("members info are",members);
-    const sessionMessages = useSelector(state => state.messages);
-    console.log("all session messages are",sessionMessages);
-    //const joinees=[];
-    const [chosenId,setChosenId]=useState('');
-    //let chosenId='123';
-    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
-    const userId = useSelector((state) => state.auth.userId);
+  useEffect = (() => {
+
+  }, [])
+
+  const users = useSelector(state => state.users.availableUsers);
+  console.log("current users are", users);
+  //const friends=useSelector(state=>state.friends.allFriends);
+  //console.log("friends are",friends);
+  const membersId = props.navigation.getParam('members');
+  const members = users.filter((friend) => membersId.includes(friend.id));
+  console.log("member ids are", membersId);
+  console.log("members info are", members);
+  const sessionMessages = useSelector(state => state.messages);
+  console.log("all session messages are", sessionMessages);
+  //const joinees=[];
+  const [chosenId, setChosenId] = useState('');
+  //let chosenId='123';
+  const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", { jsonp: false });
+  const userId = useSelector((state) => state.auth.userId);
   useEffect(() => {
     console.log('socket about to connect to server');
     socket.on("connect", () => {
@@ -78,94 +89,136 @@ const CurrentShopppingScreen=(props)=>{
   const onPayHandler = () => {
     props.navigation.navigate('PayScreen');
   }
+  const newCartItem = 2;
+  const isPresent = true;
 
-
+  const avatarStyles = useRef({
+    position: 'absolute',
+    top: Math.floor(Math.random() * 50),
+    left: Math.floor(Math.random() * 50),
+    // transform: 'translate(-50%, -50%)'
+  });
   return (
     <>
-      <ChatModal
-        visible={chatModalVisible}
-        setModalVisible={setChatModalVisible}
-        recId={chosenId}
-        socket={socket}
-      />
-      <CartModal
-        visible={cartModalVisible}
-        setModalVisible={setCartModalVisible}
-      />
-      <Container>
+      <ImageBackground source={require('../../assets/background.png')} resizeMode='cover' style={{ width: '100%', height: '100%', }}>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          message="Note archived"
+          action={action}
+        />
+        <ChatModal
+          visible={chatModalVisible}
+          setModalVisible={setChatModalVisible}
+          recId={chosenId}
+          socket={socket}
+        />
+        <CartModal
+          visible={cartModalVisible}
+          setModalVisible={setCartModalVisible}
+        />
+
         <FlatList
 
           data={members}
+          style={{ height: '85%', backgroundColor: 'rgba(0,0,0,0.3)' }}
           keyExtractor={item => item.id}
           renderItem={({ item }) => {
             return (
-              <Tooltip
-                isVisible={toolTipVisible}
+              <View style={{ paddingVertical: 15, flexDirection: 'row', }}>
+                <Popover
 
-                content=
-                {
-                  <>
-                    <View style={{ width: 150, height: 500 }}>
-                      <View>
-                        <Text style={{ textAlign: 'center', fontWeight: '700', fontSize: 15 }}>{item.name}</Text>
-                      </View>
+                  trigger={(triggerProps) => {
+                    return (
+                      <Text {...triggerProps}>
+                        {isPresent === true ?
+                          <View style={avatarStyles.current}>
+                            <Animatable.View animation="pulse" easing="ease-out" iterationCount={'infinite'} direction="alternate">
+                              <UserAvatar size={50} name={item.name} bgColors={['#ccc', '#4c1e3d', 'black', '#FF66CC', '#0095b6']} />
+                              <Badge
+                                status="success"
+                                containerStyle={{ position: 'absolute', top: 1, right: 5 }}
+                              />
+                            </Animatable.View>
+                          </View> :
+                          <UserAvatar size={50} name={item.name} bgColors={['#ccc', '#4c1e3d', 'black', '#FF66CC', '#0095b6']} />
+                        }
+
+
+                      </Text>
+
+
+                    )
+                  }}
+                >
+                  <Popover.Content accessibilityLabel="Delete Customerd" w="56">
+                    <Popover.Arrow />
+                    <Popover.CloseButton />
+                    <Popover.Header>{item.name}</Popover.Header>
+                    <Popover.Body>
                       <View style=
                         {{
                           flexDirection: 'row',
                           justifyContent: 'flex-start',
-                          marginLeft: 40,
 
                         }} >
 
                         <Ionicons
-                          name={Platform.OS === "android" ? "md-cart" : "ios-add"}
+                          name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
                           size={23}
                           color={Colors.primary}
                           onPress={() => setCartModalVisible(true)}
                         />
+                        {newCartItem > 0 && <Badge value={newCartItem} status="error" containerStyle={{ top: -3, right: 5 }} />}
+
                         <View style={{ borderRightWidth: 1, borderColor: 'grey', paddingLeft: 10, marginRight: 10 }} />
                         <Ionicons
-                          name={Platform.OS === "android" ? "chatbubbles" : "ios-add"}
+                          name={Platform.OS === "android" ? "md-chatbubbles" : "ios-chatbubbles"}
                           size={23}
                           color={Colors.primary}
                           onPress={() => setChatModalVisible(true)}
                         />
                       </View>
-                    </View>
-                  </>
-
-                }
-                placement="top"
-                onClose={() => setToolTipVisible(false)}
-              >
-                <TouchableHighlight >
-                  <Card onPress={() => handleTooltip(item)}>
-                    <UserInfo>
-                      <UserImgWrapper>
-                        <UserImg source={require('../../assets/users/user-4.jpg')} />
-                      </UserImgWrapper>
-                      <View>
-                      <Text>In Lobby</Text>
-                      </View>
-                    </UserInfo>
-                  </Card>
-                </TouchableHighlight>
-              </Tooltip>
+                    </Popover.Body>
+                  </Popover.Content>
+                </Popover>
+              </View>
 
             )
           }}
         />
 
-      </Container>
-    <View style={{backgroundColor:'white'}}>
-      <View style={{ backgroundColor: Colors.primary, width: 95, height: 40, borderRadius: 10,marginLeft:290,marginBottom:30 }}>
-          <Text
-            style={{ color: 'white', paddingTop: 10, textAlign: 'center', paddingRight: 3 }}
-            onPress={onPayHandler}
-          >Checkout</Text>
-        </View>
+
+        <View style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}>
+          <View style={{
+            backgroundColor: Colors.primary, width: 95, height: 40, borderRadius: 20, marginBottom: 30, marginLeft: 280, shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+            elevation: 5
+          }}>
+            <Text
+              style={{ color: 'white', paddingTop: 10, textAlign: 'center', paddingRight: 3 }}
+              onPress={onPayHandler}
+            >Checkout</Text>
+          </View>
+
+          <View style={{
+            overflow: 'hidden', marginBottom: -65, backgroundColor: 'orange', width: 120, height: 100, borderRadius: 90, marginLeft: 150, shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+            elevation: 5
+          }}>
+            <Text
+              style={{ color: 'black', paddingTop: 10, textAlign: 'center', paddingRight: 3, fontWeight: '700', fontSize: 17 }}
+              onPress={() => { props.navigation.navigate('ProductsOverview') }}
+            >Shop Now</Text>
+          </View>
         </View>
 
+
+      </ImageBackground>
     </>
   )
 
