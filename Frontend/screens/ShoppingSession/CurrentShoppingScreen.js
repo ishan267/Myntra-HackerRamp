@@ -39,9 +39,7 @@ const CurrentShopppingScreen = (props) => {
   const [cartModalVisible, setCartModalVisible] = useState(false);
   const [chatModalVisible, setChatModalVisible] = useState(false);
 
-  useEffect = (() => {
-
-  }, [])
+  
 
   const users = useSelector(state => state.users.availableUsers);
   console.log("current users are", users);
@@ -101,13 +99,7 @@ const CurrentShopppingScreen = (props) => {
   return (
     <>
       <ImageBackground source={require('../../assets/background.png')} resizeMode='cover' style={{ width: '100%', height: '100%', }}>
-        <Snackbar
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          message="Note archived"
-          action={action}
-        />
+        
         <ChatModal
           visible={chatModalVisible}
           setModalVisible={setChatModalVisible}
