@@ -115,7 +115,8 @@ const CustomModal = (props) => {
           const sessionData={
             sessionName:chatroomName,
             date:selectedDate,
-            time:selectedTime 
+            time:selectedTime,
+            newData:date
           }
           console.log("sessionData",sessionData);
           console.log("selected rooms/friends",selectedFriends);

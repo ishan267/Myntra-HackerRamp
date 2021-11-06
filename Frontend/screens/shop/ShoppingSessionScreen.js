@@ -20,45 +20,37 @@ import Colors from "../../constants/Colors";
 import { Card } from "react-native-elements";
 
 const ShoppingSessionScreen = (props) => {
-  const navigation=props.navigation
+  const navigation = props.navigation
   const userId = useSelector((state) => state.auth.userId);
-  const sessionList = useSelector((state) => state.sessions.availableSessions);  
-  const userSessions = sessionList.filter((session)=>{
+  const sessionList = useSelector((state) => state.sessions.availableSessions);
+  const userSessions = sessionList.filter((session) => {
 
-    if(session.members!=undefined)
-    {
-      for(let i=0;i<session.members.length;i++)
-      {
-        if(session.members[i]==userId)
-            return true;
-      }
+    for (let i = 0; i < session.members.length; i++) {
+      if (session.members[i] == userId)
+        return true;
     }
-      return false;
+    return false;
   })
-  console.log("user id is",userId);
-  console.log("all sessions",sessionList);
-  console.log("current user sesion",userSessions);
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch=useDispatch();
+  console.log("user id is", userId);
+  console.log("all sessions", sessionList);
+  console.log("current user sesion", userSessions);
 
-  useEffect(()=>{
-    setIsLoading(true);
-    dispatch(sessionActions.fetchSessions()).then(() => {
-      setIsLoading(false);
-  });
-  },[dispatch])
-
-
-  const joinHandler = (title,members) => {
+  const joinHandler = (title, members) => {
     //console.log("title is",title);
     //console.log("joineers are",members);
     navigation.navigate("CurrentShoppping", {
       title: title,
-      members:members
+      members: members
     });
-   
+
   };
 
+  const ViewDetailHandler = (title, members) => {
+    navigation.navigate("ViewDetail", {
+      title: title,
+      members: members
+    });
+  }
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -73,29 +65,40 @@ const ShoppingSessionScreen = (props) => {
       <FlatList
         // onRefresh={loadProducts}
         // refreshing={isRefreshing}
-        style={{height:'95%'}}
+        style={{ height: '95%' }}
         data={userSessions}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <Card>
-            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-              <Text>{itemData.item.title}</Text>
-              <View style={{width:90}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={{fontWeight:'700',color:Colors.primary}}>{itemData.item.title}</Text>
+
+              <Text color={Colors.primary}>{`${itemData.item.date.date}/${itemData.item.date.month}/${itemData.item.date.year}`}</Text>
+              <View style={{flexDirection:'row'}}>
+              <Text color={Colors.primary}>{`${itemData.item.time.hour}:${itemData.item.time.minute}`} </Text>
+              <Text>{itemData.item.time.hour >= 12 ? 'PM' : 'AM'}</Text>
+              </View>
+              {itemData.item.newDate == new Date() ?
                 <Button
                   color={Colors.primary}
-                  title={`${itemData.item.time.hour}:${itemData.item.time.minute}`}
-                  onPress={()=>joinHandler(itemData.item.title,itemData.item.members)}
-                />
-              </View>
+                  title="Join"
+                  onPress={() => joinHandler(itemData.item.title, itemData.item.members)}
+                /> :
+                <Button
+                  color={Colors.primary}
+                  title="View Details"
+                  onPress={() => ViewDetailHandler(itemData.item.title, itemData.item.members)}
+                />}
+
             </View>
           </Card>
         )}
       />
-       <View style={styles.buttonCont} onPress={()=>navigation.navigate('FriendList')}>
-      <Text style={{color:'white',fontSize:40}}  
-      onPress={()=>navigation.navigate('FriendList',{title:"Create New Session",name:"session",})} >+</Text>
+      <View style={styles.buttonCont} onPress={() => navigation.navigate('FriendList')}>
+        <Text style={{ color: 'white', fontSize: 40 }}
+          onPress={() => navigation.navigate('FriendList', { title: "Create New Session", name: "session", })} >+</Text>
 
-       </View>
+      </View>
     </View>
   );
 };
@@ -103,25 +106,28 @@ const ShoppingSessionScreen = (props) => {
 ShoppingSessionScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "Virtual Shopping Session",
-  
+
   };
 };
 
-const styles=StyleSheet.create({
-   buttonCont:{
-    height:40,
-    width:40,
-    backgroundColor:Colors.primary,
-    borderRadius:20,
-    justifyContent:'center',
-    alignItems:'center', 
-    marginLeft:'80%',
+const styles = StyleSheet.create({
+  buttonCont: {
+    height: 40,
+    width: 40,
+    backgroundColor: Colors.primary,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '80%',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 1,
-    shadowRadius: 3,  
+    shadowRadius: 3,
     elevation: 6,
     // marginBottom:'10%',
+    marginTop: '-10%',
+
+    zIndex: 100,
     marginTop:'-10%',
     
     zIndex:100
