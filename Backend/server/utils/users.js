@@ -1,6 +1,7 @@
 users = [];
 chatrooms = [];
 messages = [];
+sessions = [];
 
 class Chatrooms{
 	
@@ -105,4 +106,37 @@ class Messages{
 	}
 }
 
-module.exports = {users,chatrooms,messages,Users,Chatrooms,Messages};
+class Sessions{
+
+	addSession(id,title,date,time,friendsId,adminId,carts){    //no need for now, may be used later
+		var obj = {
+			"id":id,
+			"title":title,
+			"date":date,
+			"time":time,
+			"friendsId":friendsId,
+			"adminId":adminId,
+			"carts":carts
+		}
+		sessions.push(obj);
+	}
+
+	updateCarts(id,cartsObj){
+		for(var i=0;i<sessions.length;i++){
+			if(sessions[i].id==id){
+				let isPresent = 0;
+				for(var j=0;j<sessions[i].carts.length;j++){
+					if(sessions[i].carts[j].id==cartsObj.id){
+                        isPresent=1;
+                        sessions[i].carts[j]=cartsObj;
+                        break;
+					}
+				}
+				if(isPresent==0)sessions[i].carts.push(cartsObj);
+				break;
+			}
+		}
+	}
+}
+
+module.exports = {users,chatrooms,messages,sessions,Users,Chatrooms,Messages,Sessions};

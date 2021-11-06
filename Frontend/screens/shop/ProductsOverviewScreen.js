@@ -21,6 +21,7 @@ import * as productsActions from "../../store/actions/products";
 import * as chatroomAction from '../../store/actions/chatroom'
 import * as messagesAction from '../../store/actions/messages'
 import * as friendsAction from '../../store/actions/friends';
+import * as userActions from '../../store/actions/users';
 import Colors from "../../constants/Colors";
 import { Searchbar } from 'react-native-paper';
 
@@ -35,6 +36,7 @@ const ProductsOverviewScreen = (props) => {
     setError(null);
     setIsRefreshing(true);
     try {
+      await dispatch(userActions.fetchUsers());
       await dispatch(productsActions.fetchProducts());
      // await dispatch(chatroomAction.addSocket());
     } catch (err) {
@@ -42,6 +44,10 @@ const ProductsOverviewScreen = (props) => {
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
+
+  /*useEffect(()=>{
+    dispatch(userActions.fetchUsers());
+  },[dispatch])*/
 
   useEffect(() => {
     const willFocusSub = props.navigation.addListener(

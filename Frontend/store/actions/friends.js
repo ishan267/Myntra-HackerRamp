@@ -54,13 +54,33 @@ export const fetchFriends=()=>{
 
 }
 
-export const addFriends=(newFriend)=>{
+export const addFriend=(newFriend)=>{
+  console.log("add friend called with ",newFriend);
     //post request will be sent to database
     return async (dispatch,getState)=>{
 
         try{  
           
-           //request to send database to add newChatroom
+          const response =  await fetch(
+            `${baseUrl}/add-friend`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                userId1: getState().auth.userId,
+                userId2: newFriend.id
+              })
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error('Something went wrong!');
+          }
+    
+
+           
     
           dispatch({
               type:ADD_FRIEND,
@@ -68,7 +88,7 @@ export const addFriends=(newFriend)=>{
                 id:newFriend.id,
                 name:newFriend.name,
                 friends:newFriend.friends,
-                chatrooms:newChatroom.chatrooms,
+                chatrooms:newFriend.chatrooms,
               }
           })
         }catch(err){

@@ -17,6 +17,7 @@ export default (state=initialState,action)=>{
             }
         }
         case ADD_FRIEND:{
+            
             const newFriend=new user(
                    action.friendData.id,
                    action.friendData.name,

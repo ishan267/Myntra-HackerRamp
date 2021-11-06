@@ -19,6 +19,9 @@ const ProductDetailScreen = props => {
   );
   console.log("selected product is",selectedProduct);
   const dispatch = useDispatch();
+
+  const sessionCart = useSelector(state=>state.cart.sessionItems);
+  console.log("session cart is",sessionCart);
        
   return (
     <ScrollView>
@@ -41,7 +44,9 @@ const ProductDetailScreen = props => {
         <Button
           color={Colors.primary}
           title="Add to session cart"
-          onPress={()=>{} }
+          onPress={()=>{
+              dispatch(cartActions.addToSessionCart(selectedProduct));
+          } }
         />
       </View>
       <View style={styles.actions}>

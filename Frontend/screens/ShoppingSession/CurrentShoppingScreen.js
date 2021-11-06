@@ -26,23 +26,27 @@ import ChatModal from '../../components/UI/ChatModal';
 import CartModal from '../../components/UI/CartModal';
 import { useStore } from 'react-redux';
 
-const CurrentShopppingScreen = (props) => {
+const CurrentShopppingScreen=(props)=>{
 
-  const [toolTipVisible, setToolTipVisible] = useState(false);
-  const [cartModalVisible, setCartModalVisible] = useState(false);
-  const [chatModalVisible, setChatModalVisible] = useState(false);
+    const [toolTipVisible,setToolTipVisible]=useState(false);
+    const[cartModalVisible,setCartModalVisible]=useState(false);
+    const[chatModalVisible,setChatModalVisible]=useState(false);
 
-  const friends = useSelector(state => state.friends.allFriends);
-  const membersId = props.navigation.getParam('members');
-  const members = friends.filter((friend) => membersId.includes(friend.id));
-  console.log("friends are", friends);
-  console.log("member ids are", membersId);
-  console.log("members info are", members);
-  //const joinees=[];
-  const [chosenId, setChosenId] = useState('');
-  //let chosenId='123';
-  const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", { jsonp: false });
-  const userId = useSelector((state) => state.auth.userId);
+    const users=useSelector(state=>state.users.availableUsers);
+    console.log("current users are",users);
+    //const friends=useSelector(state=>state.friends.allFriends);
+    //console.log("friends are",friends);
+    const membersId=props.navigation.getParam('members');
+    const members=users.filter((friend)=>membersId.includes(friend.id));
+    console.log("member ids are",membersId);
+    console.log("members info are",members);
+    const sessionMessages = useSelector(state => state.messages);
+    console.log("all session messages are",sessionMessages);
+    //const joinees=[];
+    const [chosenId,setChosenId]=useState('');
+    //let chosenId='123';
+    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
+    const userId = useSelector((state) => state.auth.userId);
   useEffect(() => {
     console.log('socket about to connect to server');
     socket.on("connect", () => {
