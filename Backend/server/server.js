@@ -57,7 +57,7 @@ io.on('connection',(socket)=>{
         cartsObj = params.cartsObj;
         sessnObj.updateCarts(id,cartsObj);
         console.log('carts_updated');
-        socket.broadcast.to(params.id).emit('carts-updated',"ITS DONE");
+        socket.broadcast.to(params.id).emit('get-cart',sessnObj.getUserCartsList(id));
     })
 
     socket.on('join-room',(params,callback)=>{
