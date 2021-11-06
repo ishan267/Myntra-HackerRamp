@@ -51,15 +51,8 @@ const ShoppingSessionScreen = (props) => {
       members: members
     });
   }
-  if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
-  }
-
-
+ 
+  
   return (
     <View>
       <FlatList
@@ -77,8 +70,10 @@ const ShoppingSessionScreen = (props) => {
               <View style={{flexDirection:'row'}}>
               <Text color={Colors.primary}>{`${itemData.item.time.hour}:${itemData.item.time.minute}`} </Text>
               <Text>{itemData.item.time.hour >= 12 ? 'PM' : 'AM'}</Text>
+              {/* <Text>{itemData.item.newDate}</Text>
+              <Text>{new Date()}</Text> */}
               </View>
-              {itemData.item.newDate == new Date() ?
+              {(itemData.item.date.date == new Date().getDate()  && itemData.item.date.month==new Date().getMonth() && itemData.item.date.year==new Date().getFullYear()) ?
                 <Button
                   color={Colors.primary}
                   title="Join"
