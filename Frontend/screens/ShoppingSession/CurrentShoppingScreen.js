@@ -90,12 +90,7 @@ const CurrentShopppingScreen = (props) => {
   const newCartItem = 2;
   const isPresent = true;
 
-  const avatarStyles = useRef({
-    position: 'absolute',
-    top: Math.floor(Math.random() * 50),
-    left: Math.floor(Math.random() * 50),
-    // transform: 'translate(-50%, -50%)'
-  });
+  
   return (
     <>
       <ImageBackground source={require('../../assets/background.png')} resizeMode='cover' style={{ width: '100%', height: '100%', }}>
@@ -114,19 +109,20 @@ const CurrentShopppingScreen = (props) => {
         <FlatList
 
           data={members}
-          style={{ height: '85%', backgroundColor: 'rgba(0,0,0,0.3)' }}
+          style={{ height: '85%', backgroundColor: 'rgba(0,0,0,0.3)',paddingLeft:10}}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => {
+          renderItem={({ item ,index}) => {
             return (
-              <View style={{ paddingVertical: 15, flexDirection: 'row', }}>
+              <View style={{ paddingVertical: 20 ,paddingLeft:Math.floor(Math.random()*100*index)}}>
                 <Popover
-
+                
+                 placement='bottom'
                   trigger={(triggerProps) => {
                     return (
                       <Text {...triggerProps}>
                         {isPresent === true ?
-                          <View style={avatarStyles.current}>
-                            <Animatable.View animation="pulse" easing="ease-out" iterationCount={'infinite'} direction="alternate">
+                          <View>
+                            <Animatable.View animation="pulse"  iterationCount={'infinite'} direction="alternate">
                               <UserAvatar size={50} name={item.name} bgColors={['#ccc', '#4c1e3d', 'black', '#FF66CC', '#0095b6']} />
                               <Badge
                                 status="success"
