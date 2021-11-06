@@ -24,6 +24,7 @@ const ProductDetailScreen = props => {
   console.log("selected product is",selectedProduct);
   const dispatch = useDispatch();
 
+  const sessionList = useSelector((state) => state.sessions.availableSessions);
   const sessionCart = useSelector(state=>state.cart.sessionItems);
   const sesionAmount = useSelector(state=>state.cart.sessionAmount);
   //console.log("session cart is",sessionCart);
@@ -59,6 +60,7 @@ const ProductDetailScreen = props => {
   useEffect(()=>{
     console.log("session cart is",sessionCart);
     console.log("session amount is ",sesionAmount);
+    console.log("session list is",sessionList);
 
   },[sessionCart])
        
