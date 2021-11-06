@@ -52,6 +52,14 @@ io.on('connection',(socket)=>{
         console.log('session pushed in sessions');
     })
 
+    socket.on('update-carts',(params)=>{
+        id = params.id;
+        cartsObj = params.cartsObj;
+        sessnObj.updateCarts(id,cartsObj);
+        console.log('carts_updated');
+        socket.broadcast.to(params.id).emit('carts-updated',"ITS DONE");
+    })
+
     socket.on('join-room',(params,callback)=>{
         if(roomsObj.isPresentInRoom(params.cid,params.uid)){
             return callback('Username already exists in this room');
@@ -152,14 +160,14 @@ app.post('/add-friend',(req,res)=>{
     res.status(201).send(users);
 })
 
-app.post('/update-cart',(req,res)=>{
+/*app.post('/update-cart',(req,res)=>{
     //console.log("HERE");
     //console.log(req.body);
     id = req.body.id;
     cartsObj = req.cartsObj;
     sessnObj.updateCarts(id,cartsObj);
     res.status(201).send('updated');
-})
+})*/
 
 /*app.post('/add-session',(req,res)=>{
     sessions.push(req.body);
