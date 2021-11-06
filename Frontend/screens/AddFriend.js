@@ -45,7 +45,7 @@ import user from "../models/user";
     
       
       const dispatch=useDispatch();
-      //const friends=useSelector(state=>state.friends.allFriends);
+      const friends=useSelector(state=>state.friends.allFriends);
       const userId = useSelector((state) => state.auth.userId);
       const allusers=useSelector(state=>state.users.availableUsers);
       const users = allusers.filter((member)=>member.id!=userId);
@@ -54,6 +54,7 @@ import user from "../models/user";
       
       const [allFriends,setAllFriends]=useState([]);
       const [selectedFriends,setSelectedFriends]=useState([]);
+      
      
 
       useEffect(()=>{
@@ -78,17 +79,6 @@ import user from "../models/user";
          dispatch(friendActions.addFriend(allFriends[index]));
       }
 
-      const onPressHandler=()=>{
-        let newData=[...allFriends];
-        console.log("new data",newData);
-        const filteredData=newData.filter( (f) => {f.isSelected===false});
-        setAllFriends(filteredData);
-        console.log("new",filteredData);
-        props.navigation.navigate('ChatOverview',{addedFriends:selectedFriends})
-          
-      }
-   
-
       return(
      <>
      <Searchbar
@@ -109,9 +99,9 @@ import user from "../models/user";
               <TextSection>
                 <UserInfoText>
                   <UserName>{item.name}</UserName>
-                  <View  style={[styles.iconCont,{backgroundColor:item.isSelected===true? 'red':'green'}]}> 
+                  <View  style={[styles.iconCont,{backgroundColor:item.isSelected===true? 'green':Colors.primary}]}> 
                   <Text  onPress={()=>onClickHandler(index)} style={{color:'white'}}>
-                       {item.isSelected===false ? "Add":"Remove" }
+                       {item.isSelected===false ? "Add":"Friend" }
                   </Text>
                   </View>
                 </UserInfoText>
@@ -120,13 +110,7 @@ import user from "../models/user";
           </Card>
         )}
       />
-        <View style={styles.buttonCont}>
-        <Text style={{color:'white',fontSize:15,zIndex:10}}  onPress={onPressHandler} >
-            Done
-          </Text>
-
-      </View>
-      </Container>
+    </Container>
         
       </>
       )

@@ -23,6 +23,13 @@ const ShoppingSessionScreen = (props) => {
   const navigation = props.navigation
   const userId = useSelector((state) => state.auth.userId);
   const sessionList = useSelector((state) => state.sessions.availableSessions);
+  const [currTime,setcurrTime]=useState(new Date().getTime());
+
+ useEffect(()=>{
+  setInterval(()=>{
+    setcurrTime(new Date().getTime());
+  })
+ },[1000])
   const userSessions = sessionList.filter((session) => {
 
     for (let i = 0; i < session.members.length; i++) {
@@ -73,7 +80,9 @@ const ShoppingSessionScreen = (props) => {
               {/* <Text>{itemData.item.newDate}</Text>
               <Text>{new Date()}</Text> */}
               </View>
-              {(itemData.item.date.date == new Date().getDate()  && itemData.item.date.month==new Date().getMonth() && itemData.item.date.year==new Date().getFullYear()) ?
+              {(itemData.item.date.date == new Date().getDate()  && itemData.item.date.month==new Date().getMonth() && itemData.item.date.year==new Date().getFullYear()
+                  && currTime>=itemData.item.date.date
+              ) ?
                 <Button
                   color={Colors.primary}
                   title="Join"
@@ -81,7 +90,7 @@ const ShoppingSessionScreen = (props) => {
                 /> :
                 <Button
                   color={Colors.primary}
-                  title="View Details"
+                  title="View"
                   onPress={() => ViewDetailHandler(itemData.item.title, itemData.item.members)}
                 />}
 

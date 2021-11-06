@@ -35,7 +35,7 @@ const ChatOverviewScreen = ({navigation}) => {
     const userId = useSelector((state) => state.auth.userId);
 
     //const socket = SocketIOClient({baseUrl},{jsonp: false});
-    const socket = SocketIOClient("http://localhost:8080", {
+    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {
           jsonp: false,
         });
 

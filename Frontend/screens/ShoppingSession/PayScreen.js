@@ -10,6 +10,7 @@ import Card from "../../components/UI/Card"
 import DropDownPicker from 'react-native-dropdown-picker';
 import OrderItem from "../../components/shop/OrderItem";
 import { Container } from "../../styles/MessageStyles";
+import PayModal from "../../components/UI/PayModal";
 
 
 const PayScreen = (props) => {
@@ -32,9 +33,30 @@ const PayScreen = (props) => {
                     productPrice: 80,
                     quantity: 1,
                     sum: 80
+                },
+                {
+                    productId: 2,
+                    productTitle: "Gun",
+                    productPrice: 100,
+                    quantity: 1,
+                    sum: 100
+                },
+                {
+                    productId: 2,
+                    productTitle: "Gun",
+                    productPrice: 100,
+                    quantity: 1,
+                    sum: 100
+                },
+                {
+                    productId: 2,
+                    productTitle: "Gun",
+                    productPrice: 100,
+                    quantity: 1,
+                    sum: 100
                 }
             ],
-            total: 160,
+            total: 260,
             isSelected: false
         },
         {
@@ -64,6 +86,8 @@ const PayScreen = (props) => {
     const [selectedToPay, setSelectedToPay] = useState([]);  // this will be managed by redux
     const [checkoutList, setCheckoutList] = useState([]);
     const [showProducts, setShowProducts] = useState(false);
+    const [payModalVisible,setPayModalVisible]=useState(false);
+    const [totalToPay,setTotalToPay]=useState(0);
 
     useEffect(() => {
         checkoutList.map((f) => f.isSelected = false);
@@ -81,18 +105,34 @@ const PayScreen = (props) => {
         setCheckoutList(newData);
         const selectedToPay = newData.filter((f) => f.isSelected === true);
         setSelectedToPay(selectedToPay);
+        let sum=0;
+        for(var i=0;i<selectedToPay.length;i++){
+            sum+=selectedToPay[i].total;
+        }
+        setTotalToPay(sum);
+
         console.log("all", checkoutList);
         console.log("selected", selectedToPay);
     }
 
     const onPayHandler=()=>{
-        Alert.alert("Payment done successfully!")
-        props.navigation.navigate('CurrentShoppping')
+        if(selectedToPay.length==0){
+            Alert.alert("Select to pay");
+            return;
+        }
+        setPayModalVisible(true);
     }
 
 
     return (
         <>
+        <PayModal 
+           visible={payModalVisible}
+           setModalVisible={setPayModalVisible}
+           total={totalToPay}
+           orderList={selectedToPay}
+           navigation={props.navigation}
+        />
           <Container>
             <View>
                 <FlatList

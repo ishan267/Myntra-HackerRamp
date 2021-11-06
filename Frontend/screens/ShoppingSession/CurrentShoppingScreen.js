@@ -45,7 +45,7 @@ const CurrentShopppingScreen=(props)=>{
     //const joinees=[];
     const [chosenId,setChosenId]=useState('');
     //let chosenId='123';
-    const socket = SocketIOClient("http://localhost:8080", {jsonp: false});
+    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
     const userId = useSelector((state) => state.auth.userId);
   useEffect(() => {
     console.log('socket about to connect to server');
@@ -144,6 +144,9 @@ const CurrentShopppingScreen=(props)=>{
                       <UserImgWrapper>
                         <UserImg source={require('../../assets/users/user-4.jpg')} />
                       </UserImgWrapper>
+                      <View>
+                      <Text>In Lobby</Text>
+                      </View>
                     </UserInfo>
                   </Card>
                 </TouchableHighlight>
@@ -159,7 +162,7 @@ const CurrentShopppingScreen=(props)=>{
           <Text
             style={{ color: 'white', paddingTop: 10, textAlign: 'center', paddingRight: 3 }}
             onPress={onPayHandler}
-          >Pay</Text>
+          >Checkout</Text>
         </View>
         </View>
 

@@ -36,7 +36,7 @@ const ProductDetailScreen = props => {
   console.log("amount is ",amount);*/
 
   const userId = useSelector((state) => state.auth.userId);
-  const socket = SocketIOClient("http://localhost:8080", {jsonp: false});
+  const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
   useEffect( ()=>{
     console.log('socket about to connect to server');
     socket.on("connect", () => {
