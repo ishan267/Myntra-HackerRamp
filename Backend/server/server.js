@@ -175,7 +175,7 @@ app.get('/get-sessions',(req,res)=>{
 })
 
 app.get('/get-cart',(req,res)=>{
-    sessionId = req.body.id;
+    id = req.body.id;
     res.status(201).send(sessnObj.getUserCartsList(id));
 })
 
