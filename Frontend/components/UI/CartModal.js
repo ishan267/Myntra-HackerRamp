@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import CartItem from '../shop/CartItem'
 import Card from "./Card";
 
+
 const CartModal = (props) => {
     
   const dispatch=useDispatch();

@@ -23,6 +23,13 @@ const ShoppingSessionScreen = (props) => {
   const navigation = props.navigation
   const userId = useSelector((state) => state.auth.userId);
   const sessionList = useSelector((state) => state.sessions.availableSessions);
+  const [currTime,setcurrTime]=useState(new Date().getTime());
+
+ useEffect(()=>{
+  setInterval(()=>{
+    setcurrTime(new Date().getTime());
+  })
+ },[1000])
   const userSessions = sessionList.filter((session) => {
 
     if(session==undefined)
@@ -62,15 +69,8 @@ const ShoppingSessionScreen = (props) => {
       members: members
     });
   }
-  if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
-  }
-
-
+ 
+  
   return (
     <View>
       <FlatList
@@ -88,8 +88,12 @@ const ShoppingSessionScreen = (props) => {
               <View style={{flexDirection:'row'}}>
               <Text color={Colors.primary}>{`${itemData.item.time.hour}:${itemData.item.time.minute}`} </Text>
               <Text>{itemData.item.time.hour >= 12 ? 'PM' : 'AM'}</Text>
+              {/* <Text>{itemData.item.newDate}</Text>
+              <Text>{new Date()}</Text> */}
               </View>
-              {/*itemData.item.newDate == new Date() ?
+              {(itemData.item.date.date == new Date().getDate()  && itemData.item.date.month==new Date().getMonth() && itemData.item.date.year==new Date().getFullYear()
+                  && currTime>=itemData.item.date.date
+              ) ?
                 <Button
                   color={Colors.primary}
                   title="Join"
@@ -97,14 +101,10 @@ const ShoppingSessionScreen = (props) => {
                 /> :
                 <Button
                   color={Colors.primary}
-                  title="View Details"
+                  title="View"
                   onPress={() => ViewDetailHandler(itemData.item.title, itemData.item.members)}
-              />*/
-              <Button
-              color={Colors.primary}
-              title="Join"
-              onPress={() => joinHandler(itemData.item.title, itemData.item.members)}
-            />}
+              />
+              }
 
             </View>
           </Card>

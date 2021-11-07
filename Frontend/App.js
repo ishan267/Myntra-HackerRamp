@@ -17,6 +17,7 @@ import sessionReducer from './store/reducers/sessions';
 import usersReducer from './store/reducers/users';
 
 import NavigationContainer from './navigation/NavigationContainer';
+import { NativeBaseProvider } from 'native-base';
 
 const rootReducer = combineReducers({
   products: productsReducer,
@@ -44,6 +45,7 @@ export default function App() {
 
   if (!fontLoaded) {
     return (
+      <NativeBaseProvider>
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => {
@@ -51,11 +53,14 @@ export default function App() {
         }}
         onError={(err)=>console.log(err)}
       />
+      </NativeBaseProvider>
     );
   }
   return (
+    <NativeBaseProvider>
     <Provider store={store}>
       <NavigationContainer />
     </Provider>
+    </NativeBaseProvider>
   );
 }
