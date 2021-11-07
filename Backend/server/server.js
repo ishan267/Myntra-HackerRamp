@@ -51,7 +51,7 @@ io.on('connection',(socket)=>{
         socket.join(session.sessionId);
         sessnObj.updateCarts(id,cartsObj);
         console.log('carts_updated');
-        socket.broadcast.to(params.id).emit('get-cart',sessnObj.getUserCartsList(id));
+        //socket.broadcast.to(params.id).emit('get-cart',sessnObj.getUserCartsList(id));
     })
 
     socket.on('join-room',(params,callback)=>{
@@ -172,6 +172,11 @@ app.post('/add-session',(req,res)=>{
 
 app.get('/get-sessions',(req,res)=>{
     res.status(201).send(sessions);
+})
+
+app.get('/get-cart',(req,res)=>{
+    sessionId = req.body.id;
+    res.status(201).send(sessnObj.getUserCartsList(id));
 })
 
 server.listen(port,()=>{
