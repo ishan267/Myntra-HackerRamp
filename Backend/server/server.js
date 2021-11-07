@@ -5,6 +5,7 @@ const socketIO = require('socket.io');
 const path = require('path');
 const {isRealString} = require('./utils/validation');
 const {users,chatrooms,messages,sessions,chats,Users,Chatrooms,Messages,Sessions} = require('./utils/users');
+const fetch = require('node-fetch')
 
 const publicPath = path.join(__dirname,'../public');
 const port = process.env.PORT || 8080;
@@ -23,6 +24,20 @@ app.use(express.json());
 app.use(express.static(publicPath));
 console.log('HI');
 
+//to start the recommender server
+var options = {
+      host: 'get-recommendation-from-chats.herokuapp.com',
+      port: 80,
+      path: '/startServer',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    var req = http.get(options, function(res) {
+       console.log('STATUS: ' + res.statusCode);
+    });
+//recommender server is on if get status code 200 in console    
 
 io.on('connection',(socket)=>{
     console.log('New user connected with socket id',socket.id);
@@ -185,6 +200,12 @@ app.get('/get-sessions',(req,res)=>{
 app.post('/get-cart',(req,res)=>{
     id = req.body.id;
     res.status(201).send(sessnObj.getUserCartsList(id));
+})
+
+app.get('/check',(req,res)=>{
+
+    
+    //const resData = response.json();
 })
 
 server.listen(port,()=>{
