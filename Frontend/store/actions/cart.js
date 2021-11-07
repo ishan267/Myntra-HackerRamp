@@ -50,15 +50,10 @@ export const fetchSessionCarts = sessionId => {
         // }
         // console.log("array of is",rooms);
         // const loadedChatrooms=rooms.slice();
-      // dispatch({
-      //     type:FETCH_SESSION_CARTS,
-      //     friendData:{
-      //       id:newFriend.id,
-      //       name:newFriend.name,
-      //       friends:newFriend.friends,
-      //       chatrooms:newFriend.chatrooms,
-      //     }
-      // })
+      dispatch({
+          type:FETCH_SESSION_CARTS,
+          sessionCartData:resData.slice()
+      })
     }catch(err){
         throw err;
     }

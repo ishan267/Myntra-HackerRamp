@@ -13,7 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from "@expo/vector-icons";
 import * as messagesAction from '../../store/actions/messages';
 
-const CartModal = (props) => {
+const ChatModal = (props) => {
     
   const dispatch=useDispatch();
   const modalVisible = props.visible;
@@ -24,18 +24,20 @@ const CartModal = (props) => {
 
   const userId = useSelector((state) => state.auth.userId);
   const recId=props.recId;
-  console.log("chosen friend is",recId);
+  const [chosenUser,setChosenUser]=useState(props.recId);
+  const allMessages=useSelector(state=>state.messages.allMessages);
+  console.log("in chat modal chosen friend is",recId);
+  console.log("in chat modal all messages",allMessages);
   const socket = props.socket;
-  //const sessionMessages = useSelector(state => state.messages.sessionMessages);
-  //console.log("all session messages are",sessionMessages);
   let roomMessages=[];
-  /*if(sessionMessages!=undefined)
-    roomMessages= sessionMessages.filter((message) => {
-      if (message.tag == 1 && (message.senderId == props.recId || message.receiverId == props.recId))
+  if(allMessages!=undefined)
+    roomMessages= allMessages.filter((message) => {
+      if (message.tag == 1 && (message.senderId == recId || message.receiverId == recId))
         return true;
       else
         return false;
-    });*/
+    });
+  console.log("in chat modal room messages",roomMessages);
 
   let msglist = roomMessages.map((msg) => {
     return (
@@ -67,19 +69,21 @@ const CartModal = (props) => {
 
   const onSend = useCallback((msg = []) => {
     console.log("gifted chat default message",msg);
+    console.log("recid is",recId);
+    console.log("chosen user is",chosenUser);
     const message = {
       id: msg[0]._id,
       createdAt: msg[0].createdAt,
       text: msg[0].text,
-      receiverId: recId,
+      receiverId: chosenUser,
       senderId: msg[0].user._id,
       tag: '1',
       productsDiscussed: '',
       image: ''
     }
     console.log("message to be sent is", message);
-    dispatch(messagesAction.addSessionMessage(message));
-    //sendPersonalMessage(message);
+    dispatch(messagesAction.addMessage(message));
+    sendPersonalMessage(message);
   }, []);
 
     const renderSend = (props) => {
@@ -211,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartModal;
+export default ChatModal;

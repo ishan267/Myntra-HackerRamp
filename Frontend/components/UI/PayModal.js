@@ -76,7 +76,7 @@ const PayModal = (props) => {
                                     <Text style={{ color: 'white', paddingTop: 5 }} onPress={onCancelHandler}> Cancel</Text>
                                 </View>
                                 <View style={[styles.actions, { backgroundColor: 'green' }]}>
-                                    <Text style={{ color: 'white', paddingTop: 5 }} onPress={onSubmitHandler}> Place Order </Text>
+                                    <Text style={{ color: 'white', paddingTop: 5 }} onPress={onSubmitHandler}> Order </Text>
                                 </View>
 
 

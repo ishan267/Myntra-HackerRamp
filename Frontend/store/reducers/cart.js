@@ -97,10 +97,10 @@ export default (state = initialState, action) => {
           sessionAmount: state.sessionAmount + productPrice
         };
         case FETCH_SESSION_CARTS:
-          console.log("reducer fetch session called called");
+          console.log("reducer fetch session called called with",action.sessionCartData);
           return{
             ...state,
-            sessionCarts:[]
+            sessionCarts:action.sessionCartData
           };
   }
 

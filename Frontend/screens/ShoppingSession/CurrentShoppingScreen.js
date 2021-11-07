@@ -39,7 +39,7 @@ const CurrentShopppingScreen = (props) => {
   const [toolTipVisible, setToolTipVisible] = useState(false);
   const [cartModalVisible, setCartModalVisible] = useState(false);
   const [chatModalVisible, setChatModalVisible] = useState(false);
-
+  const [userChosen,setUserChosen] = useState('');
   const sessionId = props.navigation.getParam('sessionId');
 
   const users = useSelector(state => state.users.availableUsers);
@@ -51,9 +51,9 @@ const CurrentShopppingScreen = (props) => {
   console.log("member ids are", membersId);
   console.log("members info are", members);
   const sessionMessages = useSelector(state => state.messages);
-  console.log("all session messages are", sessionMessages);
+  console.log("messages state is", sessionMessages);
   //const joinees=[];
-  const [chosenId, setChosenId] = useState('');
+  const [chosenId,setChosenId] = useState('');
   //let chosenId='123';
   const dispatch=useDispatch();
   const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", { jsonp: false });
@@ -84,18 +84,18 @@ const CurrentShopppingScreen = (props) => {
   useEffect(()=>{
     console.log("about to call dispath fetch session cart with sid",sessionId);
     dispatch(sessionActions.fetchSessionCarts(sessionId));
-  },[])
+  },[dispatch])
 
   function handleTooltip(frnd) {
     console.log("chosen friend to chat is", frnd);
-    setChosenId(frnd.id);
+    //setChosenId(frnd.id);
     //chosenId=frnd.id;
     console.log("chosen id is", frnd.id);
     setToolTipVisible(!toolTipVisible);
   }
 
   const onPayHandler = () => {
-    props.navigation.navigate('PayScreen');
+    props.navigation.navigate('PayScreen',{userChosen:chosenId});
   }
   const newCartItem = 2;
   const isPresent = true;
@@ -114,6 +114,7 @@ const CurrentShopppingScreen = (props) => {
         <CartModal
           visible={cartModalVisible}
           setModalVisible={setCartModalVisible}
+          userChosen={chosenId}
         />
 
         <FlatList
@@ -128,6 +129,7 @@ const CurrentShopppingScreen = (props) => {
                 
                  placement='bottom'
                   trigger={(triggerProps) => {
+                    
                     return (
                       <Text {...triggerProps}>
                         {isPresent === true ?
@@ -166,7 +168,12 @@ const CurrentShopppingScreen = (props) => {
                           name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
                           size={23}
                           color={Colors.primary}
-                          onPress={() => setCartModalVisible(true)}
+                          onPress={() => {
+                            setCartModalVisible(true);
+                            console.log("user id is",item.id);
+                            setChosenId(item.id);
+                          }
+                          }
                         />
                         {newCartItem > 0 && <Badge value={newCartItem} status="error" containerStyle={{ top: -3, right: 5 }} />}
 
@@ -175,7 +182,11 @@ const CurrentShopppingScreen = (props) => {
                           name={Platform.OS === "android" ? "md-chatbubbles" : "ios-chatbubbles"}
                           size={23}
                           color={Colors.primary}
-                          onPress={() => setChatModalVisible(true)}
+                          onPress={() => {
+                            setChatModalVisible(true);
+                            console.log("user id is",item.id);
+                            setChosenId(item.id);
+                          }}
                         />
                       </View>
                     </Popover.Body>

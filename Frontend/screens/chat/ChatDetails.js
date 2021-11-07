@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {db,auth} from '../../firebase';
 import * as messagesAction from '../../store/actions/messages';
 import { useSelector, useDispatch } from 'react-redux';
+import message from '../../models/message';
 
 
 const ChatDetailScreen = (props) => {
@@ -67,6 +68,39 @@ const ChatDetailScreen = (props) => {
       socket.emit('createMessage',msg);
     }
 
+async function fetchML(message)
+ {
+      console.log("fetch recommendation for",message.text);
+        try{  
+          const response =  await fetch(
+            'https://get-recommendation-from-chats.herokuapp.com/getRecommendation',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                text:message.text
+              })
+            }
+          );
+          if (!response.ok) {
+            throw new Error('Something went wrong!');
+          }
+          const resData = await response.json();
+          console.log("ML response received for fetch",resData);
+          message.image=resData.url;
+          message.id=new Date().getTime()
+          message.createdAt=new Date().getTime();
+          message.text = 'Check this out!'
+          console.log("before ml msg send",message);
+          dispatch(messagesAction.addMessage(message));
+          sendPersonalMessage(message);
+        }
+        catch(err){
+            throw err;
+        }
+  }
 
   const onSend = useCallback((msg = []) => {
   
@@ -85,6 +119,7 @@ const ChatDetailScreen = (props) => {
     }
     console.log("message to be sent is",message);
     //addMessage action will be dispatched from here
+    fetchML(message);
     dispatch(messagesAction.addMessage(message));
     sendPersonalMessage(message);
   }, []);
