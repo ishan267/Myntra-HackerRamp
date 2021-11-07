@@ -182,7 +182,7 @@ app.get('/get-sessions',(req,res)=>{
     res.status(201).send(sessions);
 })
 
-app.get('/get-cart',(req,res)=>{
+app.post('/get-cart',(req,res)=>{
     id = req.body.id;
     res.status(201).send(sessnObj.getUserCartsList(id));
 })
@@ -201,7 +201,8 @@ server.listen(port,()=>{
     mssgsObj.addMessage('msg3',ids[4],'Bs Badiya tu bata',1,ids[3],Date.now());
     mssgsObj.addMessage('msg4',ids[3],'Message pohcha kya',0,'room1',Date.now());
     mssgsObj.addMessage('msg5',ids[4],'Ha pohch gaya',0,'room1',Date.now());
-
+    //sessnObj.addSession('123','Majboot','date','time','friendsid','adminid',[{"a":"b"},{"c":"d"},{"e":"f"}]);
+    //sessnObj.addSession('234','Majboot','date','time','friendsid','adminid',[{"g":"h"},{"i":"j"}]);
     console.log('Added first enteries hardcoded');
     console.log(users);
     //console.log(chatrooms);
