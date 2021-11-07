@@ -25,6 +25,8 @@ const ShoppingSessionScreen = (props) => {
   const sessionList = useSelector((state) => state.sessions.availableSessions);
   const userSessions = sessionList.filter((session) => {
 
+    if(session==undefined)
+      return false;
     for (let i = 0; i < session.members.length; i++) {
       if (session.members[i] == userId)
         return true;
@@ -34,6 +36,15 @@ const ShoppingSessionScreen = (props) => {
   console.log("user id is", userId);
   console.log("all sessions", sessionList);
   console.log("current user sesion", userSessions);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch=useDispatch();
+
+  useEffect(()=>{
+    setIsLoading(true);
+    dispatch(sessionActions.fetchSessions()).then(()=>{
+      setIsLoading(false);
+    })
+  },[dispatch])
 
   const joinHandler = (title, members) => {
     //console.log("title is",title);
@@ -78,7 +89,7 @@ const ShoppingSessionScreen = (props) => {
               <Text color={Colors.primary}>{`${itemData.item.time.hour}:${itemData.item.time.minute}`} </Text>
               <Text>{itemData.item.time.hour >= 12 ? 'PM' : 'AM'}</Text>
               </View>
-              {itemData.item.newDate == new Date() ?
+              {/*itemData.item.newDate == new Date() ?
                 <Button
                   color={Colors.primary}
                   title="Join"
@@ -88,7 +99,12 @@ const ShoppingSessionScreen = (props) => {
                   color={Colors.primary}
                   title="View Details"
                   onPress={() => ViewDetailHandler(itemData.item.title, itemData.item.members)}
-                />}
+              />*/
+              <Button
+              color={Colors.primary}
+              title="Join"
+              onPress={() => joinHandler(itemData.item.title, itemData.item.members)}
+            />}
 
             </View>
           </Card>

@@ -8,7 +8,7 @@ export const fetchUsers = () => {
       try {
         console.log("before request sent to url",baseUrl);
         const response =  await fetch(
-          'http://localhost:8080/get-users'
+          `${baseUrl}/get-users`
         );
         console.log("response received for fetch users",response);
 

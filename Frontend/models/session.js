@@ -1,5 +1,5 @@
 class Session {
-  constructor(id, title,date, time, friendsId, adminId,carts) {
+  constructor(id, title,date, time, friendsId, adminId) {
     this.id = id;
     this.title = title;
     this.date = date;

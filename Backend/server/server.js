@@ -46,12 +46,15 @@ io.on('connection',(socket)=>{
     })
 
     socket.on('update-carts',(params)=>{
+        console.log("update cart called with params",params);
         id = params.id;
         cartsObj = params.cartsObj;
-        socket.join(session.sessionId);
+        socket.join(id);
         sessnObj.updateCarts(id,cartsObj);
         console.log('carts_updated');
-        socket.broadcast.to(params.id).emit('get-cart',sessnObj.getUserCartsList(id));
+        console.log("sessions- ",sessions);
+        console.log("response to be send is",sessnObj.getUserCartsList(id));
+        socket.broadcast.to(id).emit('get-cart',sessnObj.getUserCartsList(id));
     })
 
     socket.on('join-room',(params,callback)=>{
@@ -165,7 +168,14 @@ app.post('/add-friend',(req,res)=>{
 })*/
 
 app.post('/add-session',(req,res)=>{
-    sessions.push(req.body);
+    let obj = req.body.session;
+    obj = {...obj,carts:[]};
+    //console.log("new session obj",obj);
+    sessions.push(obj);
+    console.log("array",sessions);
+    //console.log("sessions in post",sessions);
+    //console.log(req.body);
+    //console.log(req.body.session);
     res.status(201).send('session added');
 })
 

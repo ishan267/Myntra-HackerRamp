@@ -21,6 +21,7 @@ import * as productsActions from "../../store/actions/products";
 import * as chatroomAction from '../../store/actions/chatroom'
 import * as messagesAction from '../../store/actions/messages'
 import * as friendsAction from '../../store/actions/friends';
+import * as sessionActions from '../../store/actions/friends';
 import * as userActions from '../../store/actions/users';
 import Colors from "../../constants/Colors";
 import { Searchbar } from 'react-native-paper';
@@ -38,6 +39,7 @@ const ProductsOverviewScreen = (props) => {
     setIsRefreshing(true);
     try {
       await dispatch(userActions.fetchUsers());
+      //await dispatch(sessionActions.fetchSessions());
       await dispatch(productsActions.fetchProducts());
     } catch (err) {
       setError(err.message);

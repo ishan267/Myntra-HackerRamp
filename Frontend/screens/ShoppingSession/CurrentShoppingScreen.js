@@ -45,7 +45,7 @@ const CurrentShopppingScreen=(props)=>{
     //const joinees=[];
     const [chosenId,setChosenId]=useState('');
     //let chosenId='123';
-    const socket = SocketIOClient("http://localhost:8080", {jsonp: false});
+    const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
     const userId = useSelector((state) => state.auth.userId);
   useEffect(() => {
     console.log('socket about to connect to server');
@@ -59,6 +59,9 @@ const CurrentShopppingScreen=(props)=>{
       console.log("socket id is", socket.id);
       console.log("socket message received is", msg);
       dispatch(messagesAction.addMessage(msg));
+    })
+    socket.on('get-cart',(arr)=>{
+      console.log("fetch carts result is",arr);
     })
     socket.on("connect_error", (err) => {
       console.log("Error");
@@ -91,6 +94,7 @@ const CurrentShopppingScreen=(props)=>{
       <CartModal
         visible={cartModalVisible}
         setModalVisible={setCartModalVisible}
+        
       />
       <Container>
         <FlatList

@@ -110,13 +110,13 @@ class Sessions{
 
 	addSession(id,title,date,time,friendsId,adminId,carts){    //no need for now, may be used later
 		var obj = {
-			"id":id,
-			"title":title,
-			"date":date,
-			"time":time,
-			"friendsId":friendsId,
-			"adminId":adminId,
-			"carts":carts
+			id:id,
+			title:title,
+			date:date,
+			time:time,
+			friendsId:friendsId,
+			adminId:adminId,
+			carts:carts
 		}
 		sessions.push(obj);
 	}
@@ -126,7 +126,7 @@ class Sessions{
 			if(sessions[i].id==id){
 				let isPresent = 0;
 				for(var j=0;j<sessions[i].carts.length;j++){
-					if(sessions[i].carts[j].id==cartsObj.id){
+					if(sessions[i].carts[j].userId==cartsObj.userId){
                         isPresent=1;
                         sessions[i].carts[j]=cartsObj;
                         break;

@@ -16,11 +16,11 @@ const initialState = {
     
     switch (action.type) {
       case FETCH_SESSIONS:   //Done ,action part left
-        console.log("reducer called for fetch sessions");
+        console.log("reducer called for fetch sessions with",action.loadedSessions);
         let newarray=[];
         if(action.loadedSessions!=undefined)
           for(let i=0;i<action.loadedSessions.length;i++)
-            newarray.push(action.loadedSessions[i].session);
+            newarray.push(action.loadedSessions[i]);
         console.log("all sessions to be added are",newarray);
         return {  
         availableSessions: newarray, 

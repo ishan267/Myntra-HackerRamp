@@ -26,7 +26,7 @@ const ProductDetailScreen = props => {
 
   const sessionList = useSelector((state) => state.sessions.availableSessions);
   const sessionCart = useSelector(state=>state.cart.sessionItems);
-  const sesionAmount = useSelector(state=>state.cart.sessionAmount);
+  const sessionAmount = useSelector(state=>state.cart.sessionAmount);
   //console.log("session cart is",sessionCart);
   //console.log("session amount is ",sesionAmount);
 
@@ -36,7 +36,7 @@ const ProductDetailScreen = props => {
   console.log("amount is ",amount);*/
 
   const userId = useSelector((state) => state.auth.userId);
-  const socket = SocketIOClient("http://localhost:8080", {jsonp: false});
+  const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", {jsonp: false});
   useEffect( ()=>{
     console.log('socket about to connect to server');
     socket.on("connect", () => {
@@ -50,6 +50,9 @@ const ProductDetailScreen = props => {
       console.log("socket message received is",msg);
       dispatch(messagesAction.addMessage(msg));
     })
+    socket.on('get-cart',(arr)=>{
+      console.log("fetch carts result is",arr);
+    })
     socket.on("connect_error", (err) => {
       console.log("Error");
       console.log(err instanceof Error);
@@ -58,10 +61,23 @@ const ProductDetailScreen = props => {
   },[]);
 
   useEffect(()=>{
-    console.log("session cart is",sessionCart);
-    console.log("session amount is ",sesionAmount);
+    console.log("updated session cart is",sessionCart);
+    console.log("session amount is ",sessionAmount);
     console.log("session list is",sessionList);
-
+    let cartsObj={
+      userId:userId,
+      carts: sessionCart,
+      amount: sessionAmount
+    };
+    if(sessionAmount!=0 /*&& sessionList[0]!=undefined*/)
+    {
+      let obj = {
+        id:'1636229926994',
+        cartsObj:cartsObj
+      }
+      console.log("cart object to be sent is",obj);
+      socket.emit('update-carts',obj);
+    }
   },[sessionCart])
        
   return (
