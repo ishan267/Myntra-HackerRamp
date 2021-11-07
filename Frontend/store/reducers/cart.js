@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART,ADD_TO_SESSION_CART,REMOVE_FROM_SESSION_CART } from '../actions/cart';
+import { ADD_TO_CART, REMOVE_FROM_CART,ADD_TO_SESSION_CART,REMOVE_FROM_SESSION_CART, FETCH_SESSION_CARTS } from '../actions/cart';
 import { ADD_ORDER } from '../actions/orders';
 import CartItem from '../../models/cart-item';
 import { DELETE_PRODUCT } from '../actions/products';
@@ -7,7 +7,8 @@ const initialState = {
   items: {},
   totalAmount: 0,
   sessionItems:{},
-  sessionAmount:0
+  sessionAmount:0,
+  sessionCarts:[]
 };
 
 export default (state = initialState, action) => {
@@ -95,6 +96,12 @@ export default (state = initialState, action) => {
           sessionItems: { ...state.sessionItems, [addedProd.id]: newCartItem },
           sessionAmount: state.sessionAmount + productPrice
         };
+        case FETCH_SESSION_CARTS:
+          console.log("reducer fetch session called called");
+          return{
+            ...state,
+            sessionCarts:[]
+          };
   }
 
   return state;

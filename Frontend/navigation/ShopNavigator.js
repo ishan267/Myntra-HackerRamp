@@ -49,7 +49,8 @@ const ChatsNavigator = createStackNavigator(
   {
     ChatOverview: ChatOverviewScreen,
     ChatDetails: ChatDetailScreen,
-    FriendList:FriendListScreen
+    FriendList:FriendListScreen,
+    ProductDetail: ProductDetailScreen,
   },
   {
     navigationOptions: {

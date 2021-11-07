@@ -13,6 +13,7 @@ import { Popover, Button, Box, Center, NativeBaseProvider } from "native-base"
 import * as Animatable from 'react-native-animatable';
 import UserAvatar from 'react-native-user-avatar';
 import { Avatar, Badge, Icon, withBadge } from 'react-native-elements'
+import * as sessionActions from '../../store/actions/cart'
 
 import {
   Container,
@@ -39,7 +40,7 @@ const CurrentShopppingScreen = (props) => {
   const [cartModalVisible, setCartModalVisible] = useState(false);
   const [chatModalVisible, setChatModalVisible] = useState(false);
 
-  
+  const sessionId = props.navigation.getParam('sessionId');
 
   const users = useSelector(state => state.users.availableUsers);
   console.log("current users are", users);
@@ -54,6 +55,7 @@ const CurrentShopppingScreen = (props) => {
   //const joinees=[];
   const [chosenId, setChosenId] = useState('');
   //let chosenId='123';
+  const dispatch=useDispatch();
   const socket = SocketIOClient("https://social-commerce-myntra.herokuapp.com", { jsonp: false });
   const userId = useSelector((state) => state.auth.userId);
   useEffect(() => {
@@ -78,6 +80,11 @@ const CurrentShopppingScreen = (props) => {
       console.log(err.message);
     });
   }, []);
+
+  useEffect(()=>{
+    console.log("about to call dispath fetch session cart with sid",sessionId);
+    dispatch(sessionActions.fetchSessionCarts(sessionId));
+  },[])
 
   function handleTooltip(frnd) {
     console.log("chosen friend to chat is", frnd);

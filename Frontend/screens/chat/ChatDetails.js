@@ -129,6 +129,23 @@ const ChatDetailScreen = (props) => {
     );
   }
 
+  function handleUrlPress ()
+  {
+    console.log("link in msg clicked");
+    const str = msglist[0].text;
+    console.log("msg list last message is",str);
+    const a = str.indexOf(".");
+    const b = str.lastIndexOf(".");
+    const pid = str.substring(a+1,b);
+    const pname = str.substring(0,a);
+    console.log("latest product id",pid);
+    console.log("latest product name",pname);
+    props.navigation.navigate("ProductDetail", {
+      productId: pid,
+      productTitle: pname,
+    });
+  }
+
   return (
     <GiftedChat
       messages={msglist}
@@ -142,6 +159,9 @@ const ChatDetailScreen = (props) => {
       renderSend={renderSend}
       scrollToBottom
       scrollToBottomComponent={scrollToBottomComponent}
+      parsePatterns={() => [
+        {pattern: /.*\.myntra$/, style: styles.url, onPress: handleUrlPress},
+      ]}
     />
   );
 };
@@ -152,6 +172,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  url: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+  },
+
 });
 
 

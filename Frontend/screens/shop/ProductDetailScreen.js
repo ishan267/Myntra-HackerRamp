@@ -50,9 +50,9 @@ const ProductDetailScreen = props => {
       console.log("socket message received is",msg);
       dispatch(messagesAction.addMessage(msg));
     })
-    socket.on('get-cart',(arr)=>{
+    /*socket.on('get-cart',(arr)=>{
       console.log("fetch carts result is",arr);
-    })
+    })*/
     socket.on("connect_error", (err) => {
       console.log("Error");
       console.log(err instanceof Error);
@@ -72,7 +72,7 @@ const ProductDetailScreen = props => {
     if(sessionAmount!=0 /*&& sessionList[0]!=undefined*/)
     {
       let obj = {
-        id:'1636229926994',
+        id:'1636305264208',
         cartsObj:cartsObj
       }
       console.log("cart object to be sent is",obj);

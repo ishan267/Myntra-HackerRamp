@@ -106,13 +106,14 @@ import * as messagesAction from '.././store/actions/messages';
               message={
                 id: new Date().getTime(),
                 createdAt: new Date().getTime(),
-                text: product.title,
+                text: product.title+'.'+product.id+'.myntra',
                 receiverId: selectedFriends[i].id,
                 senderId: userId,
                 tag: (selectedFriends[i].adminId==undefined)?'1':'0',
                 productsDiscussed:'',
                 image:product.imageUrl
               }
+              console.log("product share msg is",message);
               dispatch(messagesAction.addMessage(message));
               socket.emit('createMessage',message);
           }

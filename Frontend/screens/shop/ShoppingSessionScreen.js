@@ -40,9 +40,9 @@ const ShoppingSessionScreen = (props) => {
     }
     return false;
   })
-  console.log("user id is", userId);
-  console.log("all sessions", sessionList);
-  console.log("current user sesion", userSessions);
+  //console.log("user id is", userId);
+  //console.log("all sessions", sessionList);
+  //console.log("current user sesion", userSessions);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch=useDispatch();
 
@@ -53,12 +53,13 @@ const ShoppingSessionScreen = (props) => {
     })
   },[dispatch])
 
-  const joinHandler = (title, members) => {
+  const joinHandler = (title, members,id) => {
     //console.log("title is",title);
     //console.log("joineers are",members);
     navigation.navigate("CurrentShoppping", {
       title: title,
-      members: members
+      members: members,
+      sessionId:id
     });
 
   };
@@ -97,7 +98,7 @@ const ShoppingSessionScreen = (props) => {
                 <Button
                   color={Colors.primary}
                   title="Join"
-                  onPress={() => joinHandler(itemData.item.title, itemData.item.members)}
+                  onPress={() => joinHandler(itemData.item.title, itemData.item.members,itemData.item.id)}
                 /> :
                 <Button
                   color={Colors.primary}
