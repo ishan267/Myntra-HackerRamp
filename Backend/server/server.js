@@ -209,7 +209,7 @@ app.get('/check',(req,res)=>{
     //const resData = response.json();
 })
 
-app.post('/counter',(req,res)=>{
+app.put('/counter',(req,res)=>{
     counter = req.body.counter;
     res.status(201).send("done");
 })
