@@ -17,6 +17,7 @@ var usersObj = new Users();
 var roomsObj = new Chatrooms();
 var mssgsObj = new Messages();
 var sessnObj = new Sessions();
+var counter  = null;
 
 app.use(cors());
 app.use(express.json());
@@ -207,6 +208,16 @@ app.get('/check',(req,res)=>{
     
     //const resData = response.json();
 })
+
+app.post('/counter',(req,res)=>{
+    counter = req.body.counter;
+    res.status(201).send("done");
+})
+
+app.get('/counter',(req,res)=>{
+    res.status(201).send(counter);
+})
+
 
 server.listen(port,()=>{
     ids = ['Y7z8PA4X3oa1J8s7LdJUqKSCWCs2','jnDoAoWRJffAT2JtKBDrA01rdiB2','E2st6ZE60mOdnFGXt0D1GtpGbTC2','RX1dV5bEfHZxETs9mD3THqXd3f23','GhgR6m57mmaEZ4GMoicKuB6YzMv1'];
