@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View,ActivityIndicator,FlatList,Platform} from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -17,24 +17,39 @@ const CartModal = (props) => {
   const dispatch=useDispatch();
   const modalVisible = props.visible;
   const  setModalVisible= props. setModalVisible;
+  const sessionCarts = useSelector(state => state.cart.sessionCarts);
+  console.log("session cart info",sessionCarts)
+  const userChosen = props.userChosen;
+  console.log("user chosen is",userChosen);
+  const cartObject = sessionCarts.filter((cart)=>cart.userId==userChosen)[0];
+  console.log("cart object is",cartObject)
+  
+  let cartTotalAmount=0;
+  let cartItems=[];
 
+if(cartObject!=undefined)
+{
+  cartTotalAmount=cartObject.amount;
+  for (var property in cartObject.carts) 
+  {
+    const obj = cartObject.carts[property];
+    obj = {...obj,productId:property};
+    cartItems.push(obj);
+  } 
+}
+console.log("cart items are",cartItems);
+console.log("cart amount is",cartTotalAmount);
 
     const onCancelHandler=()=>{
      setModalVisible(!modalVisible);
      
     }
 
+  // useEffect(()=>{
+  //   console.log("new user chosen with id");
+  // },[userChosen])
+
     const [isLoading, setIsLoading] = useState(false);
-
-    const cartTotalAmount=10;
-    const cartItems=[{
-       productId:'1',
-       productTitle:"shirt",
-       productPrice:'100',
-       quantity:10,
-        sum:20
-
-    }]
 
 //   const cartTotalAmount = useSelector(state => state.cart.totalAmount);
 //   const cartItems = useSelector(state => {
@@ -112,7 +127,7 @@ const CartModal = (props) => {
             quantity={itemData.item.quantity}
             title={itemData.item.productTitle}
             amount={itemData.item.sum}
-            deletable
+            //deletable
             // onRemove={() => {
             //   dispatch(cartActions.removeFromCart(itemData.item.productId));
             // }}

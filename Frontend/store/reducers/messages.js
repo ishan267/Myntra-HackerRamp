@@ -64,7 +64,7 @@ export default (state=initialState,action)=>{
                if(state.sessionMessages[i].id==newMessage.id)
                    return state;
            }*/
-           console.log("session messsages are",state);
+           console.log("messsages state is",state);
             return {
                ...state,
                sessionMessages: state.sessionMessages.concat(newMessage)
@@ -76,6 +76,9 @@ export default (state=initialState,action)=>{
                 allMessages:state.allMessages.filter(message=>message.id===action.messageId)
             }
 
+        }
+        default:{
+            return state;
         }
     }
 

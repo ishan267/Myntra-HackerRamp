@@ -11,77 +11,110 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import OrderItem from "../../components/shop/OrderItem";
 import { Container } from "../../styles/MessageStyles";
 import PayModal from "../../components/UI/PayModal";
+import user from "../../models/user";
 
 
 const PayScreen = (props) => {
 
-    const checkout = [
+    const sessionCarts = useSelector(state => state.cart.sessionCarts);
+    const users = useSelector(state => state.users.availableUsers);
+    console.log("session cart info", sessionCarts)
+    let checkout=[];
+    for(let i=0;i<sessionCarts.length;i++)
+    {
+        let newName;
+        for(let j=0;j<users.length;j++)
         {
-            id: 1,
-            name: "Ishan Thapa",
-            products: [
-                {
-                    productId: 1,
-                    productTitle: "Shirt",
-                    productPrice: 40,
-                    quantity: 2,
-                    sum: 80
-                },
-                {
-                    productId: 2,
-                    productTitle: "jeans",
-                    productPrice: 80,
-                    quantity: 1,
-                    sum: 80
-                },
-                {
-                    productId: 2,
-                    productTitle: "Gun",
-                    productPrice: 100,
-                    quantity: 1,
-                    sum: 100
-                },
-                {
-                    productId: 2,
-                    productTitle: "Gun",
-                    productPrice: 100,
-                    quantity: 1,
-                    sum: 100
-                },
-                {
-                    productId: 2,
-                    productTitle: "Gun",
-                    productPrice: 100,
-                    quantity: 1,
-                    sum: 100
-                }
-            ],
-            total: 260,
-            isSelected: false
-        },
-        {
-            id: 2,
-            name: "Arju Kumar",
-            products: [
-                {
-                    productId: 1,
-                    productTitle: "Shirt",
-                    productPrice: 40,
-                    quantity: 2,
-                    sum: 80
-                },
-                {
-                    productId: 2,
-                    productTitle: "perfume",
-                    productPrice: 100,
-                    quantity: 1,
-                    sum: 100
-                }
-            ],
-            total: 180,
-            isSelected: false
+            if(users[j].id==sessionCarts[i].userId)
+            {
+                newName=users[j].name;
+                break;
+            }
         }
-    ]
+        let newProduct=[];
+        for (var property in sessionCarts[i].carts) 
+        {
+            const obj = sessionCarts[i].carts[property];
+            obj = {...obj,productId:property};
+            newProduct.push(obj);
+        } 
+        let obj={
+            id:sessionCarts[i].userId,
+            name:newName,
+            total: sessionCarts[i].amount,
+            isSelected: false,
+            products:newProduct.slice()
+        }
+        checkout.push(obj);
+    }
+    console.log("final array is",checkout);
+    // let checkout = [
+    //     {
+    //         id: 1,
+    //         name: "Ishan Thapa",
+    //         products: [
+    //             {
+    //                 productId: 1,
+    //                 productTitle: "Shirt",
+    //                 productPrice: 40,
+    //                 quantity: 2,
+    //                 sum: 80
+    //             },
+    //             {
+    //                 productId: 2,
+    //                 productTitle: "jeans",
+    //                 productPrice: 80,
+    //                 quantity: 1,
+    //                 sum: 80
+    //             },
+    //             {
+    //                 productId: 2,
+    //                 productTitle: "Gun",
+    //                 productPrice: 100,
+    //                 quantity: 1,
+    //                 sum: 100
+    //             },
+    //             {
+    //                 productId: 2,
+    //                 productTitle: "Gun",
+    //                 productPrice: 100,
+    //                 quantity: 1,
+    //                 sum: 100
+    //             },
+    //             {
+    //                 productId: 2,
+    //                 productTitle: "Gun",
+    //                 productPrice: 100,
+    //                 quantity: 1,
+    //                 sum: 100
+    //             }
+    //         ],
+    //         total: 260,
+    //         isSelected: false
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "Arju Kumar",
+    //         products: [
+    //             {
+    //                 productId: 1,
+    //                 productTitle: "Shirt",
+    //                 productPrice: 40,
+    //                 quantity: 2,
+    //                 sum: 80
+    //             },
+    //             {
+    //                 productId: 2,
+    //                 productTitle: "perfume",
+    //                 productPrice: 100,
+    //                 quantity: 1,
+    //                 sum: 100
+    //             }
+    //         ],
+    //         total: 180,
+    //         isSelected: false
+    //     }
+    // ]
 
     const [selectedToPay, setSelectedToPay] = useState([]);  // this will be managed by redux
     const [checkoutList, setCheckoutList] = useState([]);
@@ -161,7 +194,7 @@ const PayScreen = (props) => {
                                         onPress={() => {
                                             setShowProducts(prevState => !prevState);
                                         }}
-                                    > {showProducts ? 'Hide Products' : 'Show Products'}</Text>
+                                    > {showProducts ? 'Hide' : 'Show'}</Text>
                                 </View>
                                 {showProducts && (
                                     <View style={styles.detailItems}>

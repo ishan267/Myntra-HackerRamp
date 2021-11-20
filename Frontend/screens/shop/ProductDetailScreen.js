@@ -69,10 +69,10 @@ const ProductDetailScreen = props => {
       carts: sessionCart,
       amount: sessionAmount
     };
-    if(sessionAmount!=0 /*&& sessionList[0]!=undefined*/)
+    if(sessionAmount!=0 && sessionList[0]!=undefined)
     {
       let obj = {
-        id:'1636305264208',
+        id:sessionList[0].id,
         cartsObj:cartsObj
       }
       console.log("cart object to be sent is",obj);
