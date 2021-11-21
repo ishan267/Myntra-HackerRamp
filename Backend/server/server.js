@@ -215,7 +215,7 @@ app.put('/counter',(req,res)=>{
 })
 
 app.get('/counter',(req,res)=>{
-    res.status(201).send(counter);
+    res.status(201).send({counter:counter});
 })
 
 
