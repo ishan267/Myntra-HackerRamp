@@ -211,7 +211,7 @@ app.get('/check',(req,res)=>{
 
 app.put('/counter',(req,res)=>{
     counter = req.body.counter;
-    res.status(201).send("done");
+    res.status(201).send({msg:"done"});
 })
 
 app.get('/counter',(req,res)=>{
